@@ -1,26 +1,98 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import './App.css';
 
+import StudentPage from './Calendar/StudentPage.jsx'
+import StaffPage from './Calendar/StaffPage.jsx'
+import CalendarStore from './mobx/CalendarStore.js';
+import {StudentOnlyRoute, StaffOnlyRoute} from './SpecialRoutes';
+
+
+const calendarStore = new CalendarStore();
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const studentOnlyRoute = ({ match }) => {
+        return (
+            <React.Fragment>
+                <Router>
+                    <Switch>
+                        <Redirect exact from={`${match.url}`} to={`${match.url}/calendar`} />
+                        
+                        <Route
+                            path={`${match.url}/calendar`} exact={true}
+                            render={(props) => (<StudentPage {...props} calendarStore={calendarStore} />)}  // Student Page will include Reusable Calendar and Nav and sidebar
+                        />
+                    </Switch>
+                </Router>
+            </React.Fragment>
+        );
+      }
+
+    const staffOnlyRoute = ({ match }) => {
+        return (
+            <React.Fragment>
+                <Router>
+                    <Switch>
+                        <Redirect exact from={`${match.url}`} to={`${match.url}/calendar`} />
+                        
+                        <Route
+                            path={`${match.url}/calendar`} exact={true}
+                            render={(props) => (<StaffPage {...props} calendarStore={calendarStore} />)} // Staff Page will include Reusable Calendar and Nav and sidebar
+                        />
+                         {/*
+                         <Route
+                            path={`${match.url}/projectlistings`} exact={true}
+                            render={(props) => (<ProjectListPage {...props} calendarStore={calendarStore} />)}
+                        /> */}
+                    </Switch>
+                </Router>
+            </React.Fragment>
+        );
+      }
+     
+    const Home = ({ match }) => {
+
+        return (
+
+            <div>
+                This is Home Page
+            </div>
+            // <React.Fragment>
+            //     <Router>
+            //         <Switch>
+            //             {/* <Redirect exact from={`${match.url}`} to={`${match.url}login`} />
+            //             <LoginRoute path={`${match.url}login`} exact component={LoginPage} calendarStore={calendarStore} 
+            //             /> 
+            //             */}
+            //         </Switch>
+            //     </Router>
+            // </React.Fragment>
+        );
+      }
+
+    
+      return (
+        <div>
+            <Router>
+                <Switch>
+
+                    <StudentOnlyRoute path="/student" component={studentOnlyRoute} calendarStore={calendarStore}
+                    />
+                    
+                    <StaffOnlyRoute path="/staff" component={staffOnlyRoute} calendarStore={calendarStore}
+                    />
+                    
+                    <Route exact path='/' component={Home} calendarStore={calendarStore}
+                    />
+
+                    
+
+                </Switch>
+            </Router>
+        </div>
+      );  
 }
+
+
 
 export default App;
