@@ -47,13 +47,21 @@ const StudentCalendar = observer(
         //     }
         // }
 
+        componentDidUpdate() {
+            console.log('Component Updated!')
+            const {calendarStore} = this.props;
+            if(calendarStore.getData.length > 0){
+                const events = calendarStore.getData;
+                let calendarAPI = this.calendarRef.current.getApi();
+                calendarAPI.addEvent(events[events.length-1]);
+            }
+        }
+
         render() {
             const {calendarStore} = this.props;
             var events = calendarStore.getData;
-            if(events.length > 4) {
-                let calendarAPI = this.calendarRef.current.getApi();
-                calendarAPI.addEvent(events[events.length-1])
-            }
+            console.log('render Student Calendar')
+            
             return (
                 <React.Fragment>
                     <FullCalendar 

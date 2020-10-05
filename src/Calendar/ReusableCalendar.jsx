@@ -16,11 +16,10 @@ const ReusableCalendar = observer(
             }
         }
 
-
         render() {
-            const{dummyEvents, calendarStore, type } = this.props;
+            const{calendarStore, type } = this.props;
             // const {getData} = calendarStore
-            
+            console.log('render Reusable Calendar')
             return (
                 
                 <div>
