@@ -16,7 +16,7 @@ const StudentPage = observer (
             }
         }
 
-        componentWillMount(){ //load data before mounting this component
+        componentDidMount(){ //load data before mounting this component
             const {calendarStore} = this.props;
             calendarStore.addUserType('Student'); 
             // if (calendarStore.getData.length === 0){

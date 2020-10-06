@@ -64,8 +64,8 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
                 type === 'Student' ?
                     <React.Fragment>
                         <List>
-                            {['Weekly Report', 'Meetings', 'Submissions'].map((text, index) => (
-                                <ListItem button key={text} >
+                            {['Reports', 'Meetings', 'Submissions'].map((text, index) => (
+                                <ListItem button key={text} onClick={() => onClickHandler(text,index)}>
                                     <ListItemText primary={text} />
                                 </ListItem>
                             ))}
@@ -82,37 +82,29 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
         </div>
     );
 
-    // const onClickHandler = (text, index) => {
-    //     const { changeDefaultState, addSelectedData, setDefaultNestedState } = calendarStore;
-    //     var user_id = calendarStore.getUserData.id
-    //     switch (text) {
-    //         case "Weekly Report":
-    //             changeDefaultState({ state: 'Weekly Report', index: 0 });
-    //             history.push(`/${user_id}/content`);
-    //             break;
-    //         case "Meetings":
-    //             changeDefaultState({ state: 'Meetings', index: 1 });
-    //             history.push(`/${user_id}/content`);
-    //             break;
-    //         case "Final Report":
-    //             changeDefaultState({ state: 'Final Report', index: 2 })
-    //             setDefaultNestedState(2)
-    //             history.push(`/${user_id}/content`)
-    //             break;
-    //         case "Interim Report":
-    //             changeDefaultState({ state: 'Interim Report', index: 2 })
-    //             setDefaultNestedState(1)
-    //             history.push(`/${user_id}/content`)
-    //             break;
-    //         case "Strategy Plan":
-    //             changeDefaultState({ state: 'Strategy Plan', index: 2 })
-    //             setDefaultNestedState(0)
-    //             history.push(`/${user_id}/content`)
-    //             break;
-    //         default:
-    //             return "";
-    //     }
-    // }
+    const onClickHandler = (text, index) => {
+        const { changeDefaultState} = calendarStore;
+        // var user_id = calendarStore.getUserData.id
+        switch (text) {
+            case "Submissions":
+                console.log('Clicked on Submissions')
+                // changeDefaultState({ state: 'Weekly Report', index: 0 });
+                // history.push(`/${user_id}/content`);
+                break;
+            case "Meetings":
+                console.log('Clicked on Meetings')
+                // changeDefaultState({ state: 'Meetings', index: 1 });
+                // history.push(`/${user_id}/content`);
+                break;
+            case "Reports":
+                console.log('Clicked on Reports')
+                // changeDefaultState({ state: 'Final Report', index: 2 })
+                // history.push(`/${user_id}/content`)
+                break;
+            default:
+                return "";
+        }
+    }
 
     return (
         <div style={{ float: 'center', textAlign: 'center', lineHeight: '74px' }}>

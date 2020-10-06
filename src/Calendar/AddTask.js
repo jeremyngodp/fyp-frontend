@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function AddTaskForm ({handleClose, calendarStore, calendarRef}){
+function AddTaskForm ({handleClose, calendarStore}){
     
     let start = new Date()
     // let dateStr = format(start, 'yyyy-MM-dd')
@@ -33,6 +33,7 @@ function AddTaskForm ({handleClose, calendarStore, calendarRef}){
         category: 'report',
         selectedDueDate: start,
         project_id: 0,
+        title: '',
     })
 
     const handleDueDateChange = (e) => {
@@ -49,10 +50,18 @@ function AddTaskForm ({handleClose, calendarStore, calendarRef}){
             [e.target.name]: value
         })
     }
+
+    const handleSummaryChange = (e) => {
+        const titleVal = e.target.value;
+        setState({
+            ...state,
+            title: titleVal,
+        })
+    }
     
     const onSubmit = (e) => {
         e.preventDefault()
-        const { selectedDueDate, project_id, category } = state;
+        const { selectedDueDate, project_id, category, title } = state;
         
         let fSelectedDueDate = format(selectedDueDate, 'yyyy-MM-dd')
         console.log(fSelectedDueDate)
@@ -66,18 +75,11 @@ function AddTaskForm ({handleClose, calendarStore, calendarRef}){
         // var project_id = calendarStore.getUserData.project_id
         // var student_id = calendarStore.getUserData.id
 
-        // let calendarAPI = calendarRef.current.getAPI();
-        
-        // calendarAPI.addEvent({
-        //     title: category,
-        //     start: fSelectedDueDate,
-        //     end: fSelectedDueDate,
-        //     // project_id: project_id,
-        // })
         calendarStore.addData({
-            title: category,
+            title: title,
             start: fSelectedDueDate,
             end: fSelectedDueDate,
+            event_type: category,
             // project_id: project_id,
         });
 
@@ -138,8 +140,8 @@ function AddTaskForm ({handleClose, calendarStore, calendarRef}){
                                 </Grid> 
                                 
                                 <Grid item xs={10} md={10}>
-                                    <Typography >Summary</Typography>
-                                    <TextField id="filled-multiline-static" multiline rows={4} variant="outlined"/>
+                                    <Typography >Task Title</Typography>
+                                    <TextField id="filled-multiline-static" name="title" multiline rows={4} variant="outlined" onChange={(e)=>handleSummaryChange(e)}/>
                                 </Grid>
                 
                             </Grid>
