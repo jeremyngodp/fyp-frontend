@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 // import * as actions from '../../../login-store/actions/auth';
 // import { connect } from 'react-redux';
 import Divider from '@material-ui/core/Divider';
-// import history from '../../../history'; 
+import history from '../history'; 
 
 const useStyles = makeStyles({
     list: {
@@ -83,23 +83,23 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
     );
 
     const onClickHandler = (text, index) => {
-        const { changeDefaultState} = calendarStore;
+        const {changeDefaultState} = calendarStore;
         // var user_id = calendarStore.getUserData.id
         switch (text) {
             case "Submissions":
+                changeDefaultState({ state: 'Submissions', index: 2 });
+                history.push(`/content`);
                 console.log('Clicked on Submissions')
-                // changeDefaultState({ state: 'Weekly Report', index: 0 });
-                // history.push(`/${user_id}/content`);
                 break;
             case "Meetings":
+                changeDefaultState({ state: 'Meetings', index: 1 });
+                history.push(`/content`);
                 console.log('Clicked on Meetings')
-                // changeDefaultState({ state: 'Meetings', index: 1 });
-                // history.push(`/${user_id}/content`);
                 break;
             case "Reports":
+                changeDefaultState({ state: 'Reports', index: 0 })
+                history.push(`/content`)
                 console.log('Clicked on Reports')
-                // changeDefaultState({ state: 'Final Report', index: 2 })
-                // history.push(`/${user_id}/content`)
                 break;
             default:
                 return "";
