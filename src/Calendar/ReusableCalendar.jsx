@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from "mobx-react";
 import StudentCalendar from "./StudentCalendar.jsx";
 import StaffCalendar from "./StaffCalendar.jsx";
-import { withRouter } from "react-router-dom";
 
 
 const ReusableCalendar = observer(
@@ -39,5 +38,5 @@ const ReusableCalendar = observer(
 )
 
 
-export default withRouter(ReusableCalendar);
+export default ReusableCalendar;
 

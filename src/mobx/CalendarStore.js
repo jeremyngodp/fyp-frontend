@@ -5,7 +5,6 @@ class CalendarStore {
     userData = ''
     userType = ''
     defaultState = {state:'Reports', index:0}
-    semStart = '2020-08-09'
 
     constructor() {
         makeObservable(this, {
@@ -13,7 +12,6 @@ class CalendarStore {
             userData: observable,
             userType: observable,
             defaultState: observable,
-            semStart: observable,
 
             getData: computed,
             getUserType: computed,

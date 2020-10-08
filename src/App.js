@@ -2,12 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import './App.css';
 
-
 import StudentPage from './Calendar/StudentPage.jsx'
 import StaffPage from './Calendar/StaffPage.jsx'
 import CalendarStore from './mobx/CalendarStore.js';
-import ContentRouting from './components/contentRouting/contentRouting.jsx';
-import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute} from './SpecialRoutes';
+import {StudentOnlyRoute, StaffOnlyRoute} from './SpecialRoutes';
 
 
 const calendarStore = new CalendarStore();
@@ -16,7 +14,7 @@ function App() {
     const studentOnlyRoute = ({ match }) => {
         return (
             <React.Fragment>
-                <Router >
+                <Router>
                     <Switch>
                         <Redirect exact from={`${match.url}`} to={`${match.url}/calendar`} />
                         
@@ -33,7 +31,7 @@ function App() {
     const staffOnlyRoute = ({ match }) => {
         return (
             <React.Fragment>
-                <Router >
+                <Router>
                     <Switch>
                         <Redirect exact from={`${match.url}`} to={`${match.url}/calendar`} />
                         
@@ -75,12 +73,10 @@ function App() {
     
       return (
         <div>
-            
+            <Router>
                 <Switch>
-                    <PrivateRoute  path="/content" component={ContentRouting} calendarStore={calendarStore} 
-                    />
 
-                    <StudentOnlyRoute  path="/student" component={studentOnlyRoute} calendarStore={calendarStore}
+                    <StudentOnlyRoute path="/student" component={studentOnlyRoute} calendarStore={calendarStore}
                     />
                     
                     <StaffOnlyRoute path="/staff" component={staffOnlyRoute} calendarStore={calendarStore}
@@ -92,6 +88,7 @@ function App() {
                     
 
                 </Switch>
+            </Router>
         </div>
       );  
 }

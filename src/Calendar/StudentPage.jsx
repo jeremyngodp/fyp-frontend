@@ -6,22 +6,6 @@ import LeftSideColumn from "./LeftSideColumn.jsx";
 import ReusableCalendar from './ReusableCalendar.jsx';
 
 
-const dummyEventData =[{title: 'Meeting 1',
-                        start: '2020-10-13',
-                        end: '2020-10-13',
-                        event_type: 'meeting'},
-
-                        {title: 'Meeting 2',
-                        start: '2020-10-15',
-                        end: '2020-10-15',
-                        event_type: 'meeting'},
-
-                        {title: 'Report 1',
-                        start: '2020-10-13',
-                        end: '2020-10-13',
-                        event_type: 'report'},
-                    ]
-
 const StudentPage = observer (
     class StudentPageClass extends React.Component {
         constructor(props) {
@@ -32,17 +16,15 @@ const StudentPage = observer (
             }
         }
 
-
         componentDidMount(){ //load data before mounting this component
             const {calendarStore} = this.props;
-            calendarStore.addUserType('Student');
-            
-            if (calendarStore.getData.length === 0){
-                // var student_id = calendarStore.getUserData.id;
-                // perform AXIOS calling here to the backend to load data if there is no data
+            calendarStore.addUserType('Student'); 
+            // if (calendarStore.getData.length === 0){
+            //     var student_id = calendarStore.getUserData.id;
+            //     // perform AXIOS calling here to the backend to load data if there is no data
                 
-                dummyEventData.map((dummyEvent) => calendarStore.addData(dummyEvent));    
-            }
+            //     dummyEventData.map((dummyEvent) => calendarStore.addData(dummyEvent));    
+            // }
             
         }
 
