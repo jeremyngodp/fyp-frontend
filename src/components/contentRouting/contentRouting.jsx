@@ -178,9 +178,9 @@ const ContentRouting = observer(
                                 <div style={{ float: 'right', width: '50%' }}>
                                     <div style={{ float: 'right' }}>
                                         {calendarStore.userType === 'Student' ?
-                                            <Button onClick={() => history.push('/student/calendar')} style={{ color: 'white' }}>Return to main Student calendar</Button>
+                                            <Button onClick={() => history.push('/student')} style={{ color: 'white' }}>Return to main Student calendar</Button>
                                             :
-                                            <Button  style={{ color: 'white' }}>Return to main Staff calendar</Button>
+                                            <Button onClick={() => history.push('/staff')} style={{ color: 'white' }}>Return to main Staff calendar</Button>
                                         }
                                         {/* <Button onClick={() => this.props.history.push('/student/calendar')} style={{ color: 'white' }}>Return to main calendar</Button> */}
                                     </div>
