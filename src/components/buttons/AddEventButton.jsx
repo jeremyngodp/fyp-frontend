@@ -24,12 +24,9 @@ export default class AddEventButton extends React.Component {
     
     
     render() {
-        const { calendarStore, type, calendarRef } = this.props;
+        const { calendarStore, type, } = this.props;
         const { open } = this.state;
-        // var start = new Date();
-        // start.setHours(0, 0, 0, 0);
-        // var end = new Date();
-        // end.setHours(0, 0, 0, 0);
+        
         return (
             <div style={{ margin: '10px 0 10px 0', textAlign: 'center' }}>
                 <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
@@ -46,7 +43,7 @@ export default class AddEventButton extends React.Component {
                 {/* <EventForm calendarStore={calendarStore} start={start} end={end} onSubmit={(event) => this.handleFormSubmit(event)} handleClose={() => this.handleClose()} /> */}
                 
                 {/* <StaffEventForm calendarStore={calendarStore} start={start} end={end} onSubmit={(event) => this.handleFormSubmit(event)} handleClose={() => this.handleClose()} /> */}
-                <AddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} calendarRef={calendarRef}/>
+                <AddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} />
                 
                 </Dialog>
              </div>

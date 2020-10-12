@@ -10,7 +10,6 @@ const ReusableCalendar = observer(
     class ReusableCalendarClass extends React.Component {
         constructor(props) {
             super(props)
-            this.FullCalendarRef = StudentCalendar.calendarRef;
             this.state = {
                 // add state here
                 event: this.props.calendarStore.getData

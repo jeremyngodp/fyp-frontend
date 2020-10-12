@@ -5,7 +5,6 @@ import {observer} from 'mobx-react';
 import LeftSideColumn from "./LeftSideColumn.jsx";
 import ReusableCalendar from './ReusableCalendar.jsx';
 
-
 const dummyEventData =[{title: 'Meeting 1',
                         start: '2020-10-13',
                         end: '2020-10-13',
@@ -26,14 +25,13 @@ const StudentPage = observer (
     class StudentPageClass extends React.Component {
         constructor(props) {
             super(props)
-            this.calendarRef =  ReusableCalendar.FullCalendarRef
             this.state = {
                 // add neccessary state for this component here
             }
         }
 
 
-        componentDidMount(){ //load data before mounting this component
+        UNSAFE_componentWillMount(){ //load data before mounting this component
             const {calendarStore} = this.props;
             calendarStore.addUserType('Student');
             
@@ -48,7 +46,7 @@ const StudentPage = observer (
 
         render() {
             const {calendarStore} = this.props;
-            console.log('renderStudentPage')
+            console.log('render Student Page')
             return (
                 <div className='MainPage'>
                     <Grid container>
