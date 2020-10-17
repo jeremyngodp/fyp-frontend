@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Paper, Typography, Button, Grid, Box, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Divider } from '@material-ui/core';
+import { Paper, Typography, Button, Grid, Box, Accordion, AccordionSummary, AccordionDetails, Divider } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import moment from 'moment';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -59,7 +59,7 @@ const SubmissionContentPage = observer(
             return Math.floor(weekNumber)
         }
 
-        renderReportExpansionPanel = () => {
+        renderReportAccordion = () => {
             const { calendarStore, classes } = this.props;
             const { getData } = calendarStore;
             var user_data_id = calendarStore.getUserData.id
@@ -71,8 +71,8 @@ const SubmissionContentPage = observer(
                     })
                     .map((text, index) => {
                         return (
-                            <ExpansionPanel id={text.Id} defaultExpanded style={{ overflow: 'hidden' }} className={classes.root} key={index}>
-                                <ExpansionPanelSummary
+                            <Accordion id={text.Id} defaultExpanded style={{ overflow: 'hidden' }} className={classes.root} key={index}>
+                                <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                 >
                                     <Grid container spacing={4}>
@@ -101,9 +101,9 @@ const SubmissionContentPage = observer(
                                             <Typography className={classes.secondaryHeading} style={{ textAlign: 'center' }}>Not Submitted</Typography>
                                         </Grid>
                                     </Grid>
-                                </ExpansionPanelSummary>
+                                </AccordionSummary>
                                 <Divider />
-                                <ExpansionPanelDetails className={classes.details} style={{ paddingBottom: '40px' }}>
+                                <AccordionDetails className={classes.details} style={{ paddingBottom: '40px' }}>
                                     {/* <div className={classes.column}>
                                     <WeeklyReportSubmissionPage calendarStore={calendarStore} documents={text.documents} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} Id={text.Id} hours_spent={text.hours_spent} content={text.content} status={text.status} />
                                     </div>
@@ -111,9 +111,9 @@ const SubmissionContentPage = observer(
                                     {/* Inside comment box, the user_id should be your own, not the student's. Because prof & student can both type in */}
                                     {/* <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} id={text.Id} user_id={user_data_id} /> */}
                                     {/* </div> */}
-                                </ExpansionPanelDetails>
+                                </AccordionDetails>
                                 
-                            </ExpansionPanel>
+                            </Accordion>
                             // </div>
                         )
                     }
@@ -142,7 +142,7 @@ const SubmissionContentPage = observer(
                             <Paper style={{ position: "sticky", top: '4.5rem', height: '50px', zIndex: '2' }}>
                             {this.renderHeader()}
                             </Paper>
-                            {this.renderReportExpansionPanel()}
+                            {this.renderReportAccordion()}
                             
                         </Paper>
                     </div>
