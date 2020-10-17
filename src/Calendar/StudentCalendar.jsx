@@ -62,7 +62,7 @@ const StudentCalendar = observer(
 
         render() {
             const {calendarStore} = this.props;
-            var events = calendarStore.getData;
+            var {getData} = calendarStore;
             console.log('render Student Calendar')
             
             return (    
@@ -74,7 +74,7 @@ const StudentCalendar = observer(
                         hiddenDays={[0,6]}
                         selectable ='true'
                         fixedWeekCount = {false}
-                        events = {events}
+                        events = {getData}
                         headerToolbar = {this.state.headerToolbar}
                         weekNumbers = {true}
                         weekNumberContent = {this.calculateWeekNo}

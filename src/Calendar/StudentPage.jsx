@@ -1,9 +1,12 @@
 import React from 'react';
 import {Grid, Button, Dialog} from '@material-ui/core';
 import {observer} from 'mobx-react';
+import axios from 'axios'
 
 import LeftSideColumn from "./LeftSideColumn.jsx";
 import ReusableCalendar from './ReusableCalendar.jsx';
+import axiosGetTaskbyStudentID from '../AxiosCall/axiosGetTaskbyStudentID.js';
+
 
 const dummyEventData =[{title: 'Meeting 1',
                         start: '2020-10-13',
@@ -39,8 +42,17 @@ const StudentPage = observer (
                 // var student_id = calendarStore.getUserData.id;
                 // perform AXIOS calling here to the backend to load data if there is no data
                 
-                dummyEventData.map((dummyEvent) => calendarStore.addData(dummyEvent));    
+                axiosGetTaskbyStudentID(1, calendarStore);   
             }
+
+            // axios testing:
+            // axios.get("http://localhost:8080/fyp/api/task/student/1")
+            // .then(res => {
+            //     res.data._embedded.taskList.map(indivRes =>{
+            //         console.log(indivRes.title)
+            //     })
+            // });
+            
             
         }
 

@@ -7,7 +7,7 @@ import ClassIcon from '@material-ui/icons/Class';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-
+import axiosAddTaskStudent from '../AxiosCall/axiosAddTaskStudent.js';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -62,7 +62,7 @@ function AddTaskForm ({handleClose, calendarStore}){
     const onSubmit = (e) => {
         e.preventDefault()
         const { selectedDueDate, project_id, category, title } = state;
-        
+        let fnewDate = format(new Date(), 'yyyy-MM-dd')
         let fSelectedDueDate = format(selectedDueDate, 'yyyy-MM-dd')
         console.log(fSelectedDueDate)
         if (selectedDueDate.getDay() === 6 || selectedDueDate.getDay() === 0) {
@@ -83,7 +83,7 @@ function AddTaskForm ({handleClose, calendarStore}){
             // project_id: project_id,
         });
 
-        // axios post calling here
+        axiosAddTaskStudent(1,1,fnewDate, fSelectedDueDate, category, title);
         
 
         alert('New Event Added');
