@@ -5,7 +5,8 @@ import moment from 'moment';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
 
-import ReusableExpansionHeader from './ReusableExpansionHeader';
+import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader';
+import ReusableCommentBox from './ReusableCommentComponent/ReusableCommentBox'
 
 const useStyles = (theme) => ({
     root: {
@@ -104,11 +105,11 @@ const ReportContentPage = observer(
                                 <AccordionDetails className={classes.details} style={{ paddingBottom: '40px' }}>
                                     {/* <div className={classes.column}>
                                     <WeeklyReportSubmissionPage calendarStore={calendarStore} documents={text.documents} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} Id={text.Id} hours_spent={text.hours_spent} content={text.content} status={text.status} />
-                                    </div>
+                                    </div> */}
                                     <div className={classes.column}>
                                     {/* Inside comment box, the user_id should be your own, not the student's. Because prof & student can both type in */}
-                                    {/* <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} id={text.Id} user_id={user_data_id} /> */}
-                                    {/* </div>  */}
+                                    <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.Id} user_id={1} />
+                                    </div> 
                                 </AccordionDetails>
                                 <Divider />
                             </Accordion>

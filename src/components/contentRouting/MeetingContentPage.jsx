@@ -4,7 +4,7 @@ import { Paper, Grid, Typography, Box, Accordion, AccordionSummary, AccordionDet
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles';
 
-import ReusableExpansionHeader from './ReusableExpansionHeader'
+import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader'
 import moment from 'moment'
 
 

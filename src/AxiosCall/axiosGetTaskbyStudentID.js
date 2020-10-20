@@ -13,7 +13,7 @@ export default function axiosGetTaskbyStudentID(student_id, calendarStore){
                     start: indivRes.deadline,
                     end: indivRes.deadline,
                     project_id: indivRes.project_id,
-                    // tutor_id: indivRes.supervisor_id,
+                    comments: indivRes.commentsDTO,
                     student_id: student_id
                 })
             })
