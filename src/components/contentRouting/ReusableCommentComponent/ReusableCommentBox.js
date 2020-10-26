@@ -41,6 +41,7 @@ const ReusableCommentBox = observer(
                 comment: "",
                 tasks: this.props.calendarStore.getData,
                 buttonLabelState: "Add a new comment",
+                dataArray: this.props.calendarStore.getData,
             }    
         }
 
@@ -58,7 +59,9 @@ const ReusableCommentBox = observer(
             const { getData } = calendarStore;
             
             const index = this.state.tasks.findIndex(task => task.Id === task_id)
-            dataArray[index].comments.push({ task_id: task_id, user_id: user_id, created_date: moment(new Date()), content: comment })
+            // so far only add user id, user_id and email will be sent back after authentication.
+            // once get back the id after the axiosPostComment call, add 'id' too
+            dataArray[index].comments.push({ task_id: task_id, user_id: 1, created_date: moment(new Date()), content: comment })
             this.setState({ dataArray });
           }
         
@@ -75,13 +78,13 @@ const ReusableCommentBox = observer(
             if (comment === "") {
               alert("Please fill in a comment before submitting");
             } else {
-            //   axiosPostComment(user_id, content, created_date);
+            //   axiosPostComment(user_id, content, created_date); ->retrieve new comment id to pass to updateCalendarStore.
         
               //Update calendar store so that comment will be reflected
-            //   this.updateCalendarStore();
+              this.updateCalendarStore(); // pass in the id of the newly added comment later.
                 alert("comment added");
               //clear comment box:
-            //   this.clearCommentBox();
+              this.clearCommentBox();
             }
         }
 
@@ -122,22 +125,17 @@ const ReusableCommentBox = observer(
 
         renderCommentsView = () => {
             const { comments, classes } = this.props;
-            // const getListOfAllIdsAndUsernames = this.props.calendarStore.getListOfAllIdsAndUsernames
-            //Logic: Depending on user_id of comment, we reflect username
+          
             return (
                 <div>
                     {comments.map((data, index) => {
-                        // var username = getListOfAllIdsAndUsernames.find(item => {
-                        //     if (item.id === data.user_id) {
-                        //         return item.username
-                        //     }
-                        // })
+                   
                         return (
                             <div key={index} style={{ padding: '7px' }}>
                                 <div style={{ display: 'flex' }}>
                                     <Typography className={classes.secondaryHeading}>
                                     {
-                                        data.user_id //will change to email once backend is updated
+                                        data.user_email 
                                     }&nbsp;</Typography>
                                     <Typography className={classes.dateText}> on {moment(data.created_date).format('LLL')}</Typography>
                                 </div>
@@ -155,7 +153,7 @@ const ReusableCommentBox = observer(
           }
 
         render() {
-            const {comments, classes} = this.props;
+            const {comments, classes, task_id} = this.props;
             return (
                 <div style={{ width: '100%' }}>
                     <Typography className={classes.heading}>Comments:</Typography>
