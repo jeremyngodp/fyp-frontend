@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Button, TextField, Paper } from '@material-ui/core';
 import moment from 'moment'
+import axiosPostComment from '../../../AxiosCall/axiosPostComment'
 
 const useStyles = (theme) => ({
     root: {
@@ -53,15 +54,15 @@ const ReusableCommentBox = observer(
             })
         }
 
-        updateCalendarStore = () => {
+        updateCalendarStore = (id, created_date) => {
             const { dataArray, comment } = this.state;
             const { calendarStore, task_id, user_id } = this.props;
             const { getData } = calendarStore;
             
             const index = this.state.tasks.findIndex(task => task.Id === task_id)
             // so far only add user id, user_id and email will be sent back after authentication.
-            // once get back the id after the axiosPostComment call, add 'id' too
-            dataArray[index].comments.push({ task_id: task_id, user_id: 1, created_date: moment(new Date()), content: comment })
+            // once get back the id after the axiosPostComment call, add 'id' too, add email once login feature is done.
+            dataArray[index].comments.push({ id:id, task_id: task_id, user_id: 1, created_date: created_date, content: comment })
             this.setState({ dataArray });
           }
         
@@ -72,16 +73,16 @@ const ReusableCommentBox = observer(
         onSubmitComment = (e) => {
             e.preventDefault();
             const { comment, buttonLabelState } = this.state;
-            const { id, user_id } = this.props;
-            var created_date = moment()
+            const { task_id, user_id } = this.props;
+            var created_date = moment(new Date());
             //bruh: u need to be able to determine if the user is student or tutor -- next time when logging in is available
             if (comment === "") {
               alert("Please fill in a comment before submitting");
             } else {
-            //   axiosPostComment(user_id, content, created_date); ->retrieve new comment id to pass to updateCalendarStore.
+              var newCommentId = axiosPostComment(task_id, user_id, comment, created_date); //retrieve new comment id to pass to updateCalendarStore.
         
               //Update calendar store so that comment will be reflected
-              this.updateCalendarStore(); // pass in the id of the newly added comment later.
+              this.updateCalendarStore(newCommentId, created_date); // pass in the id of the newly added comment later.
                 alert("comment added");
               //clear comment box:
               this.clearCommentBox();
