@@ -8,9 +8,27 @@ import StaffPage from './Calendar/StaffPage.jsx'
 import CalendarStore from './mobx/CalendarStore.js';
 import ContentRouting from './components/contentRouting/contentRouting.jsx';
 import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute} from './SpecialRoutes';
+import ProjectListPage from './components/projectListing.jsx'
 
 
 const calendarStore = new CalendarStore();
+
+const dummyProjectList = [
+                            {project_id: 1,
+                            project_name: 'Project One',
+                            students: [
+                                    {first_name: "Kobe",
+                                    last_name: "Bryant"}] 
+                            },
+
+                            {project_id: 2,
+                            project_name: 'Project Two',
+                            students: [
+                                        {first_name: "Lebron",
+                                        last_name: "James"}] 
+                            }
+
+                        ]
 
 function App() {
     const studentOnlyRoute = ({ match }) => {
@@ -41,11 +59,11 @@ function App() {
                             path={`${match.url}/calendar`} exact={true}
                             render={(props) => (<StaffPage {...props} calendarStore={calendarStore} />)} // Staff Page will include Reusable Calendar and Nav and sidebar
                         />
-                         {/*
-                         <Route
+                         
+                        <Route
                             path={`${match.url}/projectlistings`} exact={true}
-                            render={(props) => (<ProjectListPage {...props} calendarStore={calendarStore} />)}
-                        /> */}
+                            render={(props) => (<ProjectListPage {...props} projects={dummyProjectList} calendarStore={calendarStore} />)}
+                        />
                     </Switch>
                 </Router>
             </React.Fragment>

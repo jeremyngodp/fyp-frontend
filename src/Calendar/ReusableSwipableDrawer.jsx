@@ -37,9 +37,9 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
     //     logout()
     // }
 
-    // const seeProjectListings = () => {
-    //     history.push('/staff/projectlistings')
-    // }
+    const seeProjectListings = () => {
+        history.push('/staff/projectlistings')
+    }
 
     const sideList = side => (
         <div
@@ -52,7 +52,7 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
                 type === 'Staff' ?
                     <React.Fragment>
                         <List>
-                            <ListItem button key="projectlistings"  >
+                            <ListItem button key="projectlistings" onClick={()=> seeProjectListings()} >
                                 <ListItemText>Project Listings</ListItemText>
                             </ListItem>
                         </List>
