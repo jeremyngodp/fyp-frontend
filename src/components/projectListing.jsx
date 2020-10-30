@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 // import { connect } from 'react-redux';
 // import * as actions from '../login-store/actions/auth';
 import List from '@material-ui/core/List';
@@ -18,11 +19,22 @@ import history from '../history';
 const useStyles = (theme) => ({
     root: {
         width: '100%',
-    },
+    },  
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
+
+    description: {
+        fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
+        align: theme.typography.center
+    },
+
+    icon: {
+        margin: theme.spacing(4)
+    },
+
     nested: {
         paddingLeft: theme.spacing(4),
     },
@@ -99,30 +111,42 @@ class ProjectListing extends Component {
             <div className={classes.root}>
 
                 {this.props.projects.map((item, key) =>
-                    <ExpansionPanel key={item.project_id} >
-                        <ExpansionPanelSummary
+                    <Accordion key={item.id} >
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography className={classes.heading}>{item.project_name}</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                            <Typography className={classes.heading}>{item.name}</Typography>
+                            
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            
                             <List
                                 component="nav"
                                 aria-labelledby="nested-list-subheader"
                                 className={classes.root}
                             >
-                                {item.students.map((item, key) =>
+                                <ListItem>
+                                    <Typography className={classes.heading}>{item.description}</Typography>
+                                </ListItem>
+                                {/* {item.student.map((item, key) =>
                                     <ListItem button key={item.id}
                                         // onClick={(event) => this.handleClickUser(event, item.id)}
                                     >
-                                        <ListItemText primary={item.first_name + item.last_name} />
+                                        <ListItemText primary={item.fname + item.lname} />
+                                        <Typography className={classes.heading}>{item.email}</Typography>
                                     </ListItem>
-                                )}
+                                )} */}
+                                <ListItem button key={item.student.id}
+                                        // onClick={(event) => this.handleClickUser(event, item.id)}
+                                    >
+                                        <AssignmentIndIcon className={classes.icon}/>
+                                        <ListItemText primary={ item.student.fname + ' ' + item.student.lname} secondary={item.student.email} />
+                                </ListItem>
                             </List>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 )}
             </div>
         )

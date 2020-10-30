@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import './App.css';
+import axios from 'axios';
 
 
 import StudentPage from './Calendar/StudentPage.jsx'
@@ -11,24 +12,16 @@ import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute} from './SpecialRoutes';
 import ProjectListPage from './components/projectListing.jsx'
 
 
+
 const calendarStore = new CalendarStore();
 
-const dummyProjectList = [
-                            {project_id: 1,
-                            project_name: 'Project One',
-                            students: [
-                                    {first_name: "Kobe",
-                                    last_name: "Bryant"}] 
-                            },
-
-                            {project_id: 2,
-                            project_name: 'Project Two',
-                            students: [
-                                        {first_name: "Lebron",
-                                        last_name: "James"}] 
-                            }
-
-                        ]
+//temp call to load projects by supervisor id from backend
+var dummyProjects;
+axios.get("http://localhost:8080/fyp/api/project/bysup/3")
+.then(res => {
+    dummyProjects = res.data._embedded.projectList;
+})
+                     
 
 function App() {
     const studentOnlyRoute = ({ match }) => {
@@ -62,7 +55,7 @@ function App() {
                          
                         <Route
                             path={`${match.url}/projectlistings`} exact={true}
-                            render={(props) => (<ProjectListPage {...props} projects={dummyProjectList} calendarStore={calendarStore} />)}
+                            render={(props) => (<ProjectListPage {...props} projects={dummyProjects} calendarStore={calendarStore} />)}
                         />
                     </Switch>
                 </Router>
