@@ -4,12 +4,13 @@ import './App.css';
 import axios from 'axios';
 
 
-import StudentPage from './Calendar/StudentPage.jsx'
-import StaffPage from './Calendar/StaffPage.jsx'
+import StudentPage from './Calendar/StudentPage.jsx';
+import StaffPage from './Calendar/StaffPage.jsx';
 import CalendarStore from './mobx/CalendarStore.js';
 import ContentRouting from './components/contentRouting/contentRouting.jsx';
-import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute} from './SpecialRoutes';
-import ProjectListPage from './components/projectListing.jsx'
+import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRoute, CheckSwitchRoute} from './SpecialRoutes';
+import ProjectListPage from './components/projectListing.jsx';
+import LoginPage from "./components/LoginPage";
 
 
 
@@ -66,47 +67,37 @@ function App() {
     const Home = ({ match }) => {
 
         return (
-
-            <div>
-                This is Home Page
-            </div>
-            // <React.Fragment>
-            //     <Router>
-            //         <Switch>
-            //             {/* <Redirect exact from={`${match.url}`} to={`${match.url}login`} />
-            //             <LoginRoute path={`${match.url}login`} exact component={LoginPage} calendarStore={calendarStore} 
-            //             /> 
-            //             */}
-            //         </Switch>
-            //     </Router>
-            // </React.Fragment>
+            <React.Fragment>
+                <Router>
+                    <Switch>
+                        <Redirect exact from={`${match.url}`} to={`${match.url}login`} />
+                        <LoginRoute path={`${match.url}login`} exact component={LoginPage} calendarStore={calendarStore} 
+                        /> 
+                        
+                    </Switch>
+                </Router>
+            </React.Fragment>
         );
-      }
+    }
 
     
-      return (
+    return (
         <div>
             
-                <Switch>
-                    <PrivateRoute  path="/content" component={ContentRouting} calendarStore={calendarStore} 
-                    />
+            <Switch>
+                
+                <StudentOnlyRoute  path="/student" component={studentOnlyRoute} calendarStore={calendarStore} />
+                
+                <StaffOnlyRoute path="/staff" component={staffOnlyRoute} calendarStore={calendarStore} />
 
-                    <StudentOnlyRoute  path="/student" component={studentOnlyRoute} calendarStore={calendarStore}
-                    />
-                    
-                    <StaffOnlyRoute path="/staff" component={staffOnlyRoute} calendarStore={calendarStore}
-                    />
-                    
-                    <Route exact path='/' component={Home} calendarStore={calendarStore}
-                    />
+                <PrivateRoute  path="/:username/content" component={ContentRouting} calendarStore={calendarStore} />
 
-                    
+                <CheckSwitchRoute path='/determiner' calendarStore={calendarStore} />
 
-                </Switch>
+                <Route path='/' component={Home} calendarStore={calendarStore} />        
+            </Switch>
         </div>
       );  
 }
-
-
 
 export default App;
