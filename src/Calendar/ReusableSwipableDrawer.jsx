@@ -6,8 +6,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-// import * as actions from '../../../login-store/actions/auth';
-// import { connect } from 'react-redux';
+import * as actions from '../redux/login-store/actions/authActions';
+import { connect } from 'react-redux';
 import Divider from '@material-ui/core/Divider';
 import history from '../history'; 
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 });
 
 
-function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
+function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
     const classes = useStyles();
     const [state, setState] = React.useState({
         left: false,
@@ -33,9 +33,9 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
         setState({ ...state, [side]: open })
     }
 
-    // const handleLogout = (e) => {
-    //     logout()
-    // }
+    const handleLogout = (e) => {
+        logout();
+    }
 
     const seeProjectListings = () => {
         history.push('/staff/projectlistings')
@@ -75,7 +75,7 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
                     : ''
             }
             <List>
-                <ListItem button key="Logout" >
+                <ListItem button key="Logout" onClick={()=> handleLogout()} >
                     <ListItemText>Logout</ListItemText>
                 </ListItem>
             </List>
@@ -84,21 +84,21 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
 
     const onClickHandler = (text, index) => {
         const {changeDefaultState} = calendarStore;
-        // var user_id = calendarStore.getUserData.id
+        var username = calendarStore.getUserData.username;
         switch (text) {
             case "Submissions":
                 changeDefaultState({ state: 'Submissions', index: 2 });
-                history.push(`/content`);
+                history.push(`/${username}/content`);
                 console.log('Clicked on Submissions')
                 break;
             case "Meetings":
                 changeDefaultState({ state: 'Meetings', index: 1 });
-                history.push(`/content`);
+                history.push(`/${username}/content`);
                 console.log('Clicked on Meetings')
                 break;
             case "Reports":
                 changeDefaultState({ state: 'Reports', index: 0 })
-                history.push(`/content`)
+                history.push(`/${username}/content`)
                 console.log('Clicked on Reports')
                 break;
             default:
@@ -120,22 +120,22 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, type }) {
     );
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         loading: state.loading,
-//         error: state.error,
-//         token: state.token,
-//         user: state.user,
-//         projects: state.projects,
-//         paramQuery: state.paramQuery
-//     }
-// }
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        error: state.error,
+        token: state.token,
+        user: state.user,
+        // projects: state.projects,
+        // paramQuery: state.paramQuery
+    }
+}
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         setParam: (student_id, project_id) => dispatch(actions.addTasklistParams(student_id, project_id)),
-//         logout: () => dispatch(actions.logout())
-//     }
-// } connect(mapStateToProps, mapDispatchToProps)
+const mapDispatchToProps = dispatch => {
+    return {
+        // setParam: (student_id, project_id) => dispatch(actions.addTasklistParams(student_id, project_id)),
+        logout: () => dispatch(actions.logout())
+    }
+} 
 
-export default ReusableSwipeableTemporaryDrawer
+export default connect(mapStateToProps, mapDispatchToProps) (ReusableSwipeableTemporaryDrawer)
