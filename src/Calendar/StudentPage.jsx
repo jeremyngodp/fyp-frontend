@@ -21,11 +21,12 @@ const StudentPage = observer (
             const {calendarStore} = this.props;
             calendarStore.addUserType('Student');
             var studentUserId = calendarStore.getUserData.id
+            console.log(studentUserId)
             
             if (calendarStore.getData.length === 0){
                 // var student_id = calendarStore.getUserData.id;
                 // perform AXIOS calling here to the backend to load data if there is no data
-                
+                // what about student that has not had any task?
                 axiosGetTaskbyStudentID(studentUserId, calendarStore);    
             }
 
