@@ -20,7 +20,7 @@ export default function axiosAddTaskStudent(project_id, student_id, taskCreatedD
         }, 
         {
             headers: {
-                'Authorization': 'Bearer ${token}'
+                'Authorization': 'Bearer ' + token
             }
         }).then(response => {
             console.log(response);

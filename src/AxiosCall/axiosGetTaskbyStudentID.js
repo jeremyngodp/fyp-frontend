@@ -11,10 +11,10 @@ export default function axiosGetTaskbyStudentID(student_id, calendarStore){
         'Authorization': 'Bearer ' + token  
     }})
         .then(res => {
-            if (res.data._embedded.taskList){
+            if (res.data._embedded != null){
                 res.data._embedded.taskList.map(indivRes => {
                     calendarStore.addData ({
-                        Id: indivRes.id,
+                        id: indivRes.id,
                         title: indivRes.title,
                         event_type: indivRes.task_type,
                         start: indivRes.deadline,
