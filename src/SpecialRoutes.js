@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import moment from 'moment';
 import {store} from "./redux/login-store/loginStore";
+import history from './history';
 
 export const StudentOnlyRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -71,19 +72,9 @@ export const LoginRoute = ({ component: Component, ...rest }) => (
             if (token) {
                 rest.calendarStore.setUserData(JSON.parse(localStorage.getItem("user")))
                 if (store.getState().is_Staff) { //if is staff
-                    return <Redirect
-                        to={{
-                            pathname: '/staff',
-                            state: { from: props.location }
-                        }}
-                    />
+                    history.push("/staff");
                 } else if (!store.getState().is_Staff) {
-                    return <Redirect
-                        to={{
-                            pathname: '/student',
-                            state: { from: props.location }
-                        }}
-                    />
+                    history.push('/student');
                 } else {
                     return <Component {...props} />
                 }
@@ -111,7 +102,6 @@ export const CheckSwitchRoute = ({ component: Component, ...rest }) => (
                 />
             }
             if (token) {
-                console.log(props.location + "prev location")
                 if (store.getState().is_Staff) {
                     return <Redirect
                         to={{
