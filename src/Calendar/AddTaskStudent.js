@@ -4,10 +4,11 @@ import {format} from 'date-fns';
 import EventIcon from '@material-ui/icons/Event';
 import SubjectIcon from '@material-ui/icons/Subject';
 import ClassIcon from '@material-ui/icons/Class';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import axiosAddTaskStudent from '../AxiosCall/axiosAddTaskStudent.js';
+import axiosAddTask from '../AxiosCall/axiosAddTask.js';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -24,15 +25,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function AddTaskForm ({handleClose, calendarStore}){
+function StudentAddTaskForm ({handleClose, calendarStore}){
     
     let start = new Date()
     // let dateStr = format(start, 'yyyy-MM-dd')
+    
     const classes = useStyles()
     const [state, setState] = useState({
         category: 'report',
         selectedDueDate: start,
-        project_id: 0,
+        // project_id: 0,
         title: '',
     })
 
@@ -61,7 +63,9 @@ function AddTaskForm ({handleClose, calendarStore}){
     
     const onSubmit = (e) => {
         e.preventDefault()
-        const { selectedDueDate, project_id, category, title } = state;
+        const student_id = calendarStore.getUserData.id
+        const project_id = calendarStore.getProjectList[0].id
+        const { selectedDueDate, category, title } = state;
         let fnewDate = format(new Date(), 'yyyy-MM-dd')
         let fSelectedDueDate = format(selectedDueDate, 'yyyy-MM-dd')
         console.log(fSelectedDueDate)
@@ -72,26 +76,23 @@ function AddTaskForm ({handleClose, calendarStore}){
         if (selectedDueDate < start) {
             return alert("It is past the Due Date. Please choose another date instead.")
         }
-        // var project_id = calendarStore.getUserData.project_id
-        // var student_id = calendarStore.getUserData.id
-
+        
         calendarStore.addData({
             title: title,
             start: fSelectedDueDate,
             end: fSelectedDueDate,
             event_type: category,
-            // project_id: project_id,
+            project_id: project_id,
         });
 
-        axiosAddTaskStudent(1,1,fnewDate, fSelectedDueDate, category, title);
+        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title);
         
-
         alert('New Event Added');
 
         handleClose();
 
     }
-
+    
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} >
             <div>
@@ -176,4 +177,4 @@ function AddTaskForm ({handleClose, calendarStore}){
     
 }
 
-export default AddTaskForm;
+export default StudentAddTaskForm;

@@ -5,7 +5,7 @@ import axios from 'axios';
  * For axiosPost, if "weekly report", taskCreatedDate === taskDueDate
  * Else if "meetings", taskCreatedDate = start timing of meeting and end timing
  */
-export default function axiosAddTaskStudent(project_id, student_id, taskCreatedDate, taskDueDate, taskType, title) {
+export default function axiosAddTask(project_id, student_id, taskCreatedDate, taskDueDate, taskType, title) {
     const token = localStorage.getItem("token");
     if(token) {
         axios.post('http://localhost:8080/fyp/api/task/add', {
@@ -28,7 +28,7 @@ export default function axiosAddTaskStudent(project_id, student_id, taskCreatedD
                 console.log("Not Successfull")
                 console.log(error.response);
                 console.log(error.request);
-            })
+        })
     }
 }
 
