@@ -6,8 +6,8 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-// import { connect } from 'react-redux';
-// import * as actions from '../login-store/actions/auth';
+import { connect } from 'react-redux';
+import * as actions from '../redux/login-store/actions/authActions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,6 +15,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import history from '../history';
+
 
 const useStyles = (theme) => ({
     root: {
@@ -54,9 +55,9 @@ class ProjectListing extends Component {
         super(props);
     }
 
-    // handleLogout = () => {
-    //     this.props.logout();
-    // }
+    handleLogout = () => {
+        this.props.logout();
+    }
 
     // handleClickUser = (e, index) => {
     //     //This onclick sends to the student's content page
@@ -90,7 +91,7 @@ class ProjectListing extends Component {
                         <Button
                             type="submit"
                             style={{ color: 'white' }}
-                            // onClick={() => this.handleLogout()}
+                            onClick={() => this.handleLogout()}
                         >
                             Logout
                         </Button>
@@ -102,22 +103,23 @@ class ProjectListing extends Component {
         );
     }
 
-    renderProjectPanels = () => {
+    renderProjectPanels = (projects) => {
         // const handleClick = (e, index) => {
 
         // };
-        const { classes } = this.props;
+        const { classes} = this.props;
+        
         return (
             <div className={classes.root}>
 
-                {this.props.projects.map((item, key) =>
+                {projects.map((item, key) =>
                     <Accordion key={item.id} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
                         >
-                            <Typography className={classes.heading}>{item.name}</Typography>
+                            <Typography className={classes.heading}>{item.title}</Typography>
                             
                         </AccordionSummary>
                         <AccordionDetails>
@@ -163,13 +165,14 @@ class ProjectListing extends Component {
 
 
     render() {
-        const { classes } = this.props;
+        const { classes, calendarStore} = this.props;
+        const projects =  calendarStore.getProjectList;
 
-        if (this.props.projects != null) {
+        if (projects != null) {
             return (
                 <div>
                     {this.renderAppBar()}
-                    {this.renderProjectPanels()}
+                    {this.renderProjectPanels(projects)}
                 </div>
             );
         } else {
@@ -183,24 +186,22 @@ class ProjectListing extends Component {
     }
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         loading: state.loading,
-//         error: state.error,
-//         token: state.token,
-//         user: state.user,
-//         projects: state.projects,
-//         paramQuery: state.paramQuery
-//     }
-// }
+const mapStateToProps = (state) => {
+    return {
+        loading: state.loading,
+        error: state.error,
+        token: state.token,
+        user: state.user,
+        // projects: state.projects,
+    }
+}
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         setParam: (student_id, project_id) => dispatch(actions.addTasklistParams(student_id, project_id)),
-//         logout: () => dispatch(actions.logout())
-//     }
-// }
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(actions.logout())
+    }
+}
 
 const ProjectListingForm = withStyles(useStyles)(ProjectListing);
 
-export default (ProjectListingForm);
+export default connect(mapStateToProps,mapDispatchToProps) (ProjectListingForm);
