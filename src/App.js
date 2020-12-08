@@ -13,17 +13,8 @@ import ProjectListPage from './components/projectListing.jsx';
 import LoginPage from "./components/LoginPage";
 
 
-
 const calendarStore = new CalendarStore();
-
-//temp call to load projects by supervisor id from backend
-var dummyProjects;
-axios.get("http://localhost:8080/fyp/api/project/bysup/3")
-.then(res => {
-    dummyProjects = res.data._embedded.projectList;
-})
                      
-
 function App() {
     const studentOnlyRoute = ({ match }) => {
         return (
@@ -56,7 +47,7 @@ function App() {
                          
                         <Route
                             path={`${match.url}/projectlistings`} exact={true}
-                            render={(props) => (<ProjectListPage {...props} projects={dummyProjects} calendarStore={calendarStore} />)}
+                            render={(props) => (<ProjectListPage {...props}  calendarStore={calendarStore} />)}
                         />
                     </Switch>
                 </Router>
