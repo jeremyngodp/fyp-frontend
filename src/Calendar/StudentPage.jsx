@@ -20,6 +20,16 @@ const StudentPage = observer (
         UNSAFE_componentWillMount(){ //load data before mounting this component
             const {calendarStore} = this.props;
             calendarStore.addUserType('Student');
+            const projectList = JSON.parse(localStorage.getItem("projects"));
+            projectList.map(project => {
+                calendarStore.addProjectList({
+                    id: project.id,
+                    title: project.name,
+                    student: project.student,
+                    tasks: project.taskList,
+                    description: project.description
+                });
+            })
             var studentUserId = calendarStore.getUserData.id
             console.log(studentUserId)
             

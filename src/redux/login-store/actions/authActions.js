@@ -66,12 +66,16 @@ export const authLogin = (username, password) => {
                 //fullname: res.data.user.fname + " " + res.data.user.lname -> maynot be necessary
             };
 
+            const projects = res.data.projects;
+
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
             localStorage.setItem('is_staff', user.is_staff);
             var myUserJSON = JSON.stringify(user);
             localStorage.setItem('user', myUserJSON);
-             dispatch(authSuccess(token, user, user.is_staff));
+            var projectsJson = JSON.stringify(projects)
+            localStorage.setItem('projects',projectsJson)
+            dispatch(authSuccess(token, user, user.is_staff, projects));
         })
         .then(res =>{history.push("/determiner")})
         .catch(err => {

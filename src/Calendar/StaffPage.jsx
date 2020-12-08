@@ -4,13 +4,13 @@ import {observer} from 'mobx-react';
 
 import ReusabelCalendar from './ReusableCalendar.jsx';
 import LeftSideColumn from './LeftSideColumn.jsx';
+import axiosGetProjectListByStaffId from '../AxiosCall/axiosGetProjectByStaffId.js';
 
 const StaffPage = observer (
     class StaffPageClass extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
-                dummy: 'true'
                 // add neccessary state for this component here
             }
         }
@@ -18,8 +18,20 @@ const StaffPage = observer (
         UNSAFE_componentWillMount(){ //load data before mounting this component
             const {calendarStore} = this.props; 
             calendarStore.addUserType('Staff');
-            var staffUserId = calendarStore.getUserData.id;
-            // Load Projects under the staffUserId
+            var projectList = JSON.parse(localStorage.getItem("projects"));
+            
+            if (calendarStore.getData.length == 0) {
+                projectList.map( project => {
+                    calendarStore.addProjectList({
+                        id: project.id,
+                        title: project.name,
+                        student: project.student,
+                        tasks: project.taskList,
+                        description: project.description
+                    });
+                })
+            }
+            
         }
 
         render() {

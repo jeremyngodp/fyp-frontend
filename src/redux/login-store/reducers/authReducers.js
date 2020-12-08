@@ -5,7 +5,7 @@ const initialState = {
     error: null,
     loading: false,//what is it used for??
     user: null,
-    // projects: null,
+    projects: null,
     is_Staff: null,
     // paramQuery: null
 }
