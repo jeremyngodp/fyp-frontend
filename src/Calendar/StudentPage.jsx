@@ -7,23 +7,6 @@ import LeftSideColumn from "./LeftSideColumn.jsx";
 import ReusableCalendar from './ReusableCalendar.jsx';
 import axiosGetTaskbyStudentID from '../AxiosCall/axiosGetTaskbyStudentID.js';
 
-
-const dummyEventData =[{title: 'Meeting 1',
-                        start: '2020-10-13',
-                        end: '2020-10-13',
-                        event_type: 'meeting'},
-
-                        {title: 'Meeting 2',
-                        start: '2020-10-15',
-                        end: '2020-10-15',
-                        event_type: 'meeting'},
-
-                        {title: 'Report 1',
-                        start: '2020-10-13',
-                        end: '2020-10-13',
-                        event_type: 'report'},
-                    ]
-
 const StudentPage = observer (
     class StudentPageClass extends React.Component {
         constructor(props) {
@@ -37,12 +20,24 @@ const StudentPage = observer (
         UNSAFE_componentWillMount(){ //load data before mounting this component
             const {calendarStore} = this.props;
             calendarStore.addUserType('Student');
+            const projectList = JSON.parse(localStorage.getItem("projects"));
+            projectList.map(project => {
+                calendarStore.addProjectList({
+                    id: project.id,
+                    title: project.name,
+                    student: project.student,
+                    tasks: project.taskList,
+                    description: project.description
+                });
+            })
+            var studentUserId = calendarStore.getUserData.id
+            console.log(studentUserId)
             
             if (calendarStore.getData.length === 0){
                 // var student_id = calendarStore.getUserData.id;
                 // perform AXIOS calling here to the backend to load data if there is no data
-                
-                axiosGetTaskbyStudentID(1, calendarStore);   
+                // what about student that has not had any task?
+                axiosGetTaskbyStudentID(studentUserId, calendarStore);    
             }
 
             // axios testing:
@@ -63,14 +58,14 @@ const StudentPage = observer (
                 <div className='MainPage'>
                     <Grid container>
                         <Grid item xs={1} md={1}>
-                            <LeftSideColumn calendarStore={calendarStore} type={calendarStore.getUserType} calendarRef={this.calendarRef}/>
+                            <LeftSideColumn calendarStore={calendarStore} type="Student" calendarRef={this.calendarRef}/>
 
-                            <h3>This is {calendarStore.getUserType} Page Calendar</h3>
+                            <h3>Welcome {calendarStore.getUserData.id} </h3>
                         </Grid>
                         
 
                         <Grid item xs={11} md={11}>
-                            <ReusableCalendar calendarStore={calendarStore}  type={calendarStore.getUserType}/>
+                            <ReusableCalendar calendarStore={calendarStore}  type="Student"/>
                         </Grid>
 
                     </Grid>

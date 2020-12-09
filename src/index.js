@@ -8,12 +8,20 @@ import history from './history';
 import theme from './theme'
 import { ThemeProvider } from '@material-ui/styles';
 
+import { Provider } from 'react-redux'
+import { store, persistor } from './redux/login-store/loginStore';
+import { PersistGate } from 'redux-persist/integration/react'
+
 const app = (
-	<Router history={history}>
-		<ThemeProvider theme={theme}>
-			<Route path="/" component={App} />
-		</ThemeProvider>
-	</Router>
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <Router history={history}>
+                <ThemeProvider theme={theme}>
+                    <Route path="/" component={App} />
+                </ThemeProvider>
+            </Router>
+        </PersistGate>
+    </Provider>
 )
 
 ReactDOM.render(app, document.getElementById('root'));

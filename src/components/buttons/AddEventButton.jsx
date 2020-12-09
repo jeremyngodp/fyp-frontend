@@ -1,6 +1,7 @@
 import React from 'react';
 import {Grid, Button, Dialog} from '@material-ui/core';
-import AddTaskForm from '../../Calendar/AddTask'
+import StudentAddTaskForm from '../../Calendar/AddTaskStudent.js';
+import StaffAddTaskForm from '../../Calendar/AddTaskStaff';
 
 export default class AddEventButton extends React.Component {
     constructor(props) {
@@ -24,7 +25,8 @@ export default class AddEventButton extends React.Component {
     
     
     render() {
-        const { calendarStore, type, } = this.props;
+        const { calendarStore, type } = this.props;
+        console.log(type);
         const { open } = this.state;
         
         return (
@@ -38,13 +40,11 @@ export default class AddEventButton extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                {/* Need to determine if student or staff then route to eventform or staffeventform */}
-                
-                {/* <EventForm calendarStore={calendarStore} start={start} end={end} onSubmit={(event) => this.handleFormSubmit(event)} handleClose={() => this.handleClose()} /> */}
-                
-                {/* <StaffEventForm calendarStore={calendarStore} start={start} end={end} onSubmit={(event) => this.handleFormSubmit(event)} handleClose={() => this.handleClose()} /> */}
-                <AddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} />
-                
+                {type ==="Student" ?
+                <StudentAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} /> 
+                :
+                <StaffAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} />
+                }
                 </Dialog>
              </div>
         )

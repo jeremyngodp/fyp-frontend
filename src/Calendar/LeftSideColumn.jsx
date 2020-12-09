@@ -9,7 +9,8 @@ const useStyles = (theme) => ({
     label: {
         display: 'inline',
         fontFamily: 'Roboto',
-        fontSize: '15px'
+        fontSize: '15px',
+        // margin: '10px'
     },
     square: {
         background: 'red',
@@ -27,30 +28,30 @@ const LeftSideColumn = observer(
             super(props)
         }
 
-        renderOptionsButtonForStaff = () => {
-            const { classes } = this.props;
-            return (
-                <div>
-                    <Typography style={{ fontWeight: 'bold' }}>Filter by projects:</Typography>
-                    {/* {this.props.calendarStore.getCheckboxes.map(item => (
-                        <React.Fragment
-                            key={item.key}>
-                            <Checkbox
-                                value={item.key}
-                                defaultChecked
-                                name={item.name}
-                                onChange={(e) => this.handleChange(e)}
-                                size="small"
-                                style={{ color: item.color }}
-                            />
-                            <Typography className={classes.label}> {item.label}</Typography><br />
-                        </React.Fragment>
-                    ))} */}
-                </div>
-            )
+        // renderOptionsButtonForStaff = () => {
+        //     const { classes } = this.props;
+        //     return (
+        //         <div>
+        //             <Typography style={{ fontWeight: 'bold', margin: '10px' }}>Filter by projects:</Typography>
+        //             {this.props.calendarStore.getCheckboxes.map(item => (
+        //                 <React.Fragment
+        //                     key={item.key}>
+        //                     <Checkbox
+        //                         value={item.key}
+        //                         defaultChecked
+        //                         name={item.name}
+                                
+        //                         size="small"
+        //                         style={{ color: item.color }}
+        //                     />
+        //                     <Typography className={classes.label}>{item.label}</Typography><br />
+        //                 </React.Fragment>
+        //             ))}
+        //         </div>
+        //     )
     
-            // )
-        }
+        //     // )
+        // }
     
 
         render () {
@@ -66,16 +67,22 @@ const LeftSideColumn = observer(
                             }
                         </Grid>
                         
-                        <Grid item cs={12} style={{padding:'10px', border:'5px'}}>
-                            <AddEventButton calendarStore={calendarStore} calendarRef={calendarRef}/>
+                        <Grid item xs={12} style={{padding:'10px', border:'5px'}}>
+                            {
+                                type === 'Student' ?
+                                <AddEventButton calendarStore={calendarStore} calendarRef={calendarRef} type="Student"/>
+                                :
+                                <AddEventButton calendarStore={calendarStore} calendarRef={calendarRef} type="Staff"/>
+                            }
+                            
                         </Grid>
                         
-                        <Grid item xs={12} style={{ paddingTop: '5px' }}>
+                        {/* <Grid item xs={12} style={{ paddingTop: '5px' }}>
                         {type === 'Student' ?
                             "" :
                             this.renderOptionsButtonForStaff()
                         }
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </div>
             )
