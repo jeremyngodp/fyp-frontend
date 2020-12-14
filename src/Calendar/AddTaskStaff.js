@@ -9,6 +9,7 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import axiosAddTask from '../AxiosCall/axiosAddTask.js';
+import { isNull } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -84,8 +85,9 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
     const onSubmit = (e) => {
         e.preventDefault()
         
-        const student_id = calendarStore.getUserData.id
-        const { selectedDueDate, project_id, category, title } = state;
+        
+        const { selectedDueDate, project_id, category, title, chosen_project } = state;
+        const student_id = chosen_project.student.id;
         let fnewDate = format(new Date(), 'yyyy-MM-dd')
         let fSelectedDueDate = format(selectedDueDate, 'yyyy-MM-dd')
         console.log(fSelectedDueDate)
@@ -125,7 +127,7 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
                             <Grid item xs={1}><AssessmentIcon fontSize="small" style={{ float: 'right' }} /></Grid>
                             <Grid item xs={11}>
                                 <div style={{ display: 'flex' }}>
-                                    <Typography >Project: </Typography>
+                                    <Typography className={classes.secondaryHeading}>Project: </Typography>
                                     <Select
                                         labelId="demo-dialog-select-label"
                                         id="select-project"
@@ -134,7 +136,7 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
                                         onChange={(e)=>handleProjectChange(e)}
                                     >
                                         <MenuItem key="0" value="0">Select Project</MenuItem>
-                                        {projectList.map(item => {
+                                        {projectList.filter(project =>  !isNull(project.student)).map(item => {
                                             return (
                                             <MenuItem key={item.id} value={item.id}>{item.title}</MenuItem>
                                             )
@@ -173,7 +175,7 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
                             <Grid item xs={11}>
                             
                                 <div style={{ display: 'flex' }}>
-                                    <Typography >Task Type: </Typography>
+                                    <Typography className={classes.secondaryHeading}>Task Type: </Typography>
                                     <Select
                                         labelId="demo-dialog-select-label"
                                         id="select-category"
@@ -194,7 +196,7 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
                                 </Grid>     
                                 <Grid item xs={11} md={11}>
                                     <div style={{ display: 'flex' }}>
-                                    <Typography >Due Date: </Typography>
+                                    <Typography className={classes.secondaryHeading}>Due Date: </Typography>
                                     <KeyboardDatePicker
                                         format="MM/dd/yyyy"
                                         value={state.selectedDueDate}
@@ -210,8 +212,10 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
                                 </Grid> 
                                 
                                 <Grid item xs={10} md={10}>
-                                    <Typography >Task Title</Typography>
-                                    <TextField id="filled-multiline-static" name="title" multiline rows={4} variant="outlined" onChange={(e)=>handleSummaryChange(e)}/>
+                                    <div style={{ display: 'flex' }}>
+                                        <Typography className={classes.secondaryHeading}>Task Title: </Typography>
+                                        <TextField id="filled-multiline-static" name="title" multiline rows={4} variant="outlined" onChange={(e)=>handleSummaryChange(e)}/>
+                                    </div>
                                 </Grid>
                 
                             </Grid>

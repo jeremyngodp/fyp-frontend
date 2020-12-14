@@ -108,7 +108,7 @@ const ReportContentPage = observer(
                                     </div> */}
                                     <div className={classes.column}>
                                     {/* Inside comment box, the user_id should be your own, not the student's. Because prof & student can both type in */}
-                                    <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.Id} user_id={1} />
+                                    <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.id} user_id={calendarStore.getUserData.id} />
                                     </div> 
                                 </AccordionDetails>
                                 <Divider />

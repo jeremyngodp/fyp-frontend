@@ -59,8 +59,6 @@ const StudentPage = observer (
                     <Grid container>
                         <Grid item xs={1} md={1}>
                             <LeftSideColumn calendarStore={calendarStore} type="Student" calendarRef={this.calendarRef}/>
-
-                            <h3>Welcome {calendarStore.getUserData.id} </h3>
                         </Grid>
                         
 

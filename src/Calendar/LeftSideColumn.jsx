@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Grid, Checkbox, Typography } from "@material-ui/core";
 import { observer } from "mobx-react";
 import AddEventButton from "../components/buttons/AddEventButton.jsx";
+import AddProjectButton from "../components/buttons/AddProjectButton.jsx";
 import ReusableSwipeableTemporaryDrawer from "./ReusableSwipableDrawer.jsx";
 import { withStyles } from '@material-ui/core/styles';
 
@@ -77,12 +78,12 @@ const LeftSideColumn = observer(
                             
                         </Grid>
                         
-                        {/* <Grid item xs={12} style={{ paddingTop: '5px' }}>
-                        {type === 'Student' ?
-                            "" :
-                            this.renderOptionsButtonForStaff()
-                        }
-                        </Grid> */}
+                        <Grid item xs={12} style={{ paddingTop: '5px' }}>
+                            {type === 'Student' ?
+                                "" :
+                                <AddProjectButton calendarStore={calendarStore} type="Staff"/>
+                            }
+                        </Grid>
                     </Grid>
                 </div>
             )

@@ -18,6 +18,14 @@ projectList is an array containing all the project for a Staff user
         student: list of students doing the project -> {id, fname, lname, email, is_staff}
         tasks: list of task related to the project -> {id, project_id, student_id, title, created_date, deadline, task_type, comments}
     }
+
+studentList is an array containing all Student user information for Staff user to assign to Project
+    Element structure: {
+        id: student.id,
+        email: student.email,
+        fullName: student.fname + ' ' + student.lname,
+        username: student.username
+    }
 */
 class CalendarStore {
     newData = []
@@ -26,6 +34,7 @@ class CalendarStore {
     defaultState = {state:'Reports', index:0}
     semStart = '2020-08-09'
     projectList = []
+    studentList = []
 
     constructor() {
         makeObservable(this, {
@@ -35,14 +44,17 @@ class CalendarStore {
             defaultState: observable,
             semStart: observable,
             projectList: observable,
+            studentList: observable,
 
             getData: computed,
             getUserType: computed,
             getDefaultState: computed,
             getProjectList:computed,
+            getStudentList: computed,
 
             addData: action,
             addProjectList: action,
+            addStudentList: action,
             addUserType: action,
             changeDefaultState: action,
             setUserData: action,
@@ -55,6 +67,10 @@ class CalendarStore {
 
     get getProjectList () {
         return this.projectList;
+    }
+
+    get getStudentList () {
+        return this.studentList;
     }
 
     get getUserData() {
@@ -75,6 +91,10 @@ class CalendarStore {
 
     addProjectList (e) {
         this.projectList.push(e);
+    }
+
+    addStudentList (e) {
+        this.studentList.push(e);
     }
 
     addUserType = (e) => {

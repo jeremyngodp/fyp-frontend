@@ -13,11 +13,12 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import clsx from 'clsx';
-
+import * as actions from '../../redux/login-store/actions/authActions';
 
 import MeetingContentPage from './MeetingContentPage';
 import ReportContentPage from './ReportContentPage';
 import SubmissionContentPage from './SubmissionContentPage';
+import { connect } from 'react-redux';
 
 
 const useStyles = (theme) => ({
@@ -108,6 +109,10 @@ const ContentRouting = observer(
 
         handleDrawerOpen = () => {
             this.setState({ open: true })
+        }
+
+        handleLogout = () => {
+            this.props.logout()
         }
 
         handleDrawerClose = () => {
@@ -221,7 +226,7 @@ const ContentRouting = observer(
                         </List>
                         <Divider />
                         <List>
-                            <ListItem button key="Logout" >
+                            <ListItem button key="Logout" onClick={() => this.handleLogout()}>
                                 <ListItemText>Logout</ListItemText>
                             </ListItem>
                         </List>
@@ -244,5 +249,9 @@ const ContentRouting = observer(
 
     }
 )
-
-export default withStyles(useStyles)(ContentRouting);
+const mapDispatchToProps = dispatch => {
+    return {
+        logout: () => dispatch(actions.logout())
+    }
+}
+export default connect(null, mapDispatchToProps)( withStyles(useStyles)(ContentRouting));

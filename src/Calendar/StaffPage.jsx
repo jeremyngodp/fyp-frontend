@@ -19,7 +19,7 @@ const StaffPage = observer (
             const {calendarStore} = this.props; 
             calendarStore.addUserType('Staff');
             var projectList = JSON.parse(localStorage.getItem("projects"));
-            
+            console.log(projectList);
             if (calendarStore.getData.length == 0) {
                 projectList.map( project => {
                     calendarStore.addProjectList({
@@ -31,6 +31,7 @@ const StaffPage = observer (
                     });
                 })
             }
+            console.log(calendarStore.getProjectList);
             
         }
 

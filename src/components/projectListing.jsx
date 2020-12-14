@@ -15,21 +15,32 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import history from '../history';
+import ReusableCommentBox from './contentRouting/ReusableCommentComponent/ReusableCommentBox';
+import EditProjecButton from '../components/buttons/EditProjectButton';
+import { observer } from 'mobx-react';
+import axiosAddProject from '../AxiosCall/axiosAddProject';
+import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
 
 
 const useStyles = (theme) => ({
     root: {
         width: '100%',
-    },  
+    },
+    
+    innerAccordion: {
+        width:'90%',
+    },
     heading: {
-        fontSize: theme.typography.pxToRem(15),
+        fontSize: theme.typography.pxToRem(20),
         fontWeight: theme.typography.fontWeightRegular,
+        fontStyle: 'bold',
     },
 
     description: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
-        align: theme.typography.center
+        align: theme.typography.center,
+        fontStyle: 'italic',
     },
 
     icon: {
@@ -53,6 +64,28 @@ const useStyles = (theme) => ({
 class ProjectListing extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            open: false,
+        }
+    }
+    
+    handleClickStudent = () => {
+        this.setState({
+             open: true
+        })
+    };
+
+    handleClose = () => {
+        this.setState({
+            open: false
+        })
+    }
+
+    UNSAFE_componentWillMount() {
+        const {calendarStore} = this.props;
+        if(calendarStore.getStudentList.length == 0) {
+            axiosGetAllStudent(this.props.calendarStore);
+        }
     }
 
     handleLogout = () => {
@@ -71,13 +104,13 @@ class ProjectListing extends Component {
     }
 
     renderAppBar = () => {
-        const { classes } = this.props;
+        const { classes, calendarStore } = this.props;
         return (
             <div className={classes.appbarroot}>
                 <AppBar position="static">
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            Hi, UserName
+                            Welcome, {calendarStore.getUserData.username}
                         </Typography>
 
                         <Button
@@ -103,11 +136,52 @@ class ProjectListing extends Component {
         );
     }
 
+    renderStudentTaskPanel= (project) => {
+        const{calendarStore,classes} = this.props;
+        return (
+            <div className={classes.innerAccordion}>
+                {project.tasks == null ?
+                <Typography >No Task has been added for this Projectc</Typography>
+                :
+                project.tasks.map(task => 
+                    <Accordion key={task.id}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon/>}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header">
+                                <Typography>{task.title}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <List className={classes.root}>
+                                <ListItem>
+                                    <ListItemText>
+                                        <Typography>Date: {task.deadline}</Typography>
+                                    </ListItemText>
+                                </ListItem>
+                                {task.task_type === "report" ?
+                                
+                                <ListItem>
+                                    <ReusableCommentBox comments={task.comments} calendarStore={calendarStore} task_id={task.id} user_id={calendarStore.getUserData.id}/>
+                                </ListItem>
+                                :
+                                ""
+                                }
+                            </List>
+                        </AccordionDetails>
+
+                    </Accordion>
+                )}
+    
+            </div>
+        );
+    }
+
     renderProjectPanels = (projects) => {
         // const handleClick = (e, index) => {
 
         // };
-        const { classes} = this.props;
+        const { classes, calendarStore} = this.props;
+        const {open} = this.state;
         
         return (
             <div className={classes.root}>
@@ -130,7 +204,7 @@ class ProjectListing extends Component {
                                 className={classes.root}
                             >
                                 <ListItem>
-                                    <Typography className={classes.heading}>{item.description}</Typography>
+                                    <Typography className={classes.description}>{item.description}</Typography>
                                 </ListItem>
                                 {/* {item.student.map((item, key) =>
                                     <ListItem button key={item.id}
@@ -140,12 +214,40 @@ class ProjectListing extends Component {
                                         <Typography className={classes.heading}>{item.email}</Typography>
                                     </ListItem>
                                 )} */}
-                                <ListItem button key={item.student.id}
-                                        // onClick={(event) => this.handleClickUser(event, item.id)}
-                                    >
+
+                                <ListItem>
+                                    <EditProjecButton calendarStore={calendarStore} project_id={item.id}/>
+                                </ListItem>
+                                { item.student === null ?
+                                <ListItem>
+                                    <Typography className={classes.heading}>No student has been assigned to this project</Typography>
+                                </ListItem>
+                                :
+                                <div>
+                                    <ListItem key={item.student.id}>
                                         <AssignmentIndIcon className={classes.icon}/>
                                         <ListItemText primary={ item.student.fname + ' ' + item.student.lname} secondary={item.student.email} />
-                                </ListItem>
+                                    </ListItem>
+                                    {/* <Dialog
+                                        open={open}
+                                        onClose={this.handleClose}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                    >
+                                        <StudentDialogContent project={item} handleClose={this.handleClose}/>
+
+                                    </Dialog> */}
+                                    <ListItem>
+                                        <ListItemText>
+                                            <Typography className={classes.heading}>Tasks</Typography>
+                                        </ListItemText>
+                                        {item.tasks.length === 0 ?
+                                        <Typography className={classes.description}>No Task has been added for this Project</Typography>
+                                        :
+                                        this.renderStudentTaskPanel(item)}
+                                    </ListItem>
+                                </div>
+                                }
                             </List>
                         </AccordionDetails>
                     </Accordion>
@@ -202,6 +304,6 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const ProjectListingForm = withStyles(useStyles)(ProjectListing);
+const ProjectListingForm = observer(withStyles(useStyles)(ProjectListing));
 
 export default connect(mapStateToProps,mapDispatchToProps) (ProjectListingForm);
