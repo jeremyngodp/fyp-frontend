@@ -58,11 +58,12 @@ const ReusableCommentBox = observer(
             const { dataArray, comment } = this.state;
             const { calendarStore, task_id, user_id } = this.props;
             const { getData } = calendarStore;
+            const email = calendarStore.getUserData.email;
             
-            const index = this.state.tasks.findIndex(task => task.Id === task_id)
+            const index = this.state.tasks.findIndex(task => task.id === task_id)
             // so far only add user id, user_id and email will be sent back after authentication.
             // once get back the id after the axiosPostComment call, add 'id' too, add email once login feature is done.
-            dataArray[index].comments.push({ id:id, task_id: task_id, user_id: 1, created_date: created_date, content: comment })
+            dataArray[index].comments.push({ id:id, task_id: task_id, user_id: user_id, user_email: email, created_date: created_date, content: comment })
             this.setState({ dataArray });
           }
         
@@ -154,7 +155,7 @@ const ReusableCommentBox = observer(
           }
 
         render() {
-            const {comments, classes, task_id} = this.props;
+            const {comments, classes} = this.props;
             return (
                 <div style={{ width: '100%' }}>
                     <Typography className={classes.heading}>Comments:</Typography>
