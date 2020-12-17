@@ -8,9 +8,10 @@ import StudentPage from './Calendar/StudentPage.jsx';
 import StaffPage from './Calendar/StaffPage.jsx';
 import CalendarStore from './mobx/CalendarStore.js';
 import ContentRouting from './components/contentRouting/contentRouting.jsx';
-import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRoute, CheckSwitchRoute} from './SpecialRoutes';
+import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRoute, CheckSwitchRoute, RegisterRoute} from './SpecialRoutes';
 import ProjectListPage from './components/projectListing.jsx';
 import LoginPage from "./components/LoginPage";
+import RegisterPage from "./components/RegisterUser";
 
 
 const calendarStore = new CalendarStore();
@@ -76,6 +77,7 @@ function App() {
         <div>
             
             <Switch>
+                <RegisterRoute path="/register" component={RegisterPage} />
                 
                 <StudentOnlyRoute  path="/student" component={studentOnlyRoute} calendarStore={calendarStore} />
                 
