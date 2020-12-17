@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField, Dialog } from '@material-ui/core';
 import SubjectIcon from '@material-ui/icons/Subject'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import axiosAddProject from '../AxiosCall/axiosAddProject';
+import axiosUpdateProject from '../AxiosCall/axiosUpdateProject';
 import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
 import { withStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
@@ -27,9 +27,9 @@ function EditProjectForm ({handleClose, calendarStore, project_id}){
     
     const classes = useStyles();
     const [state,setState] = useState({
-        project_title: "",
-        project_description: "",
-        student_id: 0,
+        project_title: project.title,
+        project_description: project.description,
+        student_id: project.student.id,
     })
 
     console.log(state.student_id);
@@ -58,8 +58,10 @@ function EditProjectForm ({handleClose, calendarStore, project_id}){
     const onSubmit = (e) => {
         e.preventDefault();
         const {project_title, project_description, student_id} = state;
-        // axiosAddProject(project_title, student_id, project_description, calendarStore);
-
+        const {updateProject} = calendarStore;
+        var student = studentList.find(student => student.id == student_id);
+        axiosUpdateProject(project_id, project_title, student_id, project_description, calendarStore, student);
+        
         handleClose();
         
     }
@@ -81,7 +83,7 @@ function EditProjectForm ({handleClose, calendarStore, project_id}){
                                         name="title" 
                                         rows={2} 
                                         variant="outlined" 
-                                        value={project.title}
+                                        value={state.project_title}
                                         onChange={(e)=>handleTitleChange(e)}
                                     />
                                 </div>
@@ -96,7 +98,7 @@ function EditProjectForm ({handleClose, calendarStore, project_id}){
                                     name="description" 
                                     multiline rows={4} 
                                     variant="outlined" 
-                                    value={project.description}
+                                    value={state.project_description}
                                     onChange={(e)=>handleDescriptionChange(e)}/>
                                 </div>
                             </Grid>
@@ -114,7 +116,7 @@ function EditProjectForm ({handleClose, calendarStore, project_id}){
                                         <MenuItem value={state.student_id}>Assign A Student</MenuItem>
                                     {
                                         studentList.map(student => 
-                                            <MenuItem key={student.id} value={student.id}>{student.fullName}</MenuItem>
+                                        <MenuItem key={student.id} value={student.id}>{student.lname} {student.fname}</MenuItem>
                                         )
                                     }
                                     

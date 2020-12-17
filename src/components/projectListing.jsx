@@ -304,6 +304,6 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-const ProjectListingForm = observer(withStyles(useStyles)(ProjectListing));
+const ProjectListingPage = observer(withStyles(useStyles)(ProjectListing));
 
-export default connect(mapStateToProps,mapDispatchToProps) (ProjectListingForm);
+export default connect(mapStateToProps,mapDispatchToProps) (ProjectListingPage);

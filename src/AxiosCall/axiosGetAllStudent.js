@@ -13,7 +13,8 @@ export default function axiosGetAllStudent(calendarStore) {
                 calendarStore.addStudentList({
                     id: student.id,
                     email: student.email,
-                    fullName: student.fname + ' ' + student.lname,
+                    fname: student.fname,
+                    lname: student.lname,
                     username: student.username
                 })
             })
