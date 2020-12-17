@@ -34,6 +34,7 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
     }
 
     const handleLogout = (e) => {
+        calendarStore.resetStore()
         logout();
     }
 

@@ -13,8 +13,9 @@ newData is an array containing all the tasks for a Student user
 
 projectList is an array containing all the project for a Staff user
     Element structure: {
-        Id: id of the project
+        id: id of the project
         title: title of the project
+        description: description of the project
         student: list of students doing the project -> {id, fname, lname, email, is_staff}
         tasks: list of task related to the project -> {id, project_id, student_id, title, created_date, deadline, task_type, comments}
     }
@@ -58,6 +59,8 @@ class CalendarStore {
             addUserType: action,
             changeDefaultState: action,
             setUserData: action,
+            updateProject: action,
+            resetStore: action,
         })
     }
 
@@ -107,6 +110,24 @@ class CalendarStore {
 
     setUserData = (userData) => {
         this.userData = userData;
+    }
+
+    updateProject = (project_id, title, student, description) => {
+        var found = this.projectList.find((element) => element.id == project_id);
+        found.student = student;
+        found.title = title;
+        found.description = description;
+
+        console.log(this.projectList)
+    }
+
+    resetStore = () => {
+        this.newData = [];
+        this.userData = "";
+        this.defaultState = {state:'Reports', index:0};
+        this.semStart = '2020-08-09';
+        this.projectList = [];
+        this.studentList = [];
     }
     
 }    

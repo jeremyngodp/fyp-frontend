@@ -109,8 +109,8 @@ class Login extends Component {
       let errorMessage = null;
       if (this.props.error) {
           errorMessage = (
-          <p className={classes.errorMsg} >{this.props.error.message}</p>
-        //   <p className={classes.errorMsg}>Incorrect username or password. Please try again.</p>
+          // <p className={classes.errorMsg} >{this.props.error.message}</p>
+          <p className={classes.errorMsg}>Incorrect username or password. Please try again.</p>
           );
       }
 
@@ -175,7 +175,7 @@ class Login extends Component {
               >
                   Sign In
               </Button>
-              {/* 
+              
               <Grid container>
                   <Grid item xs>
                   <Link href="#" variant="body2">
@@ -183,12 +183,12 @@ class Login extends Component {
                   </Link>
                   </Grid>
                   <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="http://localhost:3000/register" variant="body2">
                       {"Don't have an account? Sign Up"}
                   </Link>
                   </Grid>
               </Grid> 
-              */}
+             
               </form>
             {/* <form className={classes.form} noValidate onSubmit={this.handleLogout} method="POST">
 

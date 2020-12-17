@@ -167,6 +167,15 @@ export const LoginRoute = ({ component: Component, ...rest }) => (
     />
 )
 
+export const RegisterRoute = ({component: Component, ...rest}) => (
+    <Route 
+    {...rest}
+    render = {props =>{
+        return <Component {...props} />
+    }}
+    />
+)
+
 export const CheckSwitchRoute = ({ component: Component, ...rest }) => (
     <Route
         {...rest}
