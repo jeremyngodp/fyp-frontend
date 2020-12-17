@@ -2,7 +2,7 @@ import React from 'react';
 import {Grid} from '@material-ui/core';
 import {observer} from 'mobx-react';
 
-import ReusabelCalendar from './ReusableCalendar.jsx';
+import ReusableCalendar from './ReusableCalendar.jsx';
 import LeftSideColumn from './LeftSideColumn.jsx';
 import axiosGetProjectListByStaffId from '../AxiosCall/axiosGetProjectByStaffId.js';
 
@@ -29,10 +29,21 @@ const StaffPage = observer (
                         tasks: project.taskList,
                         description: project.description
                     });
+
+                    project.taskList.map( task => {
+                        calendarStore.addData( {
+                            id: task.id,
+                            title: task.title,
+                            event_types: task.task_type,
+                            start: task.deadline,
+                            end: task.deadline,
+                            project_id : project.id,
+                            comments: task.comments,
+                            student_id: task.student_id
+                        })
+                    });
                 })
             }
-            console.log(calendarStore.getProjectList);
-            
         }
 
         render() {
@@ -49,7 +60,7 @@ const StaffPage = observer (
                         
 
                         <Grid item xs={11} md={11}>
-                            <ReusabelCalendar calendarStore={calendarStore} type="Staff"/>
+                            <ReusableCalendar calendarStore={calendarStore} type="Staff"/>
                         </Grid>
 
                     </Grid>

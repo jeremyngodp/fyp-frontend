@@ -50,37 +50,21 @@ const StaffCalendar = observer(
             
         }
 
-        // componentDidUpdate() {
-        //     console.log('Staff Calendar Updated!')
-        //     const {calendarStore} = this.props;
-        //     if(calendarStore.getData.length > 0){
-        //         const events = calendarStore.getData;
-        //         let calendarAPI = this.calendarRef.current.getApi();
-        //         calendarAPI.addEvent(events[events.length-1]);
-        //     }
-        // }
+        componentDidUpdate() {
+            console.log('Staff Calendar Updated!')
+            const {calendarStore} = this.props;
+            if(calendarStore.getData.length > 0){
+                const events = calendarStore.getData;
+                let calendarAPI = this.calendarRef.current.getApi();
+                calendarAPI.addEvent(events[events.length-1]);
+            }
+        }
 
         render() {
             const {calendarStore} = this.props;
             var projectList = calendarStore.getProjectList;
             
-            if (calendarStore.getData.length == 0){
-                projectList.map(project => {
-                    project.tasks.map( task => {
-                        calendarStore.addData( {
-                            id: task.id,
-                            title: task.title,
-                            event_types: task.task_type,
-                            start: task.deadline,
-                            end: task.deadline,
-                            project_id : project.id,
-                            comments: task.comments,
-                            student_id: task.student_id
-
-                        })
-                    })
-                })
-            }
+            const{getData} = calendarStore;
             console.log('render Staff Calendar')
 
             return (
@@ -93,7 +77,7 @@ const StaffCalendar = observer(
                         hiddenDays = {[0,6]}
                         selectable ='true'
                         headerToolbar = {this.state.headerToolbar}
-                        events = {calendarStore.getData}
+                        events = {getData}
                         weekNumbers = {true}
                         weekNumberContent={this.calculateWeekNo}
                     />
