@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader';
 import ReusableCommentBox from './ReusableCommentComponent/ReusableCommentBox'
+import ReportSubmissionPage from './ReportSubmissionPage';
 
 const useStyles = (theme) => ({
     root: {
@@ -75,37 +76,38 @@ const ReportContentPage = observer(
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                 >
-                                    <Grid container spacing={4}>
-                                    <Grid item xs={1} />
-                                    <Grid item xs={2}>
-                                        {/* Week nos. */}
-                                        <Typography className={classes.secondaryHeading}>{this.calculateWeekNo(text.end)}</Typography>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        {/* Report Title */}
-                                        <Typography className={classes.secondaryHeading}>{text.title}</Typography>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        {/* Submission date -- need to format it to reflect date only */}
-                                        {/* {text.event_type} */}
-                                        <Typography className={classes.secondaryHeading}>{moment(text.end).format("DD/MM/YYYY")}</Typography>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        {/* Submitted date */}
-                                        <Typography className={classes.secondaryHeading}>
-                                        {/* {text.submission_date === null ? "Not submitted yet" : "Submitted on " + moment(text.submission_date).format("DD/MM/YYYY")} */} Not Submitted
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        {/* No. of hours */}
-                                        <Typography className={classes.secondaryHeading} style={{ textAlign: 'center' }}>{text.hours_spent}</Typography>
-                                    </Grid>
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={1} />
+                                        <Grid item xs={2}>
+                                            {/* Week nos. */}
+                                            <Typography className={classes.secondaryHeading}>{this.calculateWeekNo(text.end)}</Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {/* Report Title */}
+                                            <Typography className={classes.secondaryHeading}>{text.title}</Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {/* Submission date -- need to format it to reflect date only */}
+                                            {/* {text.event_type} */}
+                                            <Typography className={classes.secondaryHeading}>{moment(text.end).format("DD/MM/YYYY")}</Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {/* Submitted date */}
+                                            <Typography className={classes.secondaryHeading}>
+                                            {text.status}  
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            {/* No. of hours */}
+                                            <Typography className={classes.secondaryHeading} style={{paddingLeft: "10px"}} >{text.hour}</Typography>
+                                        </Grid>
+                                        <Grid item xs={1} />
                                     </Grid>
                                 </AccordionSummary>
                                 <AccordionDetails className={classes.details} style={{ paddingBottom: '40px' }}>
-                                    {/* <div className={classes.column}>
-                                    <WeeklyReportSubmissionPage calendarStore={calendarStore} documents={text.documents} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} Id={text.Id} hours_spent={text.hours_spent} content={text.content} status={text.status} />
-                                    </div> */}
+                                    <div className={classes.column}>
+                                    <ReportSubmissionPage calendarStore={calendarStore} documents={text.documents} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} id={text.id} hourSpent={text.hour} content={text.content} status={text.status} />
+                                    </div>
                                     <div className={classes.column}>
                                     {/* Inside comment box, the user_id should be your own, not the student's. Because prof & student can both type in */}
                                     <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.id} user_id={calendarStore.getUserData.id} />
@@ -127,7 +129,7 @@ const ReportContentPage = observer(
                     week_no='Week No.'
                     title1='Title'
                     title2='Deadline'
-                    title3='Submitted Date'
+                    title3='Status'
                     title4='No. of hours'
                 />
             )

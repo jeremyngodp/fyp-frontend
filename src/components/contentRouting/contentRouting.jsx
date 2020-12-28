@@ -144,7 +144,14 @@ const ContentRouting = observer(
         render() {
             const {calendarStore, classes, history} = this.props;
             const {open, currentPageEvent, selectedIndex} = this.state;
-            console.log('Content Page is rendered')
+            var events = calendarStore.getData;
+            var hour = 0;
+            events.map(task => {
+                hour += task.hour;
+            });
+
+            console.log(hour);
+
             return (    
                 <div>
                     <CssBaseline />
@@ -175,7 +182,7 @@ const ContentRouting = observer(
                                     </div>
                                     <div>
                                         <Typography variant="subtitle1" noWrap style={{ paddingTop: '4px', paddingLeft: '2%' }}>
-                                            Total Hour is 100
+                                            You have spent {hour} hour on the project
                                         </Typography>
                                     </div>
                                 </div>
