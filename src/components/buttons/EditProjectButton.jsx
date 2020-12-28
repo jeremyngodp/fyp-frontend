@@ -24,7 +24,7 @@ class EditProjectButton extends React.Component {
     };
 
     render() {
-        const { calendarStore, project_id } = this.props;
+        const { calendarStore, project_id, onSubmitEditProject } = this.props;
         const { open } = this.state;
         
         return (
@@ -39,7 +39,7 @@ class EditProjectButton extends React.Component {
                     aria-describedby="alert-dialog-description"
                 >
                     
-                    <EditProjectForm handleClose={() =>this.handleClose()} calendarStore={calendarStore} project_id={project_id}/>
+                    <EditProjectForm handleClose={() =>this.handleClose()} calendarStore={calendarStore} project_id={project_id} onSubmitEditProject={onSubmitEditProject}/>
                     
                 </Dialog>
              </div>

@@ -66,6 +66,7 @@ class ProjectListing extends Component {
         super(props);
         this.state = {
             open: false,
+            projects : props.calendarStore.getProjectList,
         }
     }
     
@@ -81,11 +82,21 @@ class ProjectListing extends Component {
         })
     }
 
+    onSubmitEditProject = () => {
+        this.setState({
+            projects: this.props.calendarStore.getProjectList
+        })
+    }
+
     UNSAFE_componentWillMount() {
         const {calendarStore} = this.props;
         if(calendarStore.getStudentList.length == 0) {
             axiosGetAllStudent(this.props.calendarStore);
         }
+    }
+
+    componentDidUpdate() {
+        console.log("Project listing updated");
     }
 
     handleLogout = () => {
@@ -216,7 +227,7 @@ class ProjectListing extends Component {
                                 )} */}
 
                                 <ListItem>
-                                    <EditProjecButton calendarStore={calendarStore} project_id={item.id}/>
+                                    <EditProjecButton calendarStore={calendarStore} project_id={item.id} onSubmitEditProject={this.onSubmitEditProject}/>
                                 </ListItem>
                                 { item.student === null ?
                                 <ListItem>

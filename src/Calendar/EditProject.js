@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function EditProjectForm ({handleClose, calendarStore, project_id}){
+function EditProjectForm ({handleClose, calendarStore, project_id, onSubmitEditProject}){
     const project = calendarStore.getProjectList.find(project => project.id  === project_id);
     const studentList = calendarStore.getStudentList;
     
@@ -58,12 +58,12 @@ function EditProjectForm ({handleClose, calendarStore, project_id}){
     const onSubmit = (e) => {
         e.preventDefault();
         const {project_title, project_description, student_id} = state;
-        const {updateProject} = calendarStore;
+        
         var student = studentList.find(student => student.id == student_id);
         axiosUpdateProject(project_id, project_title, student_id, project_description, calendarStore, student);
-        
+        calendarStore.updateProject(project_id, project_title, student, project_description)
+        onSubmitEditProject();
         handleClose();
-        
     }
 
     
