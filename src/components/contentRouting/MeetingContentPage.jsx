@@ -3,9 +3,11 @@ import {observer} from 'mobx-react';
 import { Paper, Grid, Typography, Box, Accordion, AccordionSummary, AccordionDetails, Divider, Button,  } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles';
-
-import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader'
 import moment from 'moment'
+import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader'
+import MeetingNotesSubmissionPage from "./MeetingNoteSubmission"
+
+
 
 
 
@@ -66,9 +68,10 @@ const MeetingContentPage = observer(
             return(
                 <ReusableExpansionHeader 
                     week_no='Week No.'
-                    title1='Meeting Date'
-                    title2='Meeting Notes'
-                    title3='Attachments?'
+                    title1 ='Event'
+                    title2 ='Meeting Date'
+                    title3 ='Meeting Notes'
+                    title4 ='Attachments?'
                 />
             )
         }
@@ -113,24 +116,24 @@ const MeetingContentPage = observer(
                                                 {moment(text.end).format('HH:mmA')}
                                             </Typography> */}
                                         </Grid>
-                                        {/* <Grid item xs={2}>  */}
+                                        <Grid item xs={2}>  
                                             {/* Meeting Notes: whether it's available or not */}
-                                            {/* {text.event_type} */}
-                                            {/* <Typography >{text.status === "Completed" ? "Available" : "Not available"}</Typography> */}
-                                        {/* </Grid> */}
+                                            
+                                            <Typography className={classes.secondaryHeading}>{text.status === "completed" ? "Available" : "Not available"}</Typography>
+                                        </Grid>
                                         
                                     </Grid>
                                 </AccordionSummary>
                                 <Divider/>
                                 <AccordionDetails className={classes.details} style={{paddingBottom: '40px'}}>
                                     
-                                    {/* <div className={classes.column}>
+                                    <div className={classes.column}>
                                         <MeetingNotesSubmissionPage data={text}  calendarStore={calendarStore}/>
                                     </div>
-                                    <div className={classes.column}>
+                                    {/* <div className={classes.column}>
                                         <MeetingNotesAttachmentPage documents={text.documents} Id={text.Id}/>
                                     </div> */}
-                                    <p>Details</p>
+                                    
                                 </AccordionDetails>
                                 
                             </Accordion>
@@ -165,17 +168,3 @@ const MeetingContentPage = observer(
 )
 
 export default withStyles(useStyles) (MeetingContentPage);
-
-
-// .sort((a,b) => { //sort the dates so most recent date of submission is below
-//     return new Date(a.start).getTime() - new Date(b.end).getTime()
-//    })
-
-
-// <Grid item xs={2}>
-//                                         {/* Are there any attachments?  */}
-//                                             {text.documents.length === 0 ? 
-//                                             <Typography  style={{fontStyle: 'italic'}}>No attachments</Typography> 
-//                                             : <Typography >{text.documents.length} attachment(s)</Typography>
-//                                             } 
-//                                         </Grid>
