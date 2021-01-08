@@ -106,7 +106,7 @@ const ReportContentPage = observer(
                                 </AccordionSummary>
                                 <AccordionDetails className={classes.details} style={{ paddingBottom: '40px' }}>
                                     <div className={classes.column}>
-                                    <ReportSubmissionPage calendarStore={calendarStore} documents={text.documents} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} id={text.id} hourSpent={text.hour} content={text.content} status={text.status} />
+                                    <ReportSubmissionPage calendarStore={calendarStore} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} id={text.id} hourSpent={text.hour} content={text.content} status={text.status} />
                                     </div>
                                     <div className={classes.column}>
                                     {/* Inside comment box, the user_id should be your own, not the student's. Because prof & student can both type in */}

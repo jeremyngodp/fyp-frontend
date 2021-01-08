@@ -38,6 +38,7 @@ const StaffPage = observer (
                             start: task.deadline,
                             end: task.deadline,
                             project_id : project.id,
+                            hour: task.hourSpent,
                             comments: task.comments,
                             student_id: task.student_id
                         })

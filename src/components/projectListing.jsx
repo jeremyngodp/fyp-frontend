@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import history from '../history';
 import ReusableCommentBox from './contentRouting/ReusableCommentComponent/ReusableCommentBox';
 import EditProjecButton from '../components/buttons/EditProjectButton';
@@ -59,6 +60,16 @@ const useStyles = (theme) => ({
     title: {
         flexGrow: 1,
     },
+    column: {
+        flexBasis: '50%',
+        padding: '0 30px',
+    },
+    details: {
+        float: 'center',
+    },
+    flex: {
+        display: 'flex',
+    }
 })
 
 class ProjectListing extends Component {
@@ -152,9 +163,9 @@ class ProjectListing extends Component {
         return (
             <div className={classes.innerAccordion}>
                 {project.tasks == null ?
-                <Typography >No Task has been added for this Projectc</Typography>
+                <Typography >No Task has been added for this Project</Typography>
                 :
-                project.tasks.map(task => 
+                project.tasks.map(task =>
                     <Accordion key={task.id}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
@@ -170,10 +181,29 @@ class ProjectListing extends Component {
                                     </ListItemText>
                                 </ListItem>
                                 {task.task_type === "report" ?
-                                
-                                <ListItem>
-                                    <ReusableCommentBox comments={task.comments} calendarStore={calendarStore} task_id={task.id} user_id={calendarStore.getUserData.id}/>
-                                </ListItem>
+                                <div className={classes.flex}>
+                                    <div className={classes.column}>
+                                        {task.status === "complete"?
+                                        <div>
+                                            <Typography>The Report has been submitted</Typography>
+                                            <GetAppIcon style={{float: 'left'}}/>
+                                            <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>Download Submission</a></Typography>
+                                        </div>
+                                        :
+                                        <div><Typography>The Report has not been submitted</Typography></div>
+                                        }
+                                        <ListItem>
+                                            <ListItemText>
+                                                <Typography>Hour Spent: {task.hourSpent}</Typography>
+                                            </ListItemText>
+                                        </ListItem>
+                                    </div>
+                                    
+                                    <div className={classes.column}>
+                                        <ReusableCommentBox  comments={task.comments} calendarStore={calendarStore} task_id={task.id} user_id={calendarStore.getUserData.id}/>
+                                    </div>
+                                    
+                                </div>
                                 :
                                 ""
                                 }
@@ -181,8 +211,8 @@ class ProjectListing extends Component {
                         </AccordionDetails>
 
                     </Accordion>
-                )}
-    
+                )
+                }
             </div>
         );
     }
