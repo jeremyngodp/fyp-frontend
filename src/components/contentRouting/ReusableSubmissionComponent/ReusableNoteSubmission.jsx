@@ -53,7 +53,7 @@ const ReusableNotesSubmission = (props) => {
                                 <div style={{ display: 'flex' }}>
                                     <Typography className={classes.secondaryHeading} style={{ lineHeight: '40px' }}>
                                         Hours spent: &nbsp;
-                            </Typography>
+                                    </Typography>
                                     <TextField
                                         variant="outlined"
                                         size="small"

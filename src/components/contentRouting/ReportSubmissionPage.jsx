@@ -4,7 +4,9 @@ import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
-import ReusableNotesSubmission from './ReusableSubmissionComponent/ReusableNoteSubmission'
+import GetAppIcon from '@material-ui/icons/GetApp';
+import ReusableNotesSubmission from './ReusableSubmissionComponent/ReusableNoteSubmission';
+import ReusableNotesCompleted from './ReusableSubmissionComponent/ReusableNoteComplete';
 
 const useStyles = (theme) => ({
     root: {
@@ -40,8 +42,44 @@ class ReportSubmissionPage extends Component {
         }
     }
 
-    renderReportCompletedPaper() {
+    downloadFile = (id) => {
+        id.preventDefault();
 
+        const token = localStorage.getItem('token');
+        console.log(id);
+        // axios.get("http://localhost:8080/fyp/api/downloadFile/task/" + task_id, 
+        // {headers:
+        //     {'Authorization': 'Bearer ' + token}
+        // });
+    }
+
+    renderReportCompletedPaper() {
+        const {id} = this.props;
+        console.log(id);
+        const fileURL = "http://localhost:8080/fyp/api/downloadFile/task/" + id;
+        return (
+            <div style={{marginTop: '10px'}}>
+                <GetAppIcon style={{float: 'left'}}/>
+                <a style={{marginRight: '5px'}} href={fileURL} download>Download attachment</a>
+            </div>
+        )
+    }
+
+    renderWeeklyReportCompletedPaper = () => {
+        const {hourSpent, id} = this.props;
+        return (
+          <ReusableNotesCompleted
+            type="Weekly Report"
+            hourSpent={hourSpent}
+            id={id}
+            // content={content}
+            // documents={documents}
+            addAttachment={this.addAttachment}
+            upload={this.onClickHandler}
+            selectedFile={this.state.selectedFile}
+            cancel={this.cancelAddAttachment}
+          />
+        )
     }
 
     onClickHandler = () => {
@@ -76,7 +114,7 @@ class ReportSubmissionPage extends Component {
         console.log(id);
         const { hourSpent, thingsCompleted } = this.state;
         var status = this.state.selectedFile==null? "pending": "complete";
-        
+
         const { updateWeeklyReportSubmission } = calendarStore;
         var submissionTime = moment();
         if (hourSpent === "" ) {
@@ -151,9 +189,9 @@ class ReportSubmissionPage extends Component {
     
     renderSwitchPaper = (status) => {
         switch (status) {
-            case "completed":
+            case "complete":
             case "late":
-                return this.renderReportCompletedPaper();
+                return this.renderWeeklyReportCompletedPaper();
             default:
                 return this.renderReportPendingPaper();
         }
@@ -163,7 +201,7 @@ class ReportSubmissionPage extends Component {
         const { classes, status } = this.props;
         return (
             <div style={{ width: '100%' }}>
-                <Typography className={classes.heading}>Weekly Report Submission</Typography>
+                <Typography className={classes.heading}>Report Submission</Typography>
                 {this.renderSwitchPaper(status)}
             </div>
         )
