@@ -32,8 +32,8 @@ class CalendarStore {
     newData = []
     userData = ''
     userType = ''
-    defaultState = {state:'Reports', index:0}
-    semStart = '2020-08-09'
+    defaultState = {state:'Tasks', index:0}
+    semStart = '2021-01-11'
     projectList = []
     studentList = []
 

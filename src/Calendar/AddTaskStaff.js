@@ -33,7 +33,7 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
     // let dateStr = format(start, 'yyyy-MM-dd')
     const classes = useStyles()
     const [state, setState] = useState({
-        category: 'report',
+        category: 'meeting',
         selectedDueDate: start,
         project_id: '0',
         title: '',

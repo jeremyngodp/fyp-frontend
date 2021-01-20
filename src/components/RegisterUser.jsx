@@ -126,7 +126,7 @@ class RegisterUser extends Component {
                         is_staff: is_staff
                     })
                     alert("Registration successful!");
-                    history.pushState("/login");
+                    history.push("/login");
                 }
 
                 else {

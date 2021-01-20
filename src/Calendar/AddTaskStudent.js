@@ -32,7 +32,7 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
     
     const classes = useStyles()
     const [state, setState] = useState({
-        category: 'report',
+        category: 'common',
         selectedDueDate: start,
         // project_id: 0,
         title: '',
@@ -112,7 +112,7 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
                                         name="category"
                                         onChange={(e)=>handleCategoryChange(e)}
                                     >
-                                        <MenuItem value="report">Report</MenuItem>
+                                        <MenuItem value="common">Task</MenuItem>
                                         <MenuItem value="meeting" label="Meeting">Meeting</MenuItem>
                                         <MenuItem value="submission">Document Submission</MenuItem>
                                     </Select>

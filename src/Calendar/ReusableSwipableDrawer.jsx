@@ -65,7 +65,7 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
                 type === 'Student' ?
                     <React.Fragment>
                         <List>
-                            {['Reports', 'Meetings', 'Submissions'].map((text, index) => (
+                            {['Tasks', 'Meetings', 'Submissions'].map((text, index) => (
                                 <ListItem button key={text} onClick={() => onClickHandler(text,index)}>
                                     <ListItemText primary={text} />
                                 </ListItem>
@@ -97,8 +97,8 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
                 history.push(`/${username}/content`);
                 console.log('Clicked on Meetings')
                 break;
-            case "Reports":
-                changeDefaultState({ state: 'Reports', index: 0 })
+            case "Tasks":
+                changeDefaultState({ state: 'Tasks', index: 0 })
                 history.push(`/${username}/content`)
                 console.log('Clicked on Reports')
                 break;

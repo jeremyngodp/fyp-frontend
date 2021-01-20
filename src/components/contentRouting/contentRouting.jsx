@@ -97,7 +97,6 @@ const ContentRouting = observer(
             let {index, state} = props.calendarStore.getDefaultState
             this.state = {
                 open: false,
-                pageEvents: ['Reports', 'Meetings', 'Submissions'],
                 currentPageEvent: state,
                 selectedIndex: index
             }
@@ -124,7 +123,7 @@ const ContentRouting = observer(
             switch (param) {
                 case 'Meetings':
                     return <MeetingContentPage calendarStore={calendarStore} />
-                case 'Reports':
+                case 'Tasks':
                     return <ReportContentPage calendarStore={calendarStore} />
                 case 'Submissions':
                     return <SubmissionContentPage calendarStore={calendarStore} />
@@ -217,7 +216,7 @@ const ContentRouting = observer(
                         <Divider />
                         <List>
                         
-                            {['Reports', 'Meetings', 'Submissions'].map((text, index) => (
+                            {[ 'Tasks','Meetings', 'Submissions'].map((text, index) => (
                                 <ListItem
                                     selected={selectedIndex === index}
                                     button key={text}

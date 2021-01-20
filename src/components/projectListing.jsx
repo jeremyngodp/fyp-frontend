@@ -125,8 +125,13 @@ class ProjectListing extends Component {
         history.push('/staff/calendar');
     }
 
+    goToAdminPage = () => {
+        history.push('/admin');
+    }
+
     renderAppBar = () => {
         const { classes, calendarStore } = this.props;
+        const is_admin = localStorage.getItem('is_admin');
         return (
             <div className={classes.appbarroot}>
                 <AppBar position="static">
@@ -142,6 +147,18 @@ class ProjectListing extends Component {
                         >
                             Return to Staff Calendar
                         </Button>
+
+                        {is_admin === 'true' ? 
+                            <Button
+                            type="submit"
+                            style={{ color: 'white' }}
+                            onClick={() => this.goToAdminPage()}
+                            >
+                                Admin Site
+                            </Button>
+                            :
+                            ""
+                        }
 
                         <Button
                             type="submit"
