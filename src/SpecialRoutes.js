@@ -100,6 +100,66 @@ export const StaffOnlyRoute = ({ component: Component, ...rest }) => (
     />
 )
 
+export const AdminOnlyRoute = ({ component: Component, ...rest }) => (
+    <Route
+    {...rest}
+    render = {props => {
+            const token = localStorage.getItem("token")
+            const expiry = new Date(localStorage.getItem("expirationDate"))
+            const currentTime = new Date();
+            rest.calendarStore.setUserData(JSON.parse(localStorage.getItem("user")))
+            if (currentTime > expiry) {
+                return <Redirect
+                    to={{
+                        pathname: '/login',
+                        state: { from: props.location }
+                    }}
+                />
+            }
+            if (token) {
+                if (!store.getState().is_Staff) {
+                    return <Redirect
+                        to={{
+                            pathname: '/student',
+                            state: { from: props.location }
+                        }}
+                    />
+                } else if (store.getState().is_Staff) {
+                    if(store.getState().is_admin) {
+                        return <Component {...props} />
+                    }
+
+                    else {
+                        return <Redirect
+                        to={{
+                            pathname: '/staff',
+                            state: { from: props.location }
+                        }}
+                    />
+                    }
+                    
+                } else {
+                    return <Redirect
+                        to={{
+                            pathname: '/login',
+                            state: { from: props.location }
+                        }}
+                    />
+                }
+            } else {
+                return <Redirect
+                    to={{
+                        pathname: '/login',
+                        state: { from: props.location }
+                    }}
+                />
+            }
+            
+            }
+        }
+    />
+)
+
 export const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
         {...rest}
@@ -144,12 +204,25 @@ export const LoginRoute = ({ component: Component, ...rest }) => (
             if (token) {
                 rest.calendarStore.setUserData(JSON.parse(localStorage.getItem("user")))
                 if (store.getState().is_Staff) { //if is staff
-                    return <Redirect
+                    if (store.getState().is_admin) {
+                        console.log("you are admin");
+                        return <Redirect
+                        to={{
+                            pathname: '/admin',
+                            state: { from: props.location }
+                        }}
+                    />
+                    }
+
+                    else {
+                        return <Redirect
                         to={{
                             pathname: '/staff',
                             state: { from: props.location }
                         }}
                     />
+                    }
+                    
                 } else if (!store.getState().is_Staff) {
                     return <Redirect
                         to={{
@@ -193,13 +266,24 @@ export const CheckSwitchRoute = ({ component: Component, ...rest }) => (
                 />
             }
             if (token) {
-                if (store.getState().is_Staff) {
-                    return <Redirect
+                if (store.getState().is_Staff) { //if is staff
+                    if (store.getState().is_admin) {
+                        return <Redirect
+                        to={{
+                            pathname: '/admin',
+                            state: { from: props.location }
+                        }}
+                    />
+                    }
+
+                    else {
+                        return <Redirect
                         to={{
                             pathname: '/staff',
                             state: { from: props.location }
                         }}
                     />
+                    }
                 } else if (!store.getState().is_Staff) {
                     return <Redirect
                         to={{

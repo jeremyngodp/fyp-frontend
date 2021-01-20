@@ -9,11 +9,13 @@ export const authStart = () => {
     }
 }
 
-export const authSuccess = (token, user, is_staff) => ({ 
+export const authSuccess = (token, user, is_staff, projects, is_admin) => ({ 
     type: actionTypes.AUTH_SUCCESS,
     token: token,
     user: user,
-    is_Staff: is_staff
+    is_Staff: is_staff,
+    projects: projects,
+    is_admin: is_admin
 })
 
 export const authFail = error => {
@@ -29,6 +31,7 @@ export const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('projects');
     localStorage.removeItem('is_Staff');
+    localStorage.removeItem('is_admin');
     localStorage.removeItem('token');
     localStorage.removeItem('expirationDate');
     // localStorage.removeItem('paramQuery');
@@ -62,20 +65,23 @@ export const authLogin = (username, password) => {
                 id: res.data.user.id,
                 username: res.data.user.username,
                 is_staff: res.data.user.is_staff,
+                is_admin: res.data.user.is_admin,
                 email: res.data.user.email,
                 //fullname: res.data.user.fname + " " + res.data.user.lname -> maynot be necessary
             };
 
             const projects = res.data.projects;
-
+            
             localStorage.setItem('token', token);
             localStorage.setItem('expirationDate', expirationDate);
             localStorage.setItem('is_staff', user.is_staff);
+            localStorage.setItem('is_admin', user.is_admin);
             var myUserJSON = JSON.stringify(user);
             localStorage.setItem('user', myUserJSON);
             var projectsJson = JSON.stringify(projects)
             localStorage.setItem('projects',projectsJson)
-            dispatch(authSuccess(token, user, user.is_staff, projects));
+            console.log(localStorage.getItem('is_admin'));
+            dispatch(authSuccess(token, user, user.is_staff, projects, user.is_admin));
         })
         .then(res =>{history.push("/determiner")})
         .catch(err => {

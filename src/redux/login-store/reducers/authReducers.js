@@ -7,6 +7,7 @@ const initialState = {
     user: null,
     projects: null,
     is_Staff: null,
+    is_staff: null,
     // paramQuery: null
 }
 
@@ -18,6 +19,7 @@ const authStart = (state, action) => {
         user: {},
         projects: [],
         is_Staff: null,
+        is_admin: null
         // paramQuery: null
     }
 }
@@ -31,6 +33,7 @@ const authSuccess = (state, action) => {
         user: action.user,
         projects: action.projects,
         is_Staff: action.is_Staff,
+        is_admin: action.is_admin,
         // paramQuery: action.paramQuery
     }
 }
@@ -43,6 +46,7 @@ const authFail = (state, action) => {
         user: null,
         projects: null,
         is_Staff: null,
+        is_admin: null
         // paramQuery: null
     }
 }
@@ -54,6 +58,7 @@ const authLogout = (state, action) => {
         user: null,
         projects: null,
         is_Staff: null,
+        is_admin: null
         // paramQuery: null
     }
 }

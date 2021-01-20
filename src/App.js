@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import './App.css';
 import axios from 'axios';
 
-
+import AdminMainPage from './adminComponent/AdminMainPage'
 import StudentPage from './Calendar/StudentPage.jsx';
 import StaffPage from './Calendar/StaffPage.jsx';
 import CalendarStore from './mobx/CalendarStore.js';
 import ContentRouting from './components/contentRouting/contentRouting.jsx';
-import {StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRoute, CheckSwitchRoute, RegisterRoute} from './SpecialRoutes';
+import {AdminOnlyRoute, StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRoute, CheckSwitchRoute, RegisterRoute} from './SpecialRoutes';
 import ProjectListPage from './components/projectListing.jsx';
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterUser";
@@ -72,11 +72,26 @@ function App() {
         );
     }
 
+    const Admin = () => {
+
+        return (
+            <React.Fragment>
+                <Router>
+                    <Switch>
+                        <AdminMainPage calendarStore={calendarStore} />
+                    </Switch>
+                </Router>
+            </React.Fragment>
+        );
+    }
+
     
     return (
         <div>
             
             <Switch>
+                <AdminOnlyRoute path="/admin" component={Admin} calendarStore={calendarStore}/>
+
                 <RegisterRoute path="/register" component={RegisterPage} />
                 
                 <StudentOnlyRoute  path="/student" component={studentOnlyRoute} calendarStore={calendarStore} />
