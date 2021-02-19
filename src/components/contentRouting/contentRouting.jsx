@@ -17,6 +17,7 @@ import * as actions from '../../redux/login-store/actions/authActions';
 
 import MeetingContentPage from './MeetingContentPage';
 import ReportContentPage from './ReportContentPage';
+import TaskBoardPage from './TaskBoardPage';
 import SubmissionContentPage from './SubmissionContentPage';
 import { connect } from 'react-redux';
 
@@ -98,7 +99,9 @@ const ContentRouting = observer(
             this.state = {
                 open: false,
                 currentPageEvent: state,
-                selectedIndex: index
+                selectedIndex: index,
+                events: props.calendarStore.getData,
+                totalHour: 0
             }
         }
 
@@ -124,7 +127,7 @@ const ContentRouting = observer(
                 case 'Meetings':
                     return <MeetingContentPage calendarStore={calendarStore} />
                 case 'Tasks':
-                    return <ReportContentPage calendarStore={calendarStore} />
+                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask}/>
                 case 'Submissions':
                     return <SubmissionContentPage calendarStore={calendarStore} />
                 default:
@@ -140,13 +143,20 @@ const ContentRouting = observer(
             })
         }
 
+        onSubmitEditTask = () => {
+            console.log("runnnnn")
+            this.setState({
+                events: this.props.calendarStore.getData
+            })
+        }
+
         render() {
             const {calendarStore, classes, history} = this.props;
             const {open, currentPageEvent, selectedIndex} = this.state;
             var events = calendarStore.getData;
             var hour = 0;
             events.map(task => {
-                hour += task.hour;
+                hour += Number(task.hour);
             });
 
             console.log(hour);

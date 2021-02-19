@@ -12,6 +12,8 @@ import {AdminOnlyRoute, StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRou
 import ProjectListPage from './components/projectListing.jsx';
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterUser";
+import Kanban from "./components/contentRouting/TaskBoard";
+
 
 
 const calendarStore = new CalendarStore();
@@ -90,6 +92,7 @@ function App() {
         <div>
             
             <Switch>
+
                 <AdminOnlyRoute path="/admin" component={Admin} calendarStore={calendarStore}/>
 
                 <RegisterRoute path="/register" component={RegisterPage} />
