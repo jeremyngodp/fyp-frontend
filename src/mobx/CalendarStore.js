@@ -60,6 +60,7 @@ class CalendarStore {
             changeDefaultState: action,
             setUserData: action,
             updateProject: action,
+            updateTask: action,
             resetStore: action,
         })
     }
@@ -119,6 +120,12 @@ class CalendarStore {
         found.description = description;
 
         console.log(this.projectList)
+    }
+
+    updateTask = (task_id, hour, status) => {
+        var found = this.newData.find(task => task.id == task_id);
+        found.status = status;
+        found.hour = hour;
     }
 
     resetStore = () => {

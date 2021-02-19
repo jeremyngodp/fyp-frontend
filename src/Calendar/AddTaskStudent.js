@@ -83,9 +83,11 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
             end: fSelectedDueDate,
             event_type: category,
             project_id: project_id,
+            status: 'new',
+            hour: 0,
         });
 
-        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title);
+        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title, 'new');
         
         alert('New Event Added');
 

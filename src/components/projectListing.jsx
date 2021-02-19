@@ -197,17 +197,17 @@ class ProjectListing extends Component {
                                         <Typography>Date: {task.deadline}</Typography>
                                     </ListItemText>
                                 </ListItem>
-                                {task.task_type === "report" ?
+                                {task.task_type === "common" ?
                                 <div className={classes.flex}>
                                     <div className={classes.column}>
-                                        {task.status === "complete"?
+                                        {task.status === "done"?
                                         <div>
-                                            <Typography>The Report has been submitted</Typography>
+                                            <Typography>The Task has been completed</Typography>
                                             <GetAppIcon style={{float: 'left'}}/>
-                                            <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>Download Submission</a></Typography>
+                                            <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>Download Attachment</a></Typography>
                                         </div>
                                         :
-                                        <div><Typography>The Report has not been submitted</Typography></div>
+                                        <div><Typography>The Task is in-progress</Typography></div>
                                         }
                                         <ListItem>
                                             <ListItemText>
