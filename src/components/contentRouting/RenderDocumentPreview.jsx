@@ -31,7 +31,8 @@ class RenderDocumentPreview extends Component {
 
     render() {
         const { openDialog } = this.state;
-        var fileUrl ="http://localhost:8080/fyp/api/downloadFile/task/11"
+        const {item_id} = this.props;
+        var fileUrl ="http://localhost:8080/fyp/api/downloadFile/task/" + item_id
         return (
             <div>
                 <Button onClick={this.handleClickOpen}>

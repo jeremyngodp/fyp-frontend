@@ -158,7 +158,7 @@ class TaskEditForm extends React.Component {
                             </Grid>
 
                             {fileNumber >= 1  ?
-                                <RenderDocumentPreview />
+                                <RenderDocumentPreview item_id={item.id}/>
                                 :
                                 <div>
                                     <Grid item xs={1}><SubjectIcon fontSize="small" style={{ float: 'right' }} /></Grid> 

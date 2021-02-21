@@ -3,8 +3,8 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import axios from 'axios';
 import { observer } from 'mobx-react';
-import { Dialog, Modal, Typography, Paper } from "@material-ui/core";
-
+import { Dialog, Modal, Typography, Paper, Accordion, AccordionDetails, AccordionSummary } from "@material-ui/core";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReportSubmissionPage from './ReportSubmissionPage';
 import TaskEditForm from './TaskEditForm';
 
@@ -135,13 +135,20 @@ function Kanban ({calendarStore, onSubmitEditTask}) {
                                 return (
                                 <div key={item.id} onClick={() => {handleClickTask(item)}} >
                                     <Paper >
-                                    <KanbanItem id={item.id} >
-                                        <div style={classes.item}>{item.title}</div>
-                                    </KanbanItem>
+                                        <KanbanItem id={item.id} >
+                                            <Accordion style={{ overflow: 'hidden' }}  >
+                                                <AccordionSummary expandIcon={<ExpandMoreIcon/>} >
+                                                    <div style={classes.item}>{item.title}</div>
+                                                </AccordionSummary>
+                                                <AccordionDetails >
+                                                    <TaskEditForm item={item} calendarStore={calendarStore} handleClose={handleClose} onSubmitEditTask={onSubmitEditTask}/>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </KanbanItem>
                                     </Paper>
                                 </div>
                             )})}
-                            {renderTaskModal()}
+                            {/* {renderTaskModal()} */}
                         </div>
                     </div>
                     </KanbanColumn>
