@@ -7,10 +7,6 @@ import moment from 'moment'
 import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader'
 import MeetingNotesSubmissionPage from "./MeetingNoteSubmission"
 
-
-
-
-
 const useStyles = (theme) => ({
     root: {
       width: '100%',
@@ -35,7 +31,18 @@ const MeetingContentPage = observer(
     class MeetingContentPageClass extends React.Component {
         constructor(props) {
             super(props);
+            this.state = {
+                taskList : this.props.calendarStore.getData.filter(task => task.event_type === "meeting")
+            }
 
+        }
+
+        handleTaskChange = () => {
+            const {calendarStore} = this.props;
+            let newTasks = calendarStore.getData.filter(task => task.event_type === "meeting");
+            this.setState({
+                taskList: newTasks
+            });
         }
 
         calculateWeekNo = (date) => {
@@ -77,14 +84,17 @@ const MeetingContentPage = observer(
         }
 
         renderMeetingsAccordion = () => {
-            const { calendarStore, classes } = this.props;
-            const { getData } = calendarStore;
-        
+            const {classes, calendarStore} = this.props
+            const {taskList} = this.state;
+            
             return (
-                getData
-                    .filter(indivData => indivData.event_type === "meeting")
-                    .slice()
+                taskList
                     .map((text, index) => {
+                        console.log(index);
+                        if(text.attachedFile != null){
+                            console.log(text.attachedFile.fileName);
+                        }
+                        
                         return(
                             <Accordion  defaultExpanded style={{overflow: 'hidden'}}  key={index} className={classes.root}>
                                 <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
@@ -128,7 +138,12 @@ const MeetingContentPage = observer(
                                 <AccordionDetails className={classes.details} style={{paddingBottom: '40px'}}>
                                     
                                     <div className={classes.column}>
-                                        <MeetingNotesSubmissionPage data={text}  calendarStore={calendarStore}/>
+                                        <MeetingNotesSubmissionPage 
+                                            data={text}  
+                                            calendarStore={calendarStore}
+                                            attachedFile = {text.attachedFile}
+                                            handleTaskChange = {this.handleTaskChange}
+                                        />
                                     </div>
                                     {/* <div className={classes.column}>
                                         <MeetingNotesAttachmentPage documents={text.documents} Id={text.Id}/>

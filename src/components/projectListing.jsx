@@ -21,6 +21,7 @@ import EditProjecButton from '../components/buttons/EditProjectButton';
 import { observer } from 'mobx-react';
 import axiosAddProject from '../AxiosCall/axiosAddProject';
 import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
+import RenderDocumentPreview from "./contentRouting/RenderDocumentPreview"
 
 
 const useStyles = (theme) => ({
@@ -200,14 +201,16 @@ class ProjectListing extends Component {
                                 {task.task_type === "common" ?
                                 <div className={classes.flex}>
                                     <div className={classes.column}>
-                                        {task.status === "done"?
+                                        <Typography>Attachment: </Typography>
+                                        {task.attachedFile != null?
                                         <div>
-                                            <Typography>The Task has been completed</Typography>
+                                            
                                             <GetAppIcon style={{float: 'left'}}/>
-                                            <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>Download Attachment</a></Typography>
+                                            <RenderDocumentPreview  id={task.id} name={task.attachedFile.fileName}/>
+                                            {/* <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>{task.attachedFile.fileName}</a></Typography> */}
                                         </div>
                                         :
-                                        <div><Typography>The Task is in-progress</Typography></div>
+                                        <div><Typography>The Task has no Attachment</Typography></div>
                                         }
                                         <ListItem>
                                             <ListItemText>

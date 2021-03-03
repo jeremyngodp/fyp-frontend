@@ -16,6 +16,7 @@ export default function axiosGetTaskbyStudentID(student_id, calendarStore){
                         id: indivRes.id,
                         title: indivRes.title,
                         event_type: indivRes.task_type,
+                        attachedFile: indivRes.attachedFile,
                         start: indivRes.deadline,
                         end: indivRes.deadline,
                         project_id: indivRes.project_id,

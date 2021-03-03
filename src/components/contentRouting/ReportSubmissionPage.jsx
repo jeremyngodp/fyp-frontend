@@ -189,7 +189,7 @@ class ReportSubmissionPage extends Component {
     
     renderSwitchPaper = (status) => {
         switch (status) {
-            case "complete":
+            case "done":
             case "late":
                 return this.renderWeeklyReportCompletedPaper();
             default:

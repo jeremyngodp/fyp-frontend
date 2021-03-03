@@ -122,10 +122,15 @@ class CalendarStore {
         console.log(this.projectList)
     }
 
-    updateTask = (task_id, hour, status) => {
+    updateTask = (task_id, hour, status, attachedFile) => {
         var found = this.newData.find(task => task.id == task_id);
         found.status = status;
         found.hour = hour;
+    }
+
+    updateAttachedFile = (task_id, attachedFile) => {
+        var found = this.newData.find(task => task.id == task_id);
+        found.attachedFile = attachedFile;
     }
 
     resetStore = () => {

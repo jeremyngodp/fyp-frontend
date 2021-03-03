@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Paper, TextField, Button, Typography, Grid } from '@material-ui/core';
+import { Paper, TextField, Button, Typography, Grid, Divider } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import RenderDocumentPreview from '../RenderDocumentPreview';
 /**
  * 
  * @props type Weekly Report or Meeting Notes?
@@ -68,26 +69,65 @@ const ReusableNotesSubmission = (props) => {
                             }
                         </Grid>
                         <Grid item xs={12} md={12} lg={12}>
-                            {props.type === 'Weekly Report' ?
-                                <Typography className={classes.secondaryHeading}>Things Completed:</Typography>
-                                : ""
+                            {props.attachedFile != null ?
+                                <React.Fragment>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <Typography className={classes.secondaryHeading}>Attachments: </Typography>
+                                        <RenderDocumentPreview  id={props.id} name={props.attachedFile.fileName}/>
+
+                                        <Divider />
+                                    </Grid>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        <input
+                                            type="file"
+                                            onChange={props.addAttachment}
+                                            id="contained-button-file"
+                                            style={{ display: 'none' }}
+                                        />
+                                        <label htmlFor="contained-button-file">
+                                            <Button color="primary" component="span" >
+                                                + Attach More Files
+                                            </Button>
+                                        </label>
+                                    </Grid>
+                                    <Grid item xs={12} md={12} lg={12}>
+                                        {props.selectedFile ?
+                                            <div>
+                                                <Grid item>
+                                                    <AttachFileIcon style={{ float: 'left' }} /><Typography>{props.selectedFile.name}</Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    {/* <Button style={{ float: 'right' }} variant="contained" color="primary" component="span" onClick={props.upload}>
+                                                        Upload
+                                                    </Button> */}
+                                                    <Button style={{ float: 'right', marginRight: '10px' }} onClick={props.cancel}>
+                                                        Cancel
+                                                    </Button>
+                                                </Grid>
+                                            </div>
+                                            : ""
+                                        }
+
+                                    </Grid>
+                                </React.Fragment>
+                            : ''
+                                
                             }
-                            <TextField
-                                variant="outlined"
-                                multiline
-                                rows={props.noOfRows}
-                                style={{ width: '100%' }}
-                                value={props.textfieldValue}
-                                onChange={props.handleChange}
-                                name={props.textfieldName}
-                            />
                         </Grid>
                         <Grid item xs={12} md={12} lg={12}>
                             {
                                 props.selectedFile ?
-                                    <div>
+                                <div>
+                                    <Grid item>
                                         <AttachFileIcon style={{ float: 'left' }} /><Typography style={{ lineHeight: '22px' }} className={classes.bodyText}>{props.selectedFile.name}</Typography>
-                                    </div>
+                                    </Grid>
+                                    <Grid item>
+                                        
+                                        <Button style={{ float: 'right', marginRight: '10px' }} onClick={props.cancel}>
+                                            Remove
+                                        </Button>
+                                    </Grid>
+                                </div>
                                     : ''
                             }
                         </Grid>

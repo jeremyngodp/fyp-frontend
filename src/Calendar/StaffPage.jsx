@@ -34,6 +34,7 @@ const StaffPage = observer (
                         calendarStore.addData( {
                             id: task.id,
                             title: task.title,
+                            attachedFile: task.attachedFile,
                             event_types: task.task_type,
                             start: task.deadline,
                             end: task.deadline,
