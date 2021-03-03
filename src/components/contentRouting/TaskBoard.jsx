@@ -7,6 +7,10 @@ import { Dialog, Modal, Typography, Paper, Accordion, AccordionDetails, Accordio
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReportSubmissionPage from './ReportSubmissionPage';
 import TaskEditForm from './TaskEditForm';
+import TaskEditFormCopy from './TaskEditFormCopy';
+import ReusableCommentBox from "./ReusableCommentComponent/ReusableCommentBox";
+import TaskSubmissionPage from "./TaskSubmissionPage";
+import { PlayCircleFilledWhite } from "@material-ui/icons";
 
 const channels = [ "new", "wip", "done"];
 const labelsMap = {
@@ -25,16 +29,17 @@ const classes = {
   },
   column: {
     minWidth: 200,
-    width: "32.5vw",
+    width: "32.48vw",
     height: "80vh",
     margin: "0 auto",
-    backgroundColor: "#2e4da3"
+    backgroundColor: "gainsboro"
   },
   columnHead: {
     textAlign: "center",
+    color: "white",
     padding: 10,
     fontSize: "1.2em",
-    backgroundColor: "#C6D8AF"
+    backgroundColor: "#393db5"
   },
   item: {
     padding: 10,
@@ -57,14 +62,19 @@ function Kanban ({calendarStore, onSubmitEditTask}) {
     const [tasks, setTaskStatus] = useState(taskList);
     const [open, setOpen] = useState(false);
     const [currentItem, setItem] = useState('');
+    
 
     const handleOpen = () => {
         setOpen(true);
     };
     
-    const handleClose = () => {
+    const handleTaskChange = () => {
         let newTasks = calendarStore.getData.filter(task => task.event_type === "common");
         setTaskStatus(newTasks);
+    }
+
+    const handleClose = () => {
+        
         console.log(tasks);
         setOpen(false);
     };
@@ -110,7 +120,26 @@ function Kanban ({calendarStore, onSubmitEditTask}) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 >
-                    <TaskEditForm item={currentItem} calendarStore={calendarStore} handleClose={handleClose} onSubmitEditTask={onSubmitEditTask}/>
+                    <div style={{width: '90%',margin: 'auto'}}>
+                        <TaskSubmissionPage 
+                            calendarStore={calendarStore} 
+                            item={currentItem} 
+                            id={currentItem.id} 
+                            hourSpent={currentItem.hour} 
+                            attachedFile={currentItem.attachedFile}
+                            handleTaskChange = {handleTaskChange}
+                            onSubmitEditTask = {onSubmitEditTask}
+                        />
+                    </div>
+
+                    <div style={{width: '90%', margin: 'auto'}}>
+                        <ReusableCommentBox
+                            comments={currentItem.comments} 
+                            calendarStore={calendarStore} 
+                            task_id={currentItem.id} 
+                            user_id={calendarStore.getUserData.id}
+                        />
+                    </div>
             </Dialog>
         )
     }
@@ -133,28 +162,47 @@ function Kanban ({calendarStore, onSubmitEditTask}) {
                             .map(item => {
                                 console.log(item)
                                 return (
-                                <div key={item.id} onClick={() => {handleClickTask(item)}} >
+                                <div key={item.id} onClick={() => {handleClickTask(item)}} style={{margin: 'auto' ,width: "90%", alignItems: 'center'}} >
                                     <Paper >
                                         <KanbanItem id={item.id} >
-                                            <Accordion style={{ overflow: 'hidden' }}  >
+                                            <div style={classes.item}>{item.title}</div>
+                                            {/* <Accordion className= {classes.item} style={{ overflow: 'hidden' }}  >
                                                 <AccordionSummary expandIcon={<ExpandMoreIcon/>} >
                                                     <div style={classes.item}>{item.title}</div>
                                                 </AccordionSummary>
                                                 <AccordionDetails >
-                                                    <TaskEditForm item={item} calendarStore={calendarStore} handleClose={handleClose} onSubmitEditTask={onSubmitEditTask}/>
+                                                    <div>
+                                                        <TaskEditFormCopy 
+                                                            item={item} 
+                                                            calendarStore={calendarStore} 
+                                                            handleClose={handleClose} 
+                                                            onSubmitEditTask={onSubmitEditTask}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <ReusableCommentBox
+                                                            comments={item.comments} 
+                                                            calendarStore={calendarStore} 
+                                                            task_id={item.id} 
+                                                            user_id={calendarStore.getUserData.id}
+                                                        />
+                                                    </div>
                                                 </AccordionDetails>
-                                            </Accordion>
+                                            </Accordion> */}
                                         </KanbanItem>
                                     </Paper>
                                 </div>
                             )})}
-                            {/* {renderTaskModal()} */}
+                            
                         </div>
                     </div>
                     </KanbanColumn>
                 ))}
+
                 </section>
             </DndProvider>
+            {renderTaskModal(currentItem)}
         </main>
     );
 };
