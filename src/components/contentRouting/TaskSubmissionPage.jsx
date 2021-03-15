@@ -138,14 +138,14 @@ class TaskSubmissionPage extends React.Component {
         )
     }
 
-    renderTaskNotComplete = () => {
+    renderNoteSubmission = () => {
         const {hourSpent} = this.state;
         const {id} = this.props;
         console.log(id);
         return (
             <ReusableNotesSubmission
                 id={id}
-                type="Weekly Report"
+                type="CommonTask"
                 onSubmitForm={this.onSubmitForm}
                 handleChange={this.handleChange}
                 cancel={this.cancelAddAttachment}
@@ -160,18 +160,12 @@ class TaskSubmissionPage extends React.Component {
         )
     }
 
-    renderSwitchPaper = () => {
-       
-        return this.renderTaskNotComplete();
-        
-    }
-
     render() {
         const { classes, attachedFile } = this.props;
         return (
             <div style={{ width: '100%' }}>
                 <Typography className={classes.heading}>{this.props.item.title}</Typography>
-                {this.renderSwitchPaper()}
+                {this.renderNoteSubmission()}
             </div>
         )
     }

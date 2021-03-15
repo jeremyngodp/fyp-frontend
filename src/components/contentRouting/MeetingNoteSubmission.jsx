@@ -115,7 +115,7 @@ class MeetingNotesSubmissionPage extends Component {
         this.setState({ ...this.state, [event.target.name]: event.target.value })
     }
 
-    renderMeetingNotesNotCompletedPaper = () => {
+    renderMeetingNotesPaper = () => {
         const { classes, attachedFile } = this.props;
         const userType = this.props.calendarStore.getUserType;
         if (userType === 'Student') {
@@ -142,18 +142,13 @@ class MeetingNotesSubmissionPage extends Component {
         }
     }
 
-    renderSwitchPaper = () => {
-        
-        return this.renderMeetingNotesNotCompletedPaper();
-        
-    }
 
     render() {
         const { classes } = this.props;
         return (
         <div style={{ width: '100%' }}>
             <Typography className={classes.heading}>Meeting Notes:</Typography>
-            {this.renderSwitchPaper()}
+            {this.renderMeetingNotesPaper()}
         </div>
         )
     }

@@ -50,7 +50,7 @@ const ReusableNotesSubmission = (props) => {
                 <Paper elevation={2} className={classes.paper}>
                     <Grid container spacing={1}>
                         <Grid item xs={12} md={12} lg={12}>
-                            {props.type === 'Weekly Report' ?
+                            {props.type === 'CommonTask' ?
                                 <div style={{ display: 'flex' }}>
                                     <Typography className={classes.secondaryHeading} style={{ lineHeight: '40px' }}>
                                         Hours spent: &nbsp;

@@ -9,6 +9,7 @@ newData is an array containing all the tasks for a Student user
     end: deadline of task
     project_id: id of the project that the task belong to
     comments: comments related to the tasks
+    attachedFile: attached file to the task
     student_id: id of student}
 
 projectList is an array containing all the project for a Staff user
