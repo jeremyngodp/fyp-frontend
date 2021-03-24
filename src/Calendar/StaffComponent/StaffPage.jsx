@@ -2,9 +2,8 @@ import React from 'react';
 import {Grid} from '@material-ui/core';
 import {observer} from 'mobx-react';
 
-import ReusableCalendar from './ReusableCalendar.jsx';
-import LeftSideColumn from './LeftSideColumn.jsx';
-import axiosGetProjectListByStaffId from '../AxiosCall/axiosGetProjectByStaffId.js';
+import ReusableCalendar from '../ReusableCalendar.jsx';
+import LeftSideColumn from '../LeftSideColumn.jsx';
 
 const StaffPage = observer (
     class StaffPageClass extends React.Component {

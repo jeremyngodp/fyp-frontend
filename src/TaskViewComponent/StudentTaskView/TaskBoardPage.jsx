@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import { Paper, Typography, Button, Grid, Box, Accordion, AccordionSummary, AccordionDetails, Divider } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import { observer } from 'mobx-react';
-import moment from 'moment';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
-
-import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader';
-import ReusableCommentBox from './ReusableCommentComponent/ReusableCommentBox'
-import ReportSubmissionPage from './ReportSubmissionPage';
 import Kanban from './TaskBoard';
 
 

@@ -4,7 +4,7 @@ import { Paper, Grid, Typography, Box, Accordion, AccordionSummary, AccordionDet
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment'
-import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader'
+import ReusableExpansionHeader from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableExpansionHeader'
 import MeetingNotesSubmissionPage from "./MeetingNoteSubmission"
 
 const useStyles = (theme) => ({

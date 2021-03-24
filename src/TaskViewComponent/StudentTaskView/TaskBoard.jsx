@@ -5,10 +5,7 @@ import axios from 'axios';
 import { observer } from 'mobx-react';
 import { Dialog, Modal, Typography, Paper, Accordion, AccordionDetails, AccordionSummary } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ReportSubmissionPage from './ReportSubmissionPage';
-import TaskEditForm from './TaskEditForm';
-import TaskEditFormCopy from './TaskEditFormCopy';
-import ReusableCommentBox from "./ReusableCommentComponent/ReusableCommentBox";
+import ReusableCommentBox from "../ReusableTaskViewComponent/ReusableCommentComponent/ReusableCommentBox";
 import TaskSubmissionPage from "./TaskSubmissionPage";
 import { PlayCircleFilledWhite } from "@material-ui/icons";
 

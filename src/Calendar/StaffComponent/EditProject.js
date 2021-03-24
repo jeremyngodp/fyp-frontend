@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField, Dialog } from '@material-ui/core';
 import SubjectIcon from '@material-ui/icons/Subject'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import axiosUpdateProject from '../AxiosCall/axiosUpdateProject';
-import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
+import axiosUpdateProject from '../../AxiosCall/axiosUpdateProject';
 import { withStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 

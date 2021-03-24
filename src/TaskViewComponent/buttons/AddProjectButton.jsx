@@ -1,9 +1,8 @@
 import React from 'react';
 import {Grid, Button, Dialog} from '@material-ui/core';
-import StudentAddTaskForm from '../../Calendar/AddTaskStudent.js';
-import StaffAddTaskForm from '../../Calendar/AddTaskStaff';
+import AddProjectForm from '../../Calendar/StaffComponent/AddProject';
 
-export default class AddEventButton extends React.Component {
+class AddProjectButton extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -26,13 +25,12 @@ export default class AddEventButton extends React.Component {
     
     render() {
         const { calendarStore, type } = this.props;
-        console.log(type);
         const { open } = this.state;
         
         return (
             <div style={{ margin: '10px 0 10px 0', textAlign: 'center' }}>
                 <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                    Add Event
+                    Add Project
                 </Button>
                 <Dialog
                     open={open}
@@ -40,13 +38,13 @@ export default class AddEventButton extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                {type ==="Student" ?
-                <StudentAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} /> 
-                :
-                <StaffAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} />
-                }
+                    
+                    <AddProjectForm handleClose={() =>this.handleClose()} calendarStore={calendarStore}/>
+                    
                 </Dialog>
              </div>
         )
     }
 }
+
+export default AddProjectButton;

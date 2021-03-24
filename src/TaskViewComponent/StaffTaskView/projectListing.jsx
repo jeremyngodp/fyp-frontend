@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import { connect } from 'react-redux';
-import * as actions from '../redux/login-store/actions/authActions';
+import * as actions from '../../redux/login-store/actions/authActions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,13 +15,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import history from '../history';
-import ReusableCommentBox from './contentRouting/ReusableCommentComponent/ReusableCommentBox';
-import EditProjecButton from '../components/buttons/EditProjectButton';
+import history from '../../history';
+import ReusableCommentBox from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableCommentBox';
+import EditProjecButton from '../buttons/EditProjectButton';
 import { observer } from 'mobx-react';
-import axiosAddProject from '../AxiosCall/axiosAddProject';
-import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
-import RenderDocumentPreview from "./contentRouting/RenderDocumentPreview"
+import RenderDocumentPreview from "../ReusableTaskViewComponent/RenderDocumentPreview"
 
 
 const useStyles = (theme) => ({

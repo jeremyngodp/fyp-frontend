@@ -3,9 +3,9 @@ import {Grid, Button, Dialog} from '@material-ui/core';
 import {observer} from 'mobx-react';
 import axios from 'axios'
 
-import LeftSideColumn from "./LeftSideColumn.jsx";
-import ReusableCalendar from './ReusableCalendar.jsx';
-import axiosGetTaskbyStudentID from '../AxiosCall/axiosGetTaskbyStudentID.js';
+import LeftSideColumn from "../LeftSideColumn.jsx";
+import ReusableCalendar from '../ReusableCalendar.jsx';
+
 
 const StudentPage = observer (
     class StudentPageClass extends React.Component {

@@ -3,8 +3,7 @@ import axios from 'axios';
 import { observer } from 'mobx-react';
 import { withStyles } from '@material-ui/core';
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
-import ReusableNotesSubmission from './ReusableSubmissionComponent/ReusableNoteSubmission';
-import ReusableNotesCompleted from './ReusableSubmissionComponent/ReusableNoteComplete';
+import ReusableNotesSubmission from '../ReusableTaskViewComponent/ReusableSubmissionComponent/ReusableNoteSubmission';
 import moment from 'moment';
 
 const useStyles = (theme) => ({
@@ -121,21 +120,6 @@ class TaskSubmissionPage extends React.Component {
             ...this.state,
             [event.target.name]: value
         })
-    }
-
-    renderTaskComplete = () => {
-        const {hourSpent, id} = this.props;
-        return (
-            <ReusableNotesCompleted
-                type="Weekly Report"
-                hourSpent={hourSpent}
-                id={id}
-                addAttachment={this.addAttachment}
-                upload={this.onClickHandler}
-                selectedFile={this.state.selectedFile}
-                cancel={this.cancelAddAttachment}
-            />
-        )
     }
 
     renderNoteSubmission = () => {

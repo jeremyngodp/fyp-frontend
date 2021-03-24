@@ -4,9 +4,9 @@ import { observer } from 'mobx-react';
 import moment from 'moment';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { withStyles } from '@material-ui/core/styles';
-
-import ReusableExpansionHeader from './ReusableCommentComponent/ReusableExpansionHeader';
-import ReusableCommentBox from './ReusableCommentComponent/ReusableCommentBox'
+import axios from 'axios';
+import ReusableExpansionHeader from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableExpansionHeader';
+import ReusableCommentBox from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableCommentBox'
 import ReportSubmissionPage from './ReportSubmissionPage';
 
 const useStyles = (theme) => ({
@@ -29,12 +29,15 @@ const useStyles = (theme) => ({
     }
   })
 
-const ReportContentPage = observer(
-    class ReportContentPageClass extends Component {
+const SubmissionContentPage = observer(
+    class SubmissionContentPageClass extends Component {
         constructor(props) {
             super(props);
-         
+            this.state = {
+                taskList : this.props.calendarStore.getData.filter(task => task.event_type === "submission")
+            }
         }
+
         calculateWeekNo = (date) => {
             const semStart = this.props.calendarStore.semStart;
             var formattedDate = moment(date);
@@ -60,15 +63,47 @@ const ReportContentPage = observer(
             return Math.floor(weekNumber)
         }
 
+        renderStatus = (attachedFile, task) => {
+            const {classes} = this.props
+            if (attachedFile == null) {
+                return <Typography className={classes.secondaryHeading} style={{ textAlign: 'center' }}>Not Submitted</Typography>
+            } else if (attachedFile.uploadDate > task.end) {
+                return <Typography className={classes.secondaryHeading} style={{ textAlign: 'center' }}>Late</Typography>
+            } else {
+                return <Typography className={classes.secondaryHeading} style={{ textAlign: 'center' }}>Submitted</Typography>
+            }
+
+        }
+
+        handleTaskChange = () => {
+            const {calendarStore} = this.props;
+            let newTasks = calendarStore.getData.filter(task => task.event_type === "submission");
+            this.setState({
+                taskList: newTasks
+            });
+        }
+
+        cancelAddAttachment = () => {
+            this.setState({
+                selectedFile: null,
+            })
+        }
+    
+        addAttachment = event => {
+            this.setState({
+                selectedFile: event.target.files[0],
+                loaded: 0,
+            })
+        }
+
         renderReportAccordion = () => {
             const { calendarStore, classes } = this.props;
-            const { getData } = calendarStore;
-            var user_data_id = calendarStore.getUserData.id
+            const { taskList } = this.state;
+            var user_id = calendarStore.getUserData.id
             return (
-                getData
-                    .filter(indivData => indivData.event_type === "report")
+                taskList
                     .slice().sort((a, b) => { //sort the dates so most recent date of submission is below
-                        return new Date(a.start).getTime() - new Date(b.end).getTime()
+                    return new Date(a.start).getTime() - new Date(b.end).getTime()
                     })
                     .map((text, index) => {
                         return (
@@ -76,14 +111,14 @@ const ReportContentPage = observer(
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                 >
-                                    <Grid container spacing={3}>
+                                    <Grid container spacing={4}>
                                         <Grid item xs={1} />
                                         <Grid item xs={2}>
                                             {/* Week nos. */}
                                             <Typography className={classes.secondaryHeading}>{this.calculateWeekNo(text.end)}</Typography>
                                         </Grid>
                                         <Grid item xs={2}>
-                                            {/* Report Title */}
+                                            {/* Submission Title */}
                                             <Typography className={classes.secondaryHeading}>{text.title}</Typography>
                                         </Grid>
                                         <Grid item xs={2}>
@@ -92,45 +127,51 @@ const ReportContentPage = observer(
                                             <Typography className={classes.secondaryHeading}>{moment(text.end).format("DD/MM/YYYY")}</Typography>
                                         </Grid>
                                         <Grid item xs={2}>
-                                            {/* Submitted date */}
+                                            {text.attachedFile == null ? 
                                             <Typography className={classes.secondaryHeading}>
-                                            {text.status}  
+                                                Pending
                                             </Typography>
+                                            :
+                                            <Typography className={classes.secondaryHeading}>
+                                                {moment(text.attachedFile.uploadDate).format("DD/MM/YYYY")}
+                                            </Typography>
+                                            }
                                         </Grid>
                                         <Grid item xs={2}>
-                                            {/* No. of hours */}
-                                            <Typography className={classes.secondaryHeading} style={{paddingLeft: "10px"}} >{text.hour}</Typography>
+                                            {
+                                            this.renderStatus(text.attachedFile, text) 
+                                            // 
+                                            }
                                         </Grid>
-                                        <Grid item xs={1} />
                                     </Grid>
                                 </AccordionSummary>
+                                <Divider />
                                 <AccordionDetails className={classes.details} style={{ paddingBottom: '40px' }}>
                                     <div className={classes.column}>
-                                    <ReportSubmissionPage calendarStore={calendarStore} task_type={text.event_type} task_created={text.end} student_id={text.student_id} tutor_id={text.tutor_id} project_id={text.project_id} id={text.id} hourSpent={text.hour} content={text.content} status={text.status} />
+                                        <ReportSubmissionPage task={text} calendarStore={calendarStore} handleTaskChange={this.handleTaskChange}/>
                                     </div>
-                                    <div className={classes.column}>
-                                    {/* Inside comment box, the user_id should be your own, not the student's. Because prof & student can both type in */}
-                                    <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.id} user_id={calendarStore.getUserData.id} />
+                                    <div className={classes.column}> 
+                                    {/* TODO: insert user id dynamically. */}
+                                        <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.Id} user_id={user_id} />
                                     </div> 
                                 </AccordionDetails>
-                                <Divider />
+                                
                             </Accordion>
                             // </div>
                         )
                     }
                 )
             )
-            // )
-        }
+          }
 
         renderHeader = () => {
             return (
                 <ReusableExpansionHeader
                     week_no='Week No.'
-                    title1='Title'
+                    title1='Submission Title'
                     title2='Deadline'
-                    title3='Status'
-                    title4='No. of hours'
+                    title3='Submitted Date'
+                    title4='Submission Status'
                 />
             )
         }
@@ -156,4 +197,4 @@ const ReportContentPage = observer(
 
 )
 
-export default withStyles(useStyles) (ReportContentPage);
+export default withStyles(useStyles) (SubmissionContentPage);

@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import ReusableNotesSubmission from './ReusableSubmissionComponent/ReusableNoteSubmission';
-import ReusableNotesCompleted from './ReusableSubmissionComponent/ReusableNoteComplete';
+import ReusableNotesSubmission from '../ReusableTaskViewComponent/ReusableSubmissionComponent/ReusableNoteSubmission';
+import ReusableNotesCompleted from '../ReusableTaskViewComponent/ReusableSubmissionComponent/ReusableNoteComplete';
 
 const useStyles = (theme) => ({
     root: {
