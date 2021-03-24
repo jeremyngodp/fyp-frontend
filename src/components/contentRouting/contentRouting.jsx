@@ -106,7 +106,39 @@ const ContentRouting = observer(
         }
 
         componentDidMount() {
-            console.log('Component Mounted')
+            const {calendarStore} = this.props;
+            
+            if(!calendarStore.getLoadState) {
+                console.log("load not true")
+                var projectList = JSON.parse(localStorage.getItem('projects'))
+                projectList.map( project => {
+                    calendarStore.addProjectList({
+                        id: project.id,
+                        title: project.name,
+                        student: project.student,
+                        tasks: project.taskList,
+                        description: project.description
+                    });
+
+                    project.taskList.map( task => {
+                        calendarStore.addData( {
+                            id: task.id,
+                            title: task.title,
+                            attachedFile: task.attachedFile,
+                            event_type: task.task_type,
+                            start: task.deadline,
+                            end: task.deadline,
+                            project_id : project.id,
+                            hour: task.hourSpent,
+                            comments: task.comments,
+                            student_id: task.student_id,
+                            status: task.status
+                        })
+                    });
+                })
+
+                calendarStore.setLoadState();
+            }
         }
 
         handleDrawerOpen = () => {
@@ -114,7 +146,9 @@ const ContentRouting = observer(
         }
 
         handleLogout = () => {
-            this.props.logout()
+            const {calendarStore} = this.props;
+            calendarStore.resetStore()
+            this.props.logout();
         }
 
         handleDrawerClose = () => {
@@ -127,7 +161,7 @@ const ContentRouting = observer(
                 case 'Meetings':
                     return <MeetingContentPage calendarStore={calendarStore} />
                 case 'Tasks':
-                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask}/>
+                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask} user_id={calendarStore.getUserData.id}/>
                 case 'Submissions':
                     return <SubmissionContentPage calendarStore={calendarStore} />
                 default:
@@ -144,7 +178,6 @@ const ContentRouting = observer(
         }
 
         onSubmitEditTask = () => {
-            console.log("runnnnn")
             this.setState({
                 events: this.props.calendarStore.getData
             })
@@ -159,7 +192,7 @@ const ContentRouting = observer(
                 hour += Number(task.hour);
             });
 
-            console.log(hour);
+            
 
             return (    
                 <div>

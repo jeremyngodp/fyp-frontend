@@ -37,6 +37,7 @@ class CalendarStore {
     semStart = '2021-01-11'
     projectList = []
     studentList = []
+    loaded = false;
 
     constructor() {
         makeObservable(this, {
@@ -47,12 +48,14 @@ class CalendarStore {
             semStart: observable,
             projectList: observable,
             studentList: observable,
+            loaded: observable,
 
             getData: computed,
             getUserType: computed,
             getDefaultState: computed,
             getProjectList:computed,
             getStudentList: computed,
+            getLoadState: computed,
 
             addData: action,
             addProjectList: action,
@@ -60,6 +63,7 @@ class CalendarStore {
             addUserType: action,
             changeDefaultState: action,
             setUserData: action,
+            setLoadState: action,
             updateProject: action,
             updateTask: action,
             resetStore: action,
@@ -88,6 +92,14 @@ class CalendarStore {
 
     get getDefaultState() {
         return this.defaultState;
+    }
+
+    get getLoadState() {
+        return this.loaded
+    }
+
+    setLoadState() {
+        this.loaded = true;
     }
 
     addData(e) {
@@ -137,10 +149,12 @@ class CalendarStore {
     resetStore = () => {
         this.newData = [];
         this.userData = "";
+        this.userType = "";
         this.defaultState = {state:'Reports', index:0};
         this.semStart = '2020-08-09';
         this.projectList = [];
         this.studentList = [];
+        this.loaded = false;
     }
     
 }    

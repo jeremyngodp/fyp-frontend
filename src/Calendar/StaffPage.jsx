@@ -20,7 +20,7 @@ const StaffPage = observer (
             calendarStore.addUserType('Staff');
             var projectList = JSON.parse(localStorage.getItem("projects"));
             console.log(projectList);
-            if (calendarStore.getData.length == 0) {
+            if (!calendarStore.getLoadState) {
                 projectList.map( project => {
                     calendarStore.addProjectList({
                         id: project.id,
@@ -35,7 +35,7 @@ const StaffPage = observer (
                             id: task.id,
                             title: task.title,
                             attachedFile: task.attachedFile,
-                            event_types: task.task_type,
+                            event_type: task.task_type,
                             start: task.deadline,
                             end: task.deadline,
                             project_id : project.id,
@@ -45,6 +45,8 @@ const StaffPage = observer (
                         })
                     });
                 })
+                
+                calendarStore.setLoadState()
             }
         }
 

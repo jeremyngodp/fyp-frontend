@@ -177,9 +177,20 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
                 />
             }
             if (token) { //as long as authenticated, able to access the privateroute
-                return <Component {...props}
-                    calendarStore={rest.calendarStore}
-                />
+                if(!store.getState().is_Staff) {
+                    rest.calendarStore.addUserType("Student")
+                    return <Component {...props}
+                                calendarStore={rest.calendarStore}
+                            />
+                } else {
+                    return <Redirect 
+                            to={{ 
+                            pathname: '/staff',
+                            state: {from: props.location} 
+                            }} 
+                            />
+                }
+                
             } else {
                 return <Redirect to={{
                     pathname: '/login',

@@ -46,7 +46,7 @@ const TaskBoardPage = observer(
             const taskList = calendarStore.getData.filter(task => task.event_type === "common");
             console.log(taskList);
             return (
-                <Kanban calendarStore={calendarStore} className={classes.column} onSubmitEditTask={onSubmitEditTask}/>
+                <Kanban taskList={taskList} calendarStore={calendarStore} className={classes.column} onSubmitEditTask={onSubmitEditTask}/>
             )
         }
 

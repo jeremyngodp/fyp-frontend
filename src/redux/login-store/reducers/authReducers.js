@@ -7,7 +7,7 @@ const initialState = {
     user: null,
     projects: null,
     is_Staff: null,
-    is_staff: null,
+    is_admin: null,
     // paramQuery: null
 }
 

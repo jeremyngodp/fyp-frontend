@@ -102,16 +102,45 @@ class ProjectListing extends Component {
 
     UNSAFE_componentWillMount() {
         const {calendarStore} = this.props;
-        if(calendarStore.getStudentList.length == 0) {
-            axiosGetAllStudent(this.props.calendarStore);
+        if(!calendarStore.getLoadState) {
+            var projectList = JSON.parse(localStorage.getItem('projects'))
+            projectList.map( project => {
+                calendarStore.addProjectList({
+                    id: project.id,
+                    title: project.name,
+                    student: project.student,
+                    tasks: project.taskList,
+                    description: project.description
+                });
+
+                project.taskList.map( task => {
+                    calendarStore.addData( {
+                        id: task.id,
+                        title: task.title,
+                        attachedFile: task.attachedFile,
+                        event_type: task.task_type,
+                        start: task.deadline,
+                        end: task.deadline,
+                        project_id : project.id,
+                        hour: task.hourSpent,
+                        comments: task.comments,
+                        student_id: task.student_id
+                    })
+                });
+            })
+
+            calendarStore.setLoadState();
         }
     }
 
     componentDidUpdate() {
         console.log("Project listing updated");
+        const {calendarStore} = this.props;
     }
 
     handleLogout = () => {
+        const {calendarStore} = this.props;
+        calendarStore.resetStore()
         this.props.logout();
     }
 
@@ -329,7 +358,7 @@ class ProjectListing extends Component {
 
     render() {
         const { classes, calendarStore} = this.props;
-        const projects =  calendarStore.getProjectList;
+        const {projects} =  this.state;
 
         if (projects != null) {
             return (

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import axios from 'axios';
@@ -56,13 +56,19 @@ const classes = {
 };
 
 
-function Kanban ({calendarStore, onSubmitEditTask}) {
-    const taskList = calendarStore.getData.filter(task => task.event_type === "common");
+function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
+    const newtaskList = calendarStore.getData.filter(task => task.event_type === "common");
     console.log(taskList);
     const [tasks, setTaskStatus] = useState(taskList);
     const [open, setOpen] = useState(false);
     const [currentItem, setItem] = useState('');
     
+    useEffect(() => {
+        if (tasks.length === 0){
+            setTaskStatus(calendarStore.getData.filter(task => task.event_type === "common"));
+        }
+        console.log(calendarStore.getLoadState);
+    })
 
     const handleOpen = () => {
         setOpen(true);
@@ -74,7 +80,6 @@ function Kanban ({calendarStore, onSubmitEditTask}) {
     }
 
     const handleClose = () => {
-        
         console.log(tasks);
         setOpen(false);
     };
