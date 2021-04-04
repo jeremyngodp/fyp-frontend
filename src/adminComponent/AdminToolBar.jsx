@@ -35,6 +35,8 @@ class AdminToolBar extends Component {
     }
 
     handleLogout = () => {
+        const {calendarStore} = this.props
+        calendarStore.resetStore()
         this.props.logout();
     }
 

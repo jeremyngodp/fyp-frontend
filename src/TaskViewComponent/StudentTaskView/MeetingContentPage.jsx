@@ -78,7 +78,7 @@ const MeetingContentPage = observer(
                     title1 ='Event'
                     title2 ='Meeting Date'
                     title3 ='Meeting Notes'
-                    title4 ='Attachments?'
+                    
                 />
             )
         }
@@ -129,7 +129,7 @@ const MeetingContentPage = observer(
                                         <Grid item xs={2}>  
                                             {/* Meeting Notes: whether it's available or not */}
                                             
-                                            <Typography className={classes.secondaryHeading}>{text.status === "completed" ? "Available" : "Not available"}</Typography>
+                                            <Typography className={classes.secondaryHeading}>{text.attachedFile === null ? "Not Available" : "Available"}</Typography>
                                         </Grid>
                                         
                                     </Grid>

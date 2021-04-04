@@ -94,8 +94,9 @@ function EditProjectForm ({handleClose, calendarStore, project_id, onSubmitEditP
                                 <Typography className={classes.secondaryHeading}>Description: </Typography>
                                 <TextField 
                                     id="filled-multiline-static" 
-                                    name="description" 
-                                    multiline rows={4} 
+                                    name="description"
+                                    fullWidth 
+                                    multiline rows={10} 
                                     variant="outlined" 
                                     value={state.project_description}
                                     onChange={(e)=>handleDescriptionChange(e)}/>

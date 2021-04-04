@@ -11,8 +11,17 @@ const useStyles = (theme) => ({
       width: '100%',
     },
     heading: {
-      fontSize: theme.typography.pxToRem(20),
-      fontWeight: 'bold'
+      fontSize: theme.typography.pxToRem(30),
+      fontWeight: 'bold',
+      padding: '5px 0px',
+      marginTop:'20px',
+      textAlign: 'center'
+    },
+    small: {
+        fontSize: theme.typography.pxToRem(15),
+        padding: '5px 0px',
+        marginTop:'10px',
+        textAlign: 'center'
     },
     secondaryHeading: {
       fontSize: theme.typography.pxToRem(15),
@@ -25,7 +34,7 @@ const useStyles = (theme) => ({
       padding: '5px 0px',
     },
     paper: {
-      width: '80%',
+      width: '90%',
       padding: '15px',
       marginTop: '15px',
     }
@@ -149,6 +158,7 @@ class TaskSubmissionPage extends React.Component {
         return (
             <div style={{ width: '100%' }}>
                 <Typography className={classes.heading}>{this.props.item.title}</Typography>
+                <Typography className={classes.small}>Expected due date: {moment(this.props.item.start).format("Do MMM YYYY")}</Typography>
                 {this.renderNoteSubmission()}
             </div>
         )

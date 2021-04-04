@@ -20,6 +20,7 @@ import ReusableCommentBox from '../ReusableTaskViewComponent/ReusableCommentComp
 import EditProjecButton from '../buttons/EditProjectButton';
 import { observer } from 'mobx-react';
 import RenderDocumentPreview from "../ReusableTaskViewComponent/RenderDocumentPreview"
+import axiosGetAllStudent from '../../AxiosCall/axiosGetAllStudent'
 
 
 const useStyles = (theme) => ({
@@ -101,6 +102,7 @@ class ProjectListing extends Component {
     UNSAFE_componentWillMount() {
         const {calendarStore} = this.props;
         if(!calendarStore.getLoadState) {
+            axiosGetAllStudent(calendarStore);
             var projectList = JSON.parse(localStorage.getItem('projects'))
             projectList.map( project => {
                 calendarStore.addProjectList({

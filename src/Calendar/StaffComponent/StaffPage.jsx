@@ -4,6 +4,7 @@ import {observer} from 'mobx-react';
 
 import ReusableCalendar from '../ReusableCalendar.jsx';
 import LeftSideColumn from '../LeftSideColumn.jsx';
+import axiosGetAllStudent from '../../AxiosCall/axiosGetAllStudent'
 
 const StaffPage = observer (
     class StaffPageClass extends React.Component {
@@ -20,6 +21,7 @@ const StaffPage = observer (
             var projectList = JSON.parse(localStorage.getItem("projects"));
             console.log(projectList);
             if (!calendarStore.getLoadState) {
+                axiosGetAllStudent(calendarStore)
                 projectList.map( project => {
                     calendarStore.addProjectList({
                         id: project.id,
