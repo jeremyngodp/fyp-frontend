@@ -122,7 +122,7 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 >
-                    <div style={{width: '90%',margin: 'auto'}}>
+                    <div style={{width: '90%', margin: 'auto', marginBottom: "30px"}}>
                         <TaskSubmissionPage 
                             calendarStore={calendarStore} 
                             item={currentItem} 
@@ -134,7 +134,7 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
                         />
                     </div>
 
-                    <div style={{width: '90%', margin: 'auto'}}>
+                    <div style={{width: '90%', margin: 'auto', marginBottom: '30px'}}>
                         <ReusableCommentBox
                             comments={currentItem.comments} 
                             calendarStore={calendarStore} 
@@ -168,30 +168,6 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
                                     <Paper >
                                         <KanbanItem id={item.id} >
                                             <div style={classes.item}>{item.title}</div>
-                                            {/* <Accordion className= {classes.item} style={{ overflow: 'hidden' }}  >
-                                                <AccordionSummary expandIcon={<ExpandMoreIcon/>} >
-                                                    <div style={classes.item}>{item.title}</div>
-                                                </AccordionSummary>
-                                                <AccordionDetails >
-                                                    <div>
-                                                        <TaskEditFormCopy 
-                                                            item={item} 
-                                                            calendarStore={calendarStore} 
-                                                            handleClose={handleClose} 
-                                                            onSubmitEditTask={onSubmitEditTask}
-                                                        />
-                                                    </div>
-
-                                                    <div>
-                                                        <ReusableCommentBox
-                                                            comments={item.comments} 
-                                                            calendarStore={calendarStore} 
-                                                            task_id={item.id} 
-                                                            user_id={calendarStore.getUserData.id}
-                                                        />
-                                                    </div>
-                                                </AccordionDetails>
-                                            </Accordion> */}
                                         </KanbanItem>
                                     </Paper>
                                 </div>

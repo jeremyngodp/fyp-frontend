@@ -31,6 +31,7 @@ const useStyles = (theme) => ({
         padding: '15px',
         marginTop: '15px',
         minHeight: '200px',
+        width:'80%'
     }
 })
   
