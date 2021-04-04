@@ -9,6 +9,7 @@ newData is an array containing all the tasks for a Student user
     end: deadline of task
     project_id: id of the project that the task belong to
     comments: comments related to the tasks
+    attachedFile: attached file to the task
     student_id: id of student}
 
 projectList is an array containing all the project for a Staff user
@@ -36,6 +37,7 @@ class CalendarStore {
     semStart = '2021-01-11'
     projectList = []
     studentList = []
+    loaded = false;
 
     constructor() {
         makeObservable(this, {
@@ -46,12 +48,14 @@ class CalendarStore {
             semStart: observable,
             projectList: observable,
             studentList: observable,
+            loaded: observable,
 
             getData: computed,
             getUserType: computed,
             getDefaultState: computed,
             getProjectList:computed,
             getStudentList: computed,
+            getLoadState: computed,
 
             addData: action,
             addProjectList: action,
@@ -59,7 +63,9 @@ class CalendarStore {
             addUserType: action,
             changeDefaultState: action,
             setUserData: action,
+            setLoadState: action,
             updateProject: action,
+            updateTask: action,
             resetStore: action,
         })
     }
@@ -86,6 +92,14 @@ class CalendarStore {
 
     get getDefaultState() {
         return this.defaultState;
+    }
+
+    get getLoadState() {
+        return this.loaded
+    }
+
+    setLoadState() {
+        this.loaded = true;
     }
 
     addData(e) {
@@ -121,13 +135,26 @@ class CalendarStore {
         console.log(this.projectList)
     }
 
+    updateTask = (task_id, hour, status, attachedFile) => {
+        var found = this.newData.find(task => task.id == task_id);
+        found.status = status;
+        found.hour = hour;
+    }
+
+    updateAttachedFile = (task_id, attachedFile) => {
+        var found = this.newData.find(task => task.id == task_id);
+        found.attachedFile = attachedFile;
+    }
+
     resetStore = () => {
         this.newData = [];
         this.userData = "";
+        this.userType = "";
         this.defaultState = {state:'Reports', index:0};
         this.semStart = '2020-08-09';
         this.projectList = [];
         this.studentList = [];
+        this.loaded = false;
     }
     
 }    

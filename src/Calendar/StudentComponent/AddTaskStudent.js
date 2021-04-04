@@ -8,7 +8,7 @@ import AssessmentIcon from '@material-ui/icons/Assessment';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
-import axiosAddTask from '../AxiosCall/axiosAddTask.js';
+import axiosAddTask from '../../AxiosCall/axiosAddTask.js';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -83,9 +83,12 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
             end: fSelectedDueDate,
             event_type: category,
             project_id: project_id,
+            status: 'new',
+            comments: [],
+            hour: 0,
         });
 
-        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title);
+        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title, 'new');
         
         alert('New Event Added');
 
@@ -104,7 +107,7 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
                             <Grid item xs={11}>
                             
                                 <div style={{ display: 'flex' }}>
-                                    <Typography >Task Type: </Typography>
+                                    <Typography style={{marginRight: '10px'}}>Task Type: </Typography>
                                     <Select
                                         labelId="demo-dialog-select-label"
                                         id="select-category"
@@ -125,7 +128,7 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
                                 </Grid>     
                                 <Grid item xs={11} md={11}>
                                     <div style={{ display: 'flex' }}>
-                                    <Typography >Due Date: </Typography>
+                                    <Typography style={{marginRight: '10px'}}>Due Date: </Typography>
                                     <KeyboardDatePicker
                                         format="MM/dd/yyyy"
                                         value={state.selectedDueDate}
@@ -141,7 +144,7 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
                                 </Grid> 
                                 
                                 <Grid item xs={10} md={10}>
-                                    <Typography >Task Title</Typography>
+                                    <Typography style={{marginRight: '10px'}}>Task Title</Typography>
                                     <TextField id="filled-multiline-static" name="title" multiline rows={4} variant="outlined" onChange={(e)=>handleSummaryChange(e)}/>
                                 </Grid>
                 

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField, Dialog } from '@material-ui/core';
 import SubjectIcon from '@material-ui/icons/Subject'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import axiosUpdateProject from '../AxiosCall/axiosUpdateProject';
-import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
+import axiosUpdateProject from '../../AxiosCall/axiosUpdateProject';
 import { withStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -95,8 +94,9 @@ function EditProjectForm ({handleClose, calendarStore, project_id, onSubmitEditP
                                 <Typography className={classes.secondaryHeading}>Description: </Typography>
                                 <TextField 
                                     id="filled-multiline-static" 
-                                    name="description" 
-                                    multiline rows={4} 
+                                    name="description"
+                                    fullWidth 
+                                    multiline rows={10} 
                                     variant="outlined" 
                                     value={state.project_description}
                                     onChange={(e)=>handleDescriptionChange(e)}/>

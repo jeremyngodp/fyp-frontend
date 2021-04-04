@@ -31,11 +31,12 @@ class RenderDocumentPreview extends Component {
 
     render() {
         const { openDialog } = this.state;
-        var fileUrl ="http://localhost:8080/fyp/api/downloadFile/task/11"
+        const {id, name} = this.props;
+        var fileUrl ="http://localhost:8080/fyp/api/downloadFile/task/" + id
         return (
             <div>
                 <Button onClick={this.handleClickOpen}>
-                    <AttachFileIcon style={{ float: 'left' }} />&nbsp;<span style={{wordBreak: 'break-word'}} >documentName</span>
+                    <AttachFileIcon style={{ float: 'left' }} />&nbsp;<span style={{wordBreak: 'break-word'}} >{name}</span>
                 </Button>
                 <Dialog
                     open={openDialog}

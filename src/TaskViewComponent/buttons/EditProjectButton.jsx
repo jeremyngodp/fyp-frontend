@@ -1,15 +1,16 @@
 import React from 'react';
-import {Grid, Button, Dialog} from '@material-ui/core';
-import AddProjectForm from '../../Calendar/AddProject';
+import {Dialog, Button} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import EditProjectForm from '../../Calendar/StaffComponent/EditProject';
 
-class AddProjectButton extends React.Component {
-    constructor(props) {
+class EditProjectButton extends React.Component {
+    constructor(props){
         super(props)
         this.state = {
-            open: false,
+            open: false
         }
     }
-    
+
     handleClickOpen = () => {
         this.setState({
              open: true
@@ -21,16 +22,15 @@ class AddProjectButton extends React.Component {
             open: false
         })
     };
-    
-    
+
     render() {
-        const { calendarStore, type } = this.props;
+        const { calendarStore, project_id, onSubmitEditProject } = this.props;
         const { open } = this.state;
         
         return (
             <div style={{ margin: '10px 0 10px 0', textAlign: 'center' }}>
                 <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                    Add Project
+                    Edit
                 </Button>
                 <Dialog
                     open={open}
@@ -39,7 +39,7 @@ class AddProjectButton extends React.Component {
                     aria-describedby="alert-dialog-description"
                 >
                     
-                    <AddProjectForm handleClose={() =>this.handleClose()} calendarStore={calendarStore}/>
+                    <EditProjectForm handleClose={() =>this.handleClose()} calendarStore={calendarStore} project_id={project_id} onSubmitEditProject={onSubmitEditProject}/>
                     
                 </Dialog>
              </div>
@@ -47,4 +47,4 @@ class AddProjectButton extends React.Component {
     }
 }
 
-export default AddProjectButton;
+export default EditProjectButton

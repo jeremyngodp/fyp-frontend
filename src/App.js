@@ -1,17 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import './App.css';
-import axios from 'axios';
+
 
 import AdminMainPage from './adminComponent/AdminMainPage'
-import StudentPage from './Calendar/StudentPage.jsx';
-import StaffPage from './Calendar/StaffPage.jsx';
+import StudentPage from './Calendar/StudentComponent/StudentPage.jsx';
+import StaffPage from './Calendar/StaffComponent/StaffPage.jsx';
 import CalendarStore from './mobx/CalendarStore.js';
-import ContentRouting from './components/contentRouting/contentRouting.jsx';
+import ContentRouting from './TaskViewComponent/StudentTaskView/contentRouting.jsx';
 import {AdminOnlyRoute, StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRoute, CheckSwitchRoute, RegisterRoute} from './SpecialRoutes';
-import ProjectListPage from './components/projectListing.jsx';
-import LoginPage from "./components/LoginPage";
-import RegisterPage from "./components/RegisterUser";
+import ProjectListPage from './TaskViewComponent/StaffTaskView/projectListing.jsx';
+import LoginPage from "./LoginComponent/LoginPage";
+import RegisterPage from "./LoginComponent/RegisterUser";
+
+
 
 
 const calendarStore = new CalendarStore();
@@ -90,6 +92,7 @@ function App() {
         <div>
             
             <Switch>
+
                 <AdminOnlyRoute path="/admin" component={Admin} calendarStore={calendarStore}/>
 
                 <RegisterRoute path="/register" component={RegisterPage} />

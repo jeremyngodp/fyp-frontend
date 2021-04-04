@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Grid, Checkbox, Typography } from "@material-ui/core";
 import { observer } from "mobx-react";
-import AddEventButton from "../components/buttons/AddEventButton.jsx";
-import AddProjectButton from "../components/buttons/AddProjectButton.jsx";
+import AddEventButton from "../TaskViewComponent/buttons/AddEventButton.jsx";
+import AddProjectButton from "../TaskViewComponent/buttons/AddProjectButton.jsx";
 import ReusableSwipeableTemporaryDrawer from "./ReusableSwipableDrawer.jsx";
 import { withStyles } from '@material-ui/core/styles';
 

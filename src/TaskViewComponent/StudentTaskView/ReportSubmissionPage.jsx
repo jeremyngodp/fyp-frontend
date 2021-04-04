@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography, Paper, TextField, Button } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import ReusableNotesSubmission from './ReusableSubmissionComponent/ReusableNoteSubmission';
-import ReusableNotesCompleted from './ReusableSubmissionComponent/ReusableNoteComplete';
+import ReusableNotesSubmission from '../ReusableTaskViewComponent/ReusableSubmissionComponent/ReusableNoteSubmission';
+import ReusableNotesCompleted from '../ReusableTaskViewComponent/ReusableSubmissionComponent/ReusableNoteComplete';
 
 const useStyles = (theme) => ({
     root: {
@@ -38,7 +38,6 @@ class ReportSubmissionPage extends Component {
         super(props);
         this.state = {
             selectedFile: null,
-            hourSpent: props.hourSpent
         }
     }
 
@@ -82,11 +81,15 @@ class ReportSubmissionPage extends Component {
         )
     }
 
-    onClickHandler = () => {
+    onClickHandler = (e) => {
+        e.preventDefault();
+        console.log('onCLickHandler ran')
         const {selectedFile} = this.state
+        const { calendarStore} = this.props
         if (selectedFile != null){
+            console.log("file attached!")
             const data = new FormData()
-            data.append('task_id', this.props.id)
+            data.append('task_id', this.props.task.id)
             data.append('file', this.state.selectedFile)
             var upload_date = moment(new Date()).format('YYYY-MM-DD')
             data.append('upload_date', upload_date)
@@ -95,6 +98,7 @@ class ReportSubmissionPage extends Component {
             })
             .then(res => { // then print response status
                 console.log(res.statusText);
+                calendarStore.updateAttachedFile(this.props.task.id, res.data)
             })
             .catch((error) => {
                 console.log(error.response);
@@ -103,8 +107,14 @@ class ReportSubmissionPage extends Component {
         
             //reset the state
             this.setState({
-            selectedFile: null,
+                selectedFile: null,
             })
+
+            this.props.handleTaskChange();
+        }
+
+        else {
+            console.log("no file attached!");
         }
     }
 
@@ -157,24 +167,21 @@ class ReportSubmissionPage extends Component {
     }
 
     renderReportPendingPaper = () => {
-        const { classes } = this.props;
-        const { hourSpent, thingsCompleted } = this.state;
-        console.log(hourSpent);
+        const { task, classes } = this.props;
         const userType = this.props.calendarStore.getUserType;
         if (userType === 'Student') {
             return (
                 <ReusableNotesSubmission
-                    type="Weekly Report"
-                    onSubmitForm={this.onSubmitForm}
+                    id={task.id}
+                    type="Submission"
+                    onSubmitForm={this.onClickHandler}
                     handleChange={this.handleChange}
+                    cancel={this.cancelAddAttachment}
                     addAttachment={this.addAttachment}
-                    textfieldValue={thingsCompleted}
-                    textfieldName="thingsCompleted"
-                    buttonLabel="Submit"
-                    textfieldValue2={hourSpent}
-                    textfieldName2="hourSpent"
+                    buttonLabel="Submit Document"
                     noOfRows="7"
                     selectedFile={this.state.selectedFile}
+                    attachedFile={task.attachedFile}
                 />
             )
         } 
@@ -187,22 +194,16 @@ class ReportSubmissionPage extends Component {
         // }
     }
     
-    renderSwitchPaper = (status) => {
-        switch (status) {
-            case "complete":
-            case "late":
-                return this.renderWeeklyReportCompletedPaper();
-            default:
-                return this.renderReportPendingPaper();
-        }
+    renderSwitchPaper = () => {
+        return this.renderReportPendingPaper();
     }
 
     render() {
-        const { classes, status } = this.props;
+        const {classes} = this.props;
         return (
             <div style={{ width: '100%' }}>
                 <Typography className={classes.heading}>Report Submission</Typography>
-                {this.renderSwitchPaper(status)}
+                {this.renderSwitchPaper()}
             </div>
         )
     }

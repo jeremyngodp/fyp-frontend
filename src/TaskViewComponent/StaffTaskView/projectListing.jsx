@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import { connect } from 'react-redux';
-import * as actions from '../redux/login-store/actions/authActions';
+import * as actions from '../../redux/login-store/actions/authActions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -15,12 +15,12 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import history from '../history';
-import ReusableCommentBox from './contentRouting/ReusableCommentComponent/ReusableCommentBox';
-import EditProjecButton from '../components/buttons/EditProjectButton';
+import history from '../../history';
+import ReusableCommentBox from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableCommentBox';
+import EditProjecButton from '../buttons/EditProjectButton';
 import { observer } from 'mobx-react';
-import axiosAddProject from '../AxiosCall/axiosAddProject';
-import axiosGetAllStudent from '../AxiosCall/axiosGetAllStudent';
+import RenderDocumentPreview from "../ReusableTaskViewComponent/RenderDocumentPreview"
+import axiosGetAllStudent from '../../AxiosCall/axiosGetAllStudent'
 
 
 const useStyles = (theme) => ({
@@ -101,16 +101,46 @@ class ProjectListing extends Component {
 
     UNSAFE_componentWillMount() {
         const {calendarStore} = this.props;
-        if(calendarStore.getStudentList.length == 0) {
-            axiosGetAllStudent(this.props.calendarStore);
+        if(!calendarStore.getLoadState) {
+            axiosGetAllStudent(calendarStore);
+            var projectList = JSON.parse(localStorage.getItem('projects'))
+            projectList.map( project => {
+                calendarStore.addProjectList({
+                    id: project.id,
+                    title: project.name,
+                    student: project.student,
+                    tasks: project.taskList,
+                    description: project.description
+                });
+
+                project.taskList.map( task => {
+                    calendarStore.addData( {
+                        id: task.id,
+                        title: task.title,
+                        attachedFile: task.attachedFile,
+                        event_type: task.task_type,
+                        start: task.deadline,
+                        end: task.deadline,
+                        project_id : project.id,
+                        hour: task.hourSpent,
+                        comments: task.comments,
+                        student_id: task.student_id
+                    })
+                });
+            })
+
+            calendarStore.setLoadState();
         }
     }
 
     componentDidUpdate() {
         console.log("Project listing updated");
+        const {calendarStore} = this.props;
     }
 
     handleLogout = () => {
+        const {calendarStore} = this.props;
+        calendarStore.resetStore()
         this.props.logout();
     }
 
@@ -197,17 +227,19 @@ class ProjectListing extends Component {
                                         <Typography>Date: {task.deadline}</Typography>
                                     </ListItemText>
                                 </ListItem>
-                                {task.task_type === "report" ?
+                                {task.task_type === "common" ?
                                 <div className={classes.flex}>
                                     <div className={classes.column}>
-                                        {task.status === "complete"?
+                                        <Typography>Attachment: </Typography>
+                                        {task.attachedFile != null?
                                         <div>
-                                            <Typography>The Report has been submitted</Typography>
+                                            
                                             <GetAppIcon style={{float: 'left'}}/>
-                                            <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>Download Submission</a></Typography>
+                                            <RenderDocumentPreview  id={task.id} name={task.attachedFile.fileName}/>
+                                            {/* <Typography><a href={"http://localhost:8080/fyp/api/downloadFile/task/" + task.id}>{task.attachedFile.fileName}</a></Typography> */}
                                         </div>
                                         :
-                                        <div><Typography>The Report has not been submitted</Typography></div>
+                                        <div><Typography>The Task has no Attachment</Typography></div>
                                         }
                                         <ListItem>
                                             <ListItemText>
@@ -326,7 +358,7 @@ class ProjectListing extends Component {
 
     render() {
         const { classes, calendarStore} = this.props;
-        const projects =  calendarStore.getProjectList;
+        const {projects} =  this.state;
 
         if (projects != null) {
             return (

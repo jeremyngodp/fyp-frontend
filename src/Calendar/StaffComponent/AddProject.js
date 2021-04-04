@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { DialogTitle, DialogContent, makeStyles, Grid, Typography, Select, MenuItem, DialogActions, Button, TextField, Dialog } from '@material-ui/core';
 import SubjectIcon from '@material-ui/icons/Subject'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import axiosAddProject from '../AxiosCall/axiosAddProject';
+import axiosAddProject from '../../AxiosCall/axiosAddProject';
 import { withStyles } from '@material-ui/core/styles';
 import DateFnsUtils from '@date-io/date-fns';
 
@@ -65,7 +65,7 @@ function AddProjectForm ({handleClose, calendarStore}){
                             <Grid item xs={11}>
                                 <div style={{ display: 'flex' }}>
                                     <Typography className={classes.secondaryHeading}>Title: </Typography>
-                                    <TextField id="filled-multiline-static" name="title" rows={2} variant="outlined" onChange={(e)=>handleTitleChange(e)}/>
+                                    <TextField id="filled-multiline-static" name="title" rows={2} fullWidth variant="outlined" onChange={(e)=>handleTitleChange(e)}/>
                                 </div>
                             </Grid>
 
@@ -73,7 +73,7 @@ function AddProjectForm ({handleClose, calendarStore}){
                             <Grid item xs={11}>
                                 <div style={{ display: 'flex' }}>
                                 <Typography className={classes.secondaryHeading}>Description: </Typography>
-                                <TextField id="filled-multiline-static" name="description" multiline rows={4} variant="outlined" onChange={(e)=>handleDescriptionChange(e)}/>
+                                <TextField id="filled-multiline-static" name="description" multiline='true' fullWidth='true' rows={10} variant="outlined" onChange={(e)=>handleDescriptionChange(e)}/>
                                 </div>
                             </Grid>
 

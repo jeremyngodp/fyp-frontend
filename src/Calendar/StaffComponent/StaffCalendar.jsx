@@ -81,16 +81,7 @@ const StaffCalendar = observer(
                         weekNumbers = {true}
                         weekNumberContent={this.calculateWeekNo}
                     />
-                    <div>
-                        <p>There are {calendarStore.getData.length} events </p>
-                        <ul>
-                        {calendarStore.getData.map((e, idx) => (
-                            <li key={idx}>
-                                {e.title} - {e.start.toString()} - Student {e.studentID}
-                            </li>
-                        ))}
-                        </ul>
-                    </div>
+                    
                 </React.Fragment>
             )
         }

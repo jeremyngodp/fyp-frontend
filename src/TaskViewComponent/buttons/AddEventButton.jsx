@@ -1,16 +1,16 @@
 import React from 'react';
-import {Dialog, Button} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import EditProjectForm from '../../Calendar/EditProject';
+import {Grid, Button, Dialog} from '@material-ui/core';
+import StudentAddTaskForm from '../../Calendar/StudentComponent/AddTaskStudent';
+import StaffAddTaskForm from '../../Calendar/StaffComponent/AddTaskStaff';
 
-class EditProjectButton extends React.Component {
-    constructor(props){
+export default class AddEventButton extends React.Component {
+    constructor(props) {
         super(props)
         this.state = {
-            open: false
+            open: false,
         }
     }
-
+    
     handleClickOpen = () => {
         this.setState({
              open: true
@@ -22,15 +22,17 @@ class EditProjectButton extends React.Component {
             open: false
         })
     };
-
+    
+    
     render() {
-        const { calendarStore, project_id, onSubmitEditProject } = this.props;
+        const { calendarStore, type } = this.props;
+        console.log(type);
         const { open } = this.state;
         
         return (
             <div style={{ margin: '10px 0 10px 0', textAlign: 'center' }}>
                 <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-                    Edit
+                    Add Event
                 </Button>
                 <Dialog
                     open={open}
@@ -38,13 +40,13 @@ class EditProjectButton extends React.Component {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    
-                    <EditProjectForm handleClose={() =>this.handleClose()} calendarStore={calendarStore} project_id={project_id} onSubmitEditProject={onSubmitEditProject}/>
-                    
+                {type ==="Student" ?
+                <StudentAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} /> 
+                :
+                <StaffAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} />
+                }
                 </Dialog>
              </div>
         )
     }
 }
-
-export default EditProjectButton
