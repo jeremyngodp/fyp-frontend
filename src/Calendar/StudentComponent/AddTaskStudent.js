@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function StudentAddTaskForm ({handleClose, calendarStore}){
+function StudentAddTaskForm ({handleClose, calendarStore, calendarRef}){
     
     let start = new Date()
     // let dateStr = format(start, 'yyyy-MM-dd')
@@ -88,12 +88,32 @@ function StudentAddTaskForm ({handleClose, calendarStore}){
             hour: 0,
         });
 
+        let calendarAPI =  calendarRef.current.getApi()
+        calendarAPI.addEvent({
+            title: title,
+            start: fSelectedDueDate,
+            end: fSelectedDueDate,
+        })
+
+        // var projectList = JSON.parse(localStorage.getItem('projects'))
+        // projectList[0].taskList.push({
+        //     title: title,
+        //     start: fSelectedDueDate,
+        //     end: fSelectedDueDate,
+        //     event_type: category,
+        //     project_id: project_id,
+        //     status: 'new',
+        //     comments: [],
+        //     hour: 0,
+        //     attachedFile: null,
+        //     student_id: student_id,
+        // })
+
+        // localStorage.setItem('projects', JSON.stringify(projectList))
+        // console.log(JSON.parse(localStorage.getItem('projects')))
         axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title, 'new');
-        
-        alert('New Event Added');
-
+        // calendarStore.setLoadState(false);
         handleClose();
-
     }
     
     return (

@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import TimerIcon from '@material-ui/icons/Timer';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { connect } from 'react-redux';
 import * as actions from '../../redux/login-store/actions/authActions';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
+import {Paper, Dialog,Toolbar, Button, AppBar, List, ListItemText, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography, CssBaseline, DialogTitle, DialogContent} from '@material-ui/core'
 import GetAppIcon from '@material-ui/icons/GetApp';
 import history from '../../history';
+import moment from 'moment'
 import ReusableCommentBox from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableCommentBox';
 import EditProjecButton from '../buttons/EditProjectButton';
 import { observer } from 'mobx-react';
 import RenderDocumentPreview from "../ReusableTaskViewComponent/RenderDocumentPreview"
 import axiosGetAllStudent from '../../AxiosCall/axiosGetAllStudent'
+import axiosGetProjectListByStaffId from '../../AxiosCall/axiosGetProjectByStaffId';
+
 
 
 const useStyles = (theme) => ({
@@ -37,6 +35,12 @@ const useStyles = (theme) => ({
         fontStyle: 'bold',
     },
 
+    dialogSecondaryHeading: {
+        fontSize: theme.typography.pxToRem(18),
+        fontWeight: theme.typography.fontWeightRegular,
+        fontStyle: 'bold',
+    },
+
     description: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
@@ -46,6 +50,15 @@ const useStyles = (theme) => ({
 
     icon: {
         margin: theme.spacing(4)
+    },
+
+    taskTypeHeading: {
+        fontSize:'17px', 
+        textAlign:'center'
+    },
+
+    taskList: {
+        backgroundColor: 'gainsboro'
     },
 
     nested: {
@@ -69,7 +82,11 @@ const useStyles = (theme) => ({
     },
     flex: {
         display: 'flex',
+    },
+    taskPaper: {
+        marginBottom:'10px',
     }
+
 })
 
 class ProjectListing extends Component {
@@ -77,7 +94,8 @@ class ProjectListing extends Component {
         super(props);
         this.state = {
             open: false,
-            projects : props.calendarStore.getProjectList,
+            projects : props.calendarStore.getProjectList.filter(project => project.staff.id === props.calendarStore.getUserData.id),
+            currentItem: '',
         }
     }
     
@@ -94,23 +112,28 @@ class ProjectListing extends Component {
     }
 
     onSubmitEditProject = () => {
+        const {calendarStore} = this.props
         this.setState({
-            projects: this.props.calendarStore.getProjectList
+            projects: calendarStore.getProjectList.filter(project => project.staff.id === calendarStore.getUserData.id)
         })
     }
 
     UNSAFE_componentWillMount() {
+        
         const {calendarStore} = this.props;
+        console.log(calendarStore.getLoadState)
         if(!calendarStore.getLoadState) {
             axiosGetAllStudent(calendarStore);
+            axiosGetProjectListByStaffId(calendarStore.getUserData.id,calendarStore);
             var projectList = JSON.parse(localStorage.getItem('projects'))
             projectList.map( project => {
                 calendarStore.addProjectList({
                     id: project.id,
                     title: project.name,
                     student: project.student,
+                    description: project.description,
+                    staff: project.supervisor,
                     tasks: project.taskList,
-                    description: project.description
                 });
 
                 project.taskList.map( task => {
@@ -121,15 +144,17 @@ class ProjectListing extends Component {
                         event_type: task.task_type,
                         start: task.deadline,
                         end: task.deadline,
+                        deadline: task.deadline,
                         project_id : project.id,
                         hour: task.hourSpent,
                         comments: task.comments,
-                        student_id: task.student_id
+                        student_id: task.student_id,
+                        status: task.status
                     })
                 });
             })
 
-            calendarStore.setLoadState();
+            calendarStore.setLoadState(true);
         }
     }
 
@@ -162,6 +187,7 @@ class ProjectListing extends Component {
     renderAppBar = () => {
         const { classes, calendarStore } = this.props;
         const is_admin = localStorage.getItem('is_admin');
+        console.log(is_admin)
         return (
             <div className={classes.appbarroot}>
                 <AppBar position="static">
@@ -178,7 +204,7 @@ class ProjectListing extends Component {
                             Return to Staff Calendar
                         </Button>
 
-                        {is_admin === 'true' ? 
+                        {is_admin === "true" ? 
                             <Button
                             type="submit"
                             style={{ color: 'white' }}
@@ -205,14 +231,136 @@ class ProjectListing extends Component {
         );
     }
 
+    handleClose() {
+        this.setState({
+            open: false,
+            currentItem:''
+        })
+    }
+
+    handleTaskClick = (task) => {
+        this.setState({
+            currentItem: task,
+            open: true,
+        })
+    }
+
+    renderTaskModal = () => {
+        const {calendarStore, classes} = this.props
+        const {currentItem,open} = this.state
+        return (
+            <Dialog
+                open={open}
+                onClose={this.handleClose}
+                fullWidth
+                maxWidth='md'
+                backgroundColor ="white"
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle className={classes.heading}>{currentItem.title}</DialogTitle>
+                    <DialogContent >
+                    <List> 
+                        <ListItem>
+                            <InsertDriveFileIcon/> &nbsp;&nbsp;
+                            <Typography className={classes.dialogSecondaryHeading}>Attachment: </Typography> &nbsp;
+                            {currentItem.attachedFile != null?
+                            <div style={{width: '90%', margin: 'auto'}}>
+                                <RenderDocumentPreview  id={currentItem.id} name={currentItem.attachedFile.fileName}/>
+                            </div>
+                            :
+                            'No Attachment'
+                            }
+                        </ListItem>
+
+                    {currentItem.event_type ==='common'?
+                    <div>
+                        <ListItem>
+                            <TimerIcon/> &nbsp;&nbsp;
+                            <Typography className={classes.dialogSecondaryHeading}>Hour Spent:</Typography> &nbsp;
+                            <Typography>{currentItem.hour}</Typography>
+                        </ListItem>
+
+                        <ListItem>
+                            <TrendingUpIcon/> &nbsp;&nbsp;
+                            <Typography className={classes.dialogSecondaryHeading}>Status:</Typography> &nbsp;
+                            <Typography>{currentItem.status}</Typography>
+                        </ListItem>
+                    </div>
+                    :
+                    ''
+                    }
+
+                    <div style={{width: '90%', margin: 'auto', marginBottom: '30px'}}>
+                        <ReusableCommentBox
+                            comments={currentItem.comments} 
+                            calendarStore={calendarStore} 
+                            task_id={currentItem.id} 
+                            user_id={calendarStore.getUserData.id}
+                        />
+                    </div>
+                    </List>
+                    </DialogContent>
+            </Dialog>
+        )
+    }
+
+    renderStudentTaskPaper= (project) => {
+        const{calendarStore,classes} = this.props;
+        const eventList = calendarStore.getData.filter(task => task.project_id === project.id);
+        const meetings = eventList.filter(task => task.event_type === 'meeting');
+        const submissions = eventList.filter(task => task.event_type === 'submission');
+        const commons = eventList.filter(task => task.event_type === 'common');  
+        return (
+            <div style={{display:'flex', width:'100%'}}>
+                <div style ={{float:'left', width: '30%', marginRight:'20px'}}>
+
+                    <Typography className={classes.taskTypeHeading}>Meetings</Typography>
+                    <List >
+                    {meetings.map(task =>
+                        <ListItem button divider onClick={() => this.handleTaskClick(task)}>
+                            <Typography>{task.title}</Typography>&nbsp;- &nbsp;
+                            <Typography style={{fontStyle: 'italic'}}>{moment(task.deadline).format('Do MMM YYYY')}</Typography>
+                        </ListItem> 
+                    )}
+                    </List>
+                </div>
+                <div style ={{float:'left', width: '30%', marginRight:'20px'}}>
+                    <Typography className={classes.taskTypeHeading}>Tasks</Typography>
+                    <List>
+                    {commons.map(task =>
+                        <ListItem button divider onClick={() => this.handleTaskClick(task)}>
+                            <Typography>{task.title}</Typography> &nbsp;- &nbsp; 
+                            <Typography style={{fontStyle: 'italic'}}>{moment(task.deadline).format('Do MMM YYYY')}</Typography>
+                        </ListItem> 
+                    )}
+                    </List>
+                </div> 
+                <div style ={{float:'left', width: '30%', marginRight:'20px'}}>
+                    <Typography className={classes.taskTypeHeading}>Submissions</Typography>
+                    <List>
+                    {submissions.map(task =>
+                        <ListItem button divider onClick={() =>this.handleTaskClick(task)}>
+                            <Typography>{task.title}</Typography>&nbsp;- &nbsp;
+                            <Typography style={{fontStyle: 'italic'}}>{moment(task.deadline).format('Do MMM YYYY')}</Typography>
+                        </ListItem> 
+                    )}
+                    </List>
+                </div>  
+                {this.renderTaskModal(this.state.currentItem)}
+            </div>
+        )
+    }
+
     renderStudentTaskPanel= (project) => {
         const{calendarStore,classes} = this.props;
+        const eventList = calendarStore.getData.filter(task => task.project_id === project.id) 
         return (
             <div className={classes.innerAccordion}>
-                {project.tasks == null ?
+                {eventList === null ?
                 <Typography >No Task has been added for this Project</Typography>
                 :
-                project.tasks.map(task =>
+                eventList.map(task =>
                     <Accordion key={task.id}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
@@ -227,7 +375,7 @@ class ProjectListing extends Component {
                                         <Typography>Date: {task.deadline}</Typography>
                                     </ListItemText>
                                 </ListItem>
-                                {task.task_type === "common" ?
+                                {task.event_type === "common" ?
                                 <div className={classes.flex}>
                                     <div className={classes.column}>
                                         <Typography>Attachment: </Typography>
@@ -287,58 +435,47 @@ class ProjectListing extends Component {
                             
                         </AccordionSummary>
                         <AccordionDetails>
-                            
-                            <List
-                                component="nav"
-                                aria-labelledby="nested-list-subheader"
-                                className={classes.root}
-                            >
-                                <ListItem>
-                                    <Typography className={classes.description}>{item.description}</Typography>
-                                </ListItem>
-                                {/* {item.student.map((item, key) =>
-                                    <ListItem button key={item.id}
-                                        // onClick={(event) => this.handleClickUser(event, item.id)}
+                            <div style={{display:'flex', width:'100%'}}>
+                                <div style ={{float:'left', width: '30%', marginRight:'20px'}}>
+                                    <List
+                                        component="nav"
+                                        aria-labelledby="nested-list-subheader"
+                                        className={classes.root}
                                     >
-                                        <ListItemText primary={item.fname + item.lname} />
-                                        <Typography className={classes.heading}>{item.email}</Typography>
-                                    </ListItem>
-                                )} */}
+                                        <ListItem>
+                                            <Typography className={classes.description}>{item.description}</Typography>
+                                        </ListItem>
 
-                                <ListItem>
-                                    <EditProjecButton calendarStore={calendarStore} project_id={item.id} onSubmitEditProject={this.onSubmitEditProject}/>
-                                </ListItem>
-                                { item.student === null ?
-                                <ListItem>
-                                    <Typography className={classes.heading}>No student has been assigned to this project</Typography>
-                                </ListItem>
-                                :
-                                <div>
-                                    <ListItem key={item.student.id}>
-                                        <AssignmentIndIcon className={classes.icon}/>
-                                        <ListItemText primary={ item.student.fname + ' ' + item.student.lname} secondary={item.student.email} />
-                                    </ListItem>
-                                    {/* <Dialog
-                                        open={open}
-                                        onClose={this.handleClose}
-                                        aria-labelledby="alert-dialog-title"
-                                        aria-describedby="alert-dialog-description"
-                                    >
-                                        <StudentDialogContent project={item} handleClose={this.handleClose}/>
+                                        <ListItem>
+                                            <AssignmentIndIcon />&nbsp;
+                                            <Typography style={{fontSize:'18px'}}>Assigned Student:</Typography>&nbsp;&nbsp;&nbsp;
+                                        { item.student === null ?
+                                            <Typography className={classes.heading}>No student has been assigned to this project</Typography>
+                                            :
+                                            <ListItemText primary={ item.student.fname + ' ' + item.student.lname} secondary={item.student.email} />
+                                        }
+                                        </ListItem>
 
-                                    </Dialog> */}
-                                    <ListItem>
-                                        <ListItemText>
-                                            <Typography className={classes.heading}>Tasks</Typography>
-                                        </ListItemText>
-                                        {item.tasks.length === 0 ?
-                                        <Typography className={classes.description}>No Task has been added for this Project</Typography>
-                                        :
-                                        this.renderStudentTaskPanel(item)}
-                                    </ListItem>
+                                        <ListItem>
+                                            <EditProjecButton calendarStore={calendarStore} project_id={item.id} onSubmitEditProject={this.onSubmitEditProject}/>
+                                        </ListItem>
+
+                                    </List>
                                 </div>
-                                }
-                            </List>
+                                <div style ={{float:'left', width: '75%'}}>
+                                        
+                                        
+                                    <Typography style={{ marginBottom: '20px', fontSize:'30px'}}>Events and Tasks</Typography>
+                                    
+                                    {item.tasks.length === 0 ?
+                                    <Typography >No Task has been added for this Project</Typography>
+                                    :
+                                    this.renderStudentTaskPaper(item)}
+                                    
+                                    
+                                </div>    
+                            
+                            </div>
                         </AccordionDetails>
                     </Accordion>
                 )}
@@ -360,7 +497,7 @@ class ProjectListing extends Component {
         const { classes, calendarStore} = this.props;
         const {projects} =  this.state;
 
-        if (projects != null) {
+        if (projects.length != 0) {
             return (
                 <div>
                     {this.renderAppBar()}

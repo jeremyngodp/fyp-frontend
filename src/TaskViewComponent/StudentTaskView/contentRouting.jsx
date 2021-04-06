@@ -19,6 +19,7 @@ import MeetingContentPage from './MeetingContentPage';
 import TaskBoardPage from './TaskBoardPage';
 import SubmissionContentPage from './SubmissionContentPage';
 import { connect } from 'react-redux';
+import axiosGetProjectListByStudentId from '../../AxiosCall/axiosGetProjectByStudentId';
 
 
 const useStyles = (theme) => ({
@@ -104,11 +105,12 @@ const ContentRouting = observer(
             }
         }
 
-        componentDidMount() {
+        UNSAFE_componentWillMount() {
             const {calendarStore} = this.props;
             
             if(!calendarStore.getLoadState) {
                 console.log("load not true")
+                axiosGetProjectListByStudentId(calendarStore.getUserData.id, calendarStore)
                 var projectList = JSON.parse(localStorage.getItem('projects'))
                 projectList.map( project => {
                     calendarStore.addProjectList({
@@ -127,6 +129,7 @@ const ContentRouting = observer(
                             event_type: task.task_type,
                             start: task.deadline,
                             end: task.deadline,
+                            deadline: task.deadline,
                             project_id : project.id,
                             hour: task.hourSpent,
                             comments: task.comments,
@@ -135,8 +138,8 @@ const ContentRouting = observer(
                         })
                     });
                 })
-
-                calendarStore.setLoadState();
+                
+                calendarStore.setLoadState(true);
             }
         }
 
@@ -158,11 +161,11 @@ const ContentRouting = observer(
             const { calendarStore } = this.props;
             switch (param) {
                 case 'Meetings':
-                    return <MeetingContentPage calendarStore={calendarStore} />
+                    return <MeetingContentPage calendarStore={calendarStore}  events={this.state}/>
                 case 'Tasks':
-                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask} user_id={calendarStore.getUserData.id}/>
+                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask} user_id={calendarStore.getUserData.id} events={this.state}/>
                 case 'Submissions':
-                    return <SubmissionContentPage calendarStore={calendarStore} />
+                    return <SubmissionContentPage calendarStore={calendarStore} events={this.state}/>
                 default:
                     return "No drawer found";
             }

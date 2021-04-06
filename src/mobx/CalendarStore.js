@@ -37,6 +37,7 @@ class CalendarStore {
     semStart = '2021-01-11'
     projectList = []
     studentList = []
+    staffList = []
     loaded = false;
 
     constructor() {
@@ -48,24 +49,29 @@ class CalendarStore {
             semStart: observable,
             projectList: observable,
             studentList: observable,
+            staffList:observable,
             loaded: observable,
 
             getData: computed,
+            getUserData:computed,
             getUserType: computed,
             getDefaultState: computed,
             getProjectList:computed,
             getStudentList: computed,
+            getStaffList: computed,
             getLoadState: computed,
 
             addData: action,
             addProjectList: action,
             addStudentList: action,
+            addStaffList: action,
             addUserType: action,
             changeDefaultState: action,
             setUserData: action,
             setLoadState: action,
             updateProject: action,
             updateTask: action,
+            updateStaffList:action,
             resetStore: action,
         })
     }
@@ -80,6 +86,10 @@ class CalendarStore {
 
     get getStudentList () {
         return this.studentList;
+    }
+
+    get getStaffList () {
+        return this.staffList;
     }
 
     get getUserData() {
@@ -98,8 +108,8 @@ class CalendarStore {
         return this.loaded
     }
 
-    setLoadState() {
-        this.loaded = true;
+    setLoadState(value) {
+        this.loaded = value;
     }
 
     addData(e) {
@@ -112,6 +122,10 @@ class CalendarStore {
 
     addStudentList (e) {
         this.studentList.push(e);
+    }
+
+    addStaffList (e) {
+        this.staffList.push(e);
     }
 
     addUserType = (e) => {
@@ -131,8 +145,6 @@ class CalendarStore {
         found.student = student;
         found.title = title;
         found.description = description;
-
-        console.log(this.projectList)
     }
 
     updateTask = (task_id, hour, status, attachedFile) => {
@@ -146,6 +158,11 @@ class CalendarStore {
         found.attachedFile = attachedFile;
     }
 
+    updateStaffList = (id, isAdmin) => {
+        var found = this.staffList.find(staff => staff.id = id);
+        found.isAdmin = isAdmin
+    }
+
     resetStore = () => {
         this.newData = [];
         this.userData = "";
@@ -154,6 +171,7 @@ class CalendarStore {
         this.semStart = '2020-08-09';
         this.projectList = [];
         this.studentList = [];
+        this.staffList = [];
         this.loaded = false;
     }
     

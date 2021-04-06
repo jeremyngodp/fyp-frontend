@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function StaffAddTaskForm ({handleClose, calendarStore}){
+function StaffAddTaskForm ({handleClose, calendarStore, calendarRef}){
     
     let start = new Date()
     const projectList =  calendarStore.getProjectList;
@@ -107,9 +107,19 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
             end: fSelectedDueDate,
             event_type: category,
             project_id: project_id,
+            status: 'new',
+            comments: [],
+            hour: 0,
         });
 
-        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title);
+        let calendarAPI = calendarRef.current.getApi();
+        calendarAPI.addEvent( {
+            title: title,
+            start: fSelectedDueDate,
+            end: fSelectedDueDate,
+        })
+
+        axiosAddTask(project_id,student_id,fnewDate, fSelectedDueDate, category, title, 'new');
         
         alert('New Event Added');
 
@@ -183,7 +193,7 @@ function StaffAddTaskForm ({handleClose, calendarStore}){
                                         name="category"
                                         onChange={(e)=>handleCategoryChange(e)}
                                     >
-                                        <MenuItem value="report">Report</MenuItem>
+                                        <MenuItem value="common">Task</MenuItem>
                                         <MenuItem value="meeting" label="Meeting">Meeting</MenuItem>
                                         <MenuItem value="submission">Document Submission</MenuItem>
                                     </Select>
