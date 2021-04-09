@@ -20,11 +20,15 @@ import TaskBoardPage from './TaskBoardPage';
 import SubmissionContentPage from './SubmissionContentPage';
 import { connect } from 'react-redux';
 import axiosGetProjectListByStudentId from '../../AxiosCall/axiosGetProjectByStudentId';
+import MyInfo from '../../Calendar/MyInfo';
 
 
 const useStyles = (theme) => ({
     root: {
         display: 'flex',
+    },
+    appbarroot: {
+        flexGrow: 1,
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -117,6 +121,7 @@ const ContentRouting = observer(
                         id: project.id,
                         title: project.name,
                         student: project.student,
+                        supervisor: project.supervisor,
                         tasks: project.taskList,
                         description: project.description
                     });
@@ -160,6 +165,8 @@ const ContentRouting = observer(
         renderSwitchCase = (param) => {
             const { calendarStore } = this.props;
             switch (param) {
+                case 'My Information':
+                    return <MyInfo calendarStore={calendarStore}/>
                 case 'Meetings':
                     return <MeetingContentPage calendarStore={calendarStore}  events={this.state}/>
                 case 'Tasks':
@@ -261,7 +268,7 @@ const ContentRouting = observer(
                         <Divider />
                         <List>
                         
-                            {[ 'Tasks','Meetings', 'Submissions'].map((text, index) => (
+                            {[ 'My Information', 'Tasks','Meetings', 'Submissions'].map((text, index) => (
                                 <ListItem
                                     selected={selectedIndex === index}
                                     button key={text}

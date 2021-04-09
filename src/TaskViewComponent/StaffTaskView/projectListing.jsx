@@ -7,8 +7,12 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import { connect } from 'react-redux';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import clsx from 'clsx';
 import * as actions from '../../redux/login-store/actions/authActions';
-import {Paper, Dialog,Toolbar, Button, AppBar, List, ListItemText, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography, CssBaseline, DialogTitle, DialogContent} from '@material-ui/core'
+import {Drawer, Dialog,Toolbar, Button, AppBar, List, Divider, IconButton, ListItemText, ListItem, 
+    Accordion, AccordionSummary, AccordionDetails, Typography, CssBaseline, DialogTitle, DialogContent} from '@material-ui/core'
 import GetAppIcon from '@material-ui/icons/GetApp';
 import history from '../../history';
 import moment from 'moment'
@@ -85,17 +89,36 @@ const useStyles = (theme) => ({
     },
     taskPaper: {
         marginBottom:'10px',
-    }
+    },
+    drawer: {
+        // width: drawerWidth,
+        flexShrink: 0,
+    },
+    drawerPaper: {
+        // width: drawerWidth,
+    },
+    drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    },
+
 
 })
 
 class ProjectListing extends Component {
     constructor(props) {
         super(props);
+        let {index, state} = props.calendarStore.getDefaultState
         this.state = {
+            currentPageEvent: state,
+            selectedIndex: index,
             open: false,
-            projects : props.calendarStore.getProjectList.filter(project => project.staff.id === props.calendarStore.getUserData.id),
+            projects : props.calendarStore.getProjectList.filter(project => project.supervisor.id === props.calendarStore.getUserData.id),
             currentItem: '',
+            openDrawer:false,
         }
     }
     
@@ -192,14 +215,32 @@ class ProjectListing extends Component {
         history.push('/admin');
     }
 
+    handleDrawerClose = () => {
+        this.setState({ openDrawer: false })
+    }
+
+    handleDrawerOpen = () => {
+        this.setState({ openDrawer: true })
+    }
+
     renderAppBar = () => {
         const { classes, calendarStore } = this.props;
+        const {openDrawer} = this.state
         const is_admin = localStorage.getItem('is_admin');
         console.log(is_admin)
         return (
             <div className={classes.appbarroot}>
                 <AppBar position="static">
                     <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={this.handleDrawerOpen}
+                            edge="start"
+                            className={clsx(classes.menuButton, openDrawer && classes.hide)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             Welcome, {calendarStore.getUserData.username}
                         </Typography>
@@ -223,18 +264,41 @@ class ProjectListing extends Component {
                             :
                             ""
                         }
-
-                        <Button
-                            type="submit"
-                            style={{ color: 'white' }}
-                            onClick={() => this.handleLogout()}
-                        >
-                            Logout
-                        </Button>
-
-                        
                     </Toolbar>
                 </AppBar>
+                <Drawer
+                    className={classes.drawer}
+                    variant="persistent"
+                    anchor="left"
+                    open={openDrawer}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <div className={classes.drawerHeader} >
+                        <IconButton onClick={this.handleDrawerClose}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>
+                        <ListItem button>
+                            <ListItemText onClick={() => {history.push("/staff/userinfo")}}>My Information</ListItemText>
+                        </ListItem>
+
+                        <ListItem button>
+                            <ListItemText onClick={() =>{history.push("/staff/projectListings")}}>Project Listing</ListItemText>
+                        </ListItem>
+                       
+
+                    </List>
+                    <Divider />
+                    <List>
+                        <ListItem button key="Logout" onClick={() => this.handleLogout()}>
+                            <ListItemText>Logout</ListItemText>
+                        </ListItem>
+                    </List>
+                </Drawer>
             </div>
         );
     }

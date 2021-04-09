@@ -38,9 +38,6 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
         logout();
     }
 
-    const seeProjectListings = () => {
-        history.push('/staff/projectlistings')
-    }
 
     const sideList = side => (
         <div
@@ -49,33 +46,34 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
             onClick={toggleDrawer(side, false)}
             onKeyDown={toggleDrawer(side, false)}
         >
-            {
-                type === 'Staff' ?
-                    <React.Fragment>
-                        <List>
-                            <ListItem button key="projectlistings" onClick={()=> seeProjectListings()} >
-                                <ListItemText>Project Listings</ListItemText>
-                            </ListItem>
-                        </List>
-                        <Divider />
-                    </React.Fragment>
-                    : ""
-            }
-            {
-                type === 'Student' ?
-                    <React.Fragment>
-                        <List>
-                            {['Tasks', 'Meetings', 'Submissions'].map((text, index) => (
-                                <ListItem button key={text} onClick={() => onClickHandler(text,index)}>
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Divider />
-                    </React.Fragment>
-                    : ''
-            }
             <List>
+                <ListItem button key="myInfo" onClick={()=> onClickHandler('My Information',3)} >
+                    <ListItemText>My Information</ListItemText>
+                </ListItem>
+            
+                {
+                    type === 'Staff' ?
+                        <React.Fragment>
+                                <ListItem button key="projectlistings" onClick={()=> onClickHandler('ProjectListing', 4)} >
+                                    <ListItemText>Project Listings</ListItemText>
+                                </ListItem>
+                            <Divider />
+                        </React.Fragment>
+                        : ""
+                }
+                {
+                    type === 'Student' ?
+                        <React.Fragment>
+                                {['Tasks', 'Meetings', 'Submissions'].map((text, index) => (
+                                    <ListItem button key={text} onClick={() => onClickHandler(text,index)}>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                ))}
+                            <Divider />
+                        </React.Fragment>
+                        : ''
+                }
+            
                 <ListItem button key="Logout" onClick={()=> handleLogout()} >
                     <ListItemText>Logout</ListItemText>
                 </ListItem>
@@ -87,6 +85,20 @@ function ReusableSwipeableTemporaryDrawer({ calendarStore, logout, type }) {
         const {changeDefaultState} = calendarStore;
         var username = calendarStore.getUserData.username;
         switch (text) {
+            case "ProjectListing":
+                changeDefaultState({ state: 'ProjectListing', index: 4 });
+                history.push(`/staff/projectListings`);
+                break;
+            case 'My Information':
+                changeDefaultState({ state: 'My Information', index: 3 });
+                if (type==='Student'){
+                    history.push(`/${username}/content`);
+                }
+                if (type==='Staff'){
+                    history.push(`/staff/userinfo`);
+                }
+                console.log('Clicked on MyInfo')
+                break;
             case "Submissions":
                 changeDefaultState({ state: 'Submissions', index: 2 });
                 history.push(`/${username}/content`);
