@@ -1,3 +1,4 @@
+import { indexOf } from "lodash"
 import { observable, action, computed, makeObservable } from "mobx"
 /*
 newData is an array containing all the tasks for a Student user
@@ -69,9 +70,12 @@ class CalendarStore {
             changeDefaultState: action,
             setUserData: action,
             setLoadState: action,
+            updateAttachedFile:action,
             updateProject: action,
             updateTask: action,
             updateStaffList:action,
+            removeProject: action,
+            removeUser: action,
             resetStore: action,
         })
     }
@@ -124,6 +128,11 @@ class CalendarStore {
         this.studentList.push(e);
     }
 
+    removeUser(username) {
+        var index = indexOf(this.studentList.find(student => student.username == username));
+        this.studentList.splice(index,1);
+    }
+
     addStaffList (e) {
         this.staffList.push(e);
     }
@@ -147,6 +156,11 @@ class CalendarStore {
         found.description = description;
     }
 
+    removeProject(id) {
+        var index = indexOf(this.projectList.find(project => project.id == id));
+        this.projectList.splice(index,1);
+    }
+
     updateTask = (task_id, hour, status, attachedFile) => {
         var found = this.newData.find(task => task.id == task_id);
         found.status = status;
@@ -159,7 +173,7 @@ class CalendarStore {
     }
 
     updateStaffList = (id, isAdmin) => {
-        var found = this.staffList.find(staff => staff.id = id);
+        var found = this.staffList.find(staff => staff.id == id);
         found.isAdmin = isAdmin
     }
 
@@ -168,7 +182,7 @@ class CalendarStore {
         this.userData = "";
         this.userType = "";
         this.defaultState = {state:'Reports', index:0};
-        this.semStart = '2020-08-09';
+        this.semStart = '2021-01-11';
         this.projectList = [];
         this.studentList = [];
         this.staffList = [];
