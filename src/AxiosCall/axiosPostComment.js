@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export default function axiosPostComment (task_id, user_id, content, created_date) {
     const token = localStorage.getItem('token')
-    axios.post('http://localhost:8080/fyp/api/comment/addByComment', 
+    axios.post('http://localhost:8080/fyp/api/comment/add', 
         {
             task_id: task_id,
             user_id: user_id,

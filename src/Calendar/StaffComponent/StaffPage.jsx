@@ -42,7 +42,7 @@ const StaffPage = observer (
                         student: project.student,
                         tasks: project.taskList,
                         description: project.description,
-                        staff: project.supervisor,
+                        supervisor: project.supervisor,
                     });
 
                     project.taskList.map( task => {

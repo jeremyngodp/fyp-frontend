@@ -67,7 +67,7 @@ export const authLogin = (username, password) => {
                 is_staff: res.data.user.is_staff,
                 is_admin: res.data.user.is_admin,
                 email: res.data.user.email,
-                //fullname: res.data.user.fname + " " + res.data.user.lname -> maynot be necessary
+                fullname: res.data.user.fname + " " + res.data.user.lname
             };
 
             const projects = res.data.projects;

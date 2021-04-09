@@ -63,6 +63,7 @@ const StudentPage = observer (
                         id: project.id,
                         title: project.name,
                         student: project.student,
+                        supervisor: project.supervisor,
                         tasks: project.taskList,
                         description: project.description
                     });

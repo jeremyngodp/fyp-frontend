@@ -114,7 +114,15 @@ class ProjectListing extends Component {
     onSubmitEditProject = () => {
         const {calendarStore} = this.props
         this.setState({
-            projects: calendarStore.getProjectList.filter(project => project.staff.id === calendarStore.getUserData.id)
+            projects: calendarStore.getProjectList.filter(project => project.supervisor.id === calendarStore.getUserData.id)
+        })
+    }
+
+    onClickHandler = (text, index) => {
+        this.setState({
+            currentPageEvent: text,
+            selectedIndex: index,
+            open: false,
         })
     }
 
@@ -132,7 +140,7 @@ class ProjectListing extends Component {
                     title: project.name,
                     student: project.student,
                     description: project.description,
-                    staff: project.supervisor,
+                    supervisor: project.supervisor,
                     tasks: project.taskList,
                 });
 
