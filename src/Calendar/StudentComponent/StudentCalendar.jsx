@@ -9,7 +9,7 @@ const StudentCalendar = observer(
     class StudentCalendarClass extends React.Component {
         
         constructor(props){
-            super()
+            super(props)
             this.calendarRef = React.createRef();
             this.state = {
                 headerToolbar : {
@@ -62,8 +62,9 @@ const StudentCalendar = observer(
 
         render() {
             const {calendarStore} = this.props;
-            var {getData} = calendarStore;
+            const eventList = calendarStore.getData;
             console.log('render Student Calendar')
+            console.log(eventList);
             
             return (    
                 <React.Fragment>
@@ -74,21 +75,12 @@ const StudentCalendar = observer(
                         hiddenDays={[0,6]}
                         selectable ='true'
                         fixedWeekCount = {false}
-                        events = {getData}
+                        events = {eventList}
                         headerToolbar = {this.state.headerToolbar}
                         weekNumbers = {true}
                         weekNumberContent = {this.calculateWeekNo}
                     />
-                    <div>
-                        <p>There are {calendarStore.getData.length} events </p>
-                        <ul>
-                        {calendarStore.getData.map((e, idx) => (
-                            <li key={idx}>
-                                {e.title} - {e.start.toString()}
-                            </li>
-                        ))}
-                        </ul>
-                    </div>
+                    
                 </React.Fragment>
             )
         }
