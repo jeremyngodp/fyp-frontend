@@ -12,6 +12,7 @@ import {AdminOnlyRoute, StudentOnlyRoute, StaffOnlyRoute, PrivateRoute, LoginRou
 import ProjectListPage from './TaskViewComponent/StaffTaskView/projectListing.jsx';
 import LoginPage from "./LoginComponent/LoginPage";
 import RegisterPage from "./LoginComponent/RegisterUser";
+import MyInfo from './Calendar/MyInfo';
 
 
 
@@ -51,6 +52,11 @@ function App() {
                         <Route
                             path={`${match.url}/projectlistings`} exact={true}
                             render={(props) => (<ProjectListPage {...props}  calendarStore={calendarStore} />)}
+                        />
+
+                        <Route
+                            path={`${match.url}/userinfo`} exact={true}
+                            render={(props) => (<MyInfo {...props}  calendarStore={calendarStore} />)}
                         />
                     </Switch>
                 </Router>
