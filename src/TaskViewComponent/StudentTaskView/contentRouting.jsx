@@ -19,11 +19,16 @@ import MeetingContentPage from './MeetingContentPage';
 import TaskBoardPage from './TaskBoardPage';
 import SubmissionContentPage from './SubmissionContentPage';
 import { connect } from 'react-redux';
+import axiosGetProjectListByStudentId from '../../AxiosCall/axiosGetProjectByStudentId';
+import MyInfo from '../../Calendar/MyInfo';
 
 
 const useStyles = (theme) => ({
     root: {
         display: 'flex',
+    },
+    appbarroot: {
+        flexGrow: 1,
     },
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
@@ -104,17 +109,19 @@ const ContentRouting = observer(
             }
         }
 
-        componentDidMount() {
+        UNSAFE_componentWillMount() {
             const {calendarStore} = this.props;
             
             if(!calendarStore.getLoadState) {
                 console.log("load not true")
+                axiosGetProjectListByStudentId(calendarStore.getUserData.id, calendarStore)
                 var projectList = JSON.parse(localStorage.getItem('projects'))
                 projectList.map( project => {
                     calendarStore.addProjectList({
                         id: project.id,
                         title: project.name,
                         student: project.student,
+                        supervisor: project.supervisor,
                         tasks: project.taskList,
                         description: project.description
                     });
@@ -127,6 +134,7 @@ const ContentRouting = observer(
                             event_type: task.task_type,
                             start: task.deadline,
                             end: task.deadline,
+                            deadline: task.deadline,
                             project_id : project.id,
                             hour: task.hourSpent,
                             comments: task.comments,
@@ -135,8 +143,8 @@ const ContentRouting = observer(
                         })
                     });
                 })
-
-                calendarStore.setLoadState();
+                
+                calendarStore.setLoadState(true);
             }
         }
 
@@ -157,12 +165,14 @@ const ContentRouting = observer(
         renderSwitchCase = (param) => {
             const { calendarStore } = this.props;
             switch (param) {
+                case 'My Information':
+                    return <MyInfo calendarStore={calendarStore}/>
                 case 'Meetings':
-                    return <MeetingContentPage calendarStore={calendarStore} />
+                    return <MeetingContentPage calendarStore={calendarStore}  events={this.state}/>
                 case 'Tasks':
-                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask} user_id={calendarStore.getUserData.id}/>
+                    return <TaskBoardPage calendarStore={calendarStore} onSubmitEditTask={this.onSubmitEditTask} user_id={calendarStore.getUserData.id} events={this.state}/>
                 case 'Submissions':
-                    return <SubmissionContentPage calendarStore={calendarStore} />
+                    return <SubmissionContentPage calendarStore={calendarStore} events={this.state}/>
                 default:
                     return "No drawer found";
             }
@@ -258,7 +268,7 @@ const ContentRouting = observer(
                         <Divider />
                         <List>
                         
-                            {[ 'Tasks','Meetings', 'Submissions'].map((text, index) => (
+                            {[ 'My Information', 'Tasks','Meetings', 'Submissions'].map((text, index) => (
                                 <ListItem
                                     selected={selectedIndex === index}
                                     button key={text}

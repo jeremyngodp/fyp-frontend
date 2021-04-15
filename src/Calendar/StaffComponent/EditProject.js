@@ -28,7 +28,7 @@ function EditProjectForm ({handleClose, calendarStore, project_id, onSubmitEditP
     const [state,setState] = useState({
         project_title: project.title,
         project_description: project.description,
-        student_id: project.student.id,
+        student_id: 0,
     })
 
     console.log(state.student_id);

@@ -4,7 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import { connect } from 'react-redux';
 import * as actions from '../redux/login-store/actions/authActions';
-import { Paper, Popover, Button, Typography, Divider, Grid } from '@material-ui/core';
+import { Paper, Popover, Button, Typography, Divider, Grid, Tabs, Tab } from '@material-ui/core';
 import history from '../history'
 
 const useStyles = (theme) => ({
@@ -75,6 +75,14 @@ class AdminToolBar extends Component {
                             value="setSem"
                         >
                             Set Semester
+                        </Button>
+
+                        <Button
+                            style={{ color: 'white' }}
+                            onClick={handleClick}
+                            value="userMgt"
+                        >
+                            User Management
                         </Button>
 
                         <Button

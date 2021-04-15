@@ -59,13 +59,6 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
     const [tasks, setTaskStatus] = useState(taskList);
     const [open, setOpen] = useState(false);
     const [currentItem, setItem] = useState('');
-    
-    useEffect(() => {
-        if (tasks.length === 0){
-            setTaskStatus(calendarStore.getData.filter(task => task.event_type === "common"));
-        }
-        console.log(calendarStore.getLoadState);
-    })
 
     const handleOpen = () => {
         setOpen(true);
@@ -146,6 +139,30 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
         )
     }
 
+    const renderTaskChannel= (tasks, channel) => {
+        if(tasks.length > 0) {
+            return (
+                <div>
+                {tasks
+                    .filter(item => item.status === channel)
+                    .map(item => {
+                        console.log(item)
+                        return (
+                            <div key={item.id} onClick={() => {handleClickTask(item)}} style={{margin: 'auto' ,width: "90%", alignItems: 'center'}} >
+                                <Paper >
+                                    <KanbanItem id={item.id} >
+                                        <div style={classes.item}>{item.title}</div>
+                                    </KanbanItem>
+                                </Paper>
+                            </div>
+                        )
+                        })
+                }
+                </div>
+            )
+        }
+    }
+
     return (
         <main>
             <DndProvider backend={HTML5Backend}>
@@ -159,11 +176,14 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
                     <div style={classes.column}>
                         <div style={classes.columnHead}>{labelsMap[channel]}</div>
                         <div>
-                        {tasks
-                            .filter(item => item.status === channel)
-                            .map(item => {
-                                console.log(item)
-                                return (
+
+                        {renderTaskChannel(tasks, channel)}
+                        
+                        {/* {tasks
+                        .filter(item => item.status === channel)
+                        .map(item => {
+                            console.log(item)
+                            return (
                                 <div key={item.id} onClick={() => {handleClickTask(item)}} style={{margin: 'auto' ,width: "90%", alignItems: 'center'}} >
                                     <Paper >
                                         <KanbanItem id={item.id} >
@@ -171,7 +191,10 @@ function Kanban ({taskList, calendarStore, onSubmitEditTask}) {
                                         </KanbanItem>
                                     </Paper>
                                 </div>
-                            )})}
+                            )
+                            })
+                        }
+                     */}
                             
                         </div>
                     </div>

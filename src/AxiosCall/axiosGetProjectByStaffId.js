@@ -12,15 +12,16 @@ export default function axiosGetProjectListByStaffId (staff_id, calendarStore) {
     })
     .then(res => {
         if (res.data._embedded != null) {
-            res.data._embedded.projectList.map( project => {
-                calendarStore.addProjectList({
-                    id: project.id,
-                    title: project.name,
-                    student: project.student,
-                    tasks: project.taskList,
-                    description: project.description
-                });
-            })
+        //     res.data._embedded.projectList.map( project => {
+        //         calendarStore.addProjectList({
+        //             id: project.id,
+        //             title: project.name,
+        //             student: project.student,
+        //             tasks: project.taskList,
+        //             description: project.description
+        //         });
+        //     })
+            localStorage.setItem("projects", JSON.stringify(res.data._embedded.projectList))
         }
     }).catch(err => {
         console.log(err);

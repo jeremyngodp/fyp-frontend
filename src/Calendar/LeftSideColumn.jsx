@@ -62,7 +62,7 @@ const LeftSideColumn = observer(
                     <Grid container>
                         <Grid item xs={12}>
                             {type === 'Student' ?
-                                <ReusableSwipeableTemporaryDrawer type="Student" calendarStore={calendarStore} />
+                                <ReusableSwipeableTemporaryDrawer type="Student" calendarStore={calendarStore}  />
                                 :
                                 <ReusableSwipeableTemporaryDrawer type="Staff" calendarStore={calendarStore} />
                             }

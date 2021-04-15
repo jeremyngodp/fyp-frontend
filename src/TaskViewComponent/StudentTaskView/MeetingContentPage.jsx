@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import moment from 'moment'
 import ReusableExpansionHeader from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableExpansionHeader'
 import MeetingNotesSubmissionPage from "./MeetingNoteSubmission"
+import ReusableCommentBox from '../ReusableTaskViewComponent/ReusableCommentComponent/ReusableCommentBox'
 
 const useStyles = (theme) => ({
     root: {
@@ -86,6 +87,7 @@ const MeetingContentPage = observer(
         renderMeetingsAccordion = () => {
             const {classes, calendarStore} = this.props
             const {taskList} = this.state;
+            const user_id = calendarStore.getUserData.id
             
             return (
                 taskList
@@ -145,9 +147,10 @@ const MeetingContentPage = observer(
                                             handleTaskChange = {this.handleTaskChange}
                                         />
                                     </div>
-                                    {/* <div className={classes.column}>
-                                        <MeetingNotesAttachmentPage documents={text.documents} Id={text.Id}/>
-                                    </div> */}
+                                    <div className={classes.column}> 
+                                    {/* TODO: insert user id dynamically. */}
+                                        <ReusableCommentBox comments={text.comments} calendarStore={calendarStore} task_id={text.Id} user_id={user_id} />
+                                    </div>
                                     
                                 </AccordionDetails>
                                 

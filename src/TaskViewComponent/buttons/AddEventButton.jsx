@@ -41,9 +41,9 @@ export default class AddEventButton extends React.Component {
                     aria-describedby="alert-dialog-description"
                 >
                 {type ==="Student" ?
-                <StudentAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} /> 
+                <StudentAddTaskForm calendarStore={calendarStore} calendarRef={this.props.calendarRef} handleClose={ () => this.handleClose()} /> 
                 :
-                <StaffAddTaskForm calendarStore={calendarStore} handleClose={ () => this.handleClose()} />
+                <StaffAddTaskForm calendarStore={calendarStore} calendarRef={this.props.calendarRef} handleClose={ () => this.handleClose()} />
                 }
                 </Dialog>
              </div>

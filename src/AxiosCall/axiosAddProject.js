@@ -25,7 +25,9 @@ export default function axiosAddProject(project_title, student_id, project_descr
                 id: response.data.id,
                 title: response.data.name,
                 student: response.data.student,
-                tasks: response.data.taskList,
+                tasks: [],
+                supervisor: response.data.supervisor,
+                description: response.data.description,
             });
         }).catch((error) => {
                 console.log("Not Successfull")
