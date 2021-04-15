@@ -38,7 +38,7 @@ class AdminMainPage extends Component {
                             title: project.name,
                             student: project.student,
                             description: project.description,
-                            staff: project.supervisor,
+                            supervisor: project.supervisor,
                             tasks: project.taskList,
                         });
                     })

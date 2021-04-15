@@ -104,6 +104,23 @@ const useStyles = (theme) => ({
         ...theme.mixins.toolbar,
         justifyContent: 'flex-end',
     },
+    appBar: {
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        // backgroundColor: '#2A2C5D',
+        backgroundColor: theme.palette.primary.dark,
+        color: theme.palette.primary.contrastText
+    },
+    appBarShift: {
+        // width: `calc(100% - ${drawerWidth}px)`,
+        // marginLeft: drawerWidth,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
 
 
 })
@@ -230,7 +247,10 @@ class ProjectListing extends Component {
         console.log(is_admin)
         return (
             <div className={classes.appbarroot}>
-                <AppBar position="static">
+                <AppBar position="static"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: openDrawer,
+                })}>
                     <Toolbar>
                         <IconButton
                             color="inherit"

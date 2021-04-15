@@ -66,7 +66,7 @@ class AdminProjectView extends Component {
                                     <ListItem>
                                         <SupervisorAccountIcon/> &nbsp;
                                         <Typography className={classes.itemName}>Supervisor:</Typography> &nbsp;
-                                        <Typography>{item.staff.fname} {item.staff.lname}</Typography>
+                                        <Typography>{item.supervisor.fname} {item.supervisor.lname}</Typography>
                                     </ListItem>
                                     {item.student == null? 
                                     <ListItem>
